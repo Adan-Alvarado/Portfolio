@@ -9,12 +9,7 @@ export const initPortfolioInteractions = () => {
 	const updateCanvasScale = () => {
 		const isResponsiveLayout = window.innerWidth <= 1023;
 		const scale = isResponsiveLayout ? 1 : Math.min(window.innerWidth / 1366, window.innerHeight / 768);
-		const canvasWidth = isResponsiveLayout ? window.innerWidth : window.innerWidth / scale;
-		const canvasExtra = Math.max(0, canvasWidth - 1366);
 		root.style.setProperty('--canvas-scale', String(scale));
-		root.style.setProperty('--canvas-width', `${canvasWidth}px`);
-		root.style.setProperty('--canvas-extra', `${canvasExtra}px`);
-		root.style.setProperty('--canvas-extra-half', `${canvasExtra / 2}px`);
 	};
 
 	const setActiveSection = (id: string) => {

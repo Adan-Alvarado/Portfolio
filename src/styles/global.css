@@ -12,9 +12,6 @@
 @layer base {
 	:root {
 		--canvas-scale: 1;
-		--canvas-width: 1366px;
-		--canvas-extra: 0px;
-		--canvas-extra-half: 0px;
 		--ease-out: cubic-bezier(.16, 1, .3, 1);
 		--ease-smooth: cubic-bezier(.22, 1, .36, 1);
 		--grid-line: rgb(255 255 255 / 10%);
@@ -88,19 +85,14 @@
 	position: relative;
 	height: 100svh;
 	overflow: hidden;
-	background-color: #121212;
-	background-image:
-		linear-gradient(var(--grid-line) 1px, transparent 1px),
-		linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
-	background-attachment: fixed;
-	background-size: 50px 50px;
+	background: transparent;
 }
 
 .screen-inner {
 	position: absolute;
 	top: 50%;
 	left: 50%;
-	width: var(--canvas-width);
+	width: 1366px;
 	height: 768px;
 	overflow: hidden;
 	transform: translate(-50%, -50%) scale(var(--canvas-scale));
@@ -112,7 +104,7 @@
 	top: 50%;
 	left: 50%;
 	z-index: 80;
-	width: var(--canvas-width);
+	width: 1366px;
 	height: 768px;
 	pointer-events: none;
 	transform: translate(-50%, -50%) scale(var(--canvas-scale));
@@ -721,37 +713,20 @@ body.motion-ready .timeline::before {
 	position: absolute;
 	top: -124px;
 	left: 660px;
-	width: 920px;
+	width: 706px;
 	height: 768px;
-	overflow: visible;
+	overflow: hidden;
 	isolation: isolate;
 	outline: none;
 }
 
 .credential-background-layer {
 	inset: 0;
-	overflow: visible;
-	clip-path: inset(0 -1000px);
+	overflow: hidden;
 	-webkit-mask-image:
-		linear-gradient(
-			to bottom,
-			transparent 0%,
-			rgb(0 0 0 / 24%) 7%,
-			#000 18%,
-			#000 82%,
-			rgb(0 0 0 / 24%) 93%,
-			transparent 100%
-		);
+		linear-gradient(to bottom, transparent 0, #000 2%, #000 98%, transparent 100%);
 	mask-image:
-		linear-gradient(
-			to bottom,
-			transparent 0%,
-			rgb(0 0 0 / 24%) 7%,
-			#000 18%,
-			#000 82%,
-			rgb(0 0 0 / 24%) 93%,
-			transparent 100%
-		);
+		linear-gradient(to bottom, transparent 0, #000 2%, #000 98%, transparent 100%);
 }
 
 .credential-background-card {
@@ -788,6 +763,18 @@ body.motion-ready .timeline::before {
 	gap: 8px;
 	animation: credential-column-rise 28s linear infinite;
 	will-change: transform;
+}
+
+.credential-moving-sequence {
+	display: flex;
+	width: 430px;
+	flex: 0 0 auto;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.credential-moving-sequence + .credential-moving-sequence {
+	margin-left: 111px;
 }
 
 .credential-moving-column.is-paused {
@@ -973,8 +960,8 @@ body.motion-ready .timeline::before {
 }
 
 @keyframes credential-column-rise {
-	from { transform: translateY(0); }
-	to { transform: translateY(-525px); }
+	from { transform: translate3d(0, 0, 0); }
+	to { transform: translate3d(-111px, -1575px, 0); }
 }
 
 .credential-card-face {
@@ -1711,13 +1698,13 @@ body.motion-ready .timeline::before {
 	right: 0;
 	display: flex;
 	flex-direction: column;
-	width: min(580px, 100%);
+	width: min(760px, 100%);
 	height: 100%;
 	overflow-y: auto;
 	overscroll-behavior: contain;
 	scrollbar-width: thin;
 	scrollbar-color: rgb(197 80 7 / 62%) transparent;
-	padding: 40px;
+	padding: 44px;
 	border-left: 1px solid rgb(255 255 255 / 14%);
 	background: #101010;
 	box-shadow: -24px 0 70px rgb(0 0 0 / 50%);
@@ -1818,7 +1805,7 @@ body.motion-ready .timeline::before {
 }
 
 .drawer-groups h3 {
-	font-size: 18px;
+	font-size: 20px;
 	font-weight: 600;
 }
 
@@ -1829,7 +1816,7 @@ body.motion-ready .timeline::before {
 	margin-top: 13px;
 	padding: 0;
 	list-style: none;
-	font-size: 15px;
+	font-size: 18px;
 	opacity: 1;
 }
 
@@ -1837,12 +1824,12 @@ body.motion-ready .timeline::before {
 .stack-drawer footer li {
 	display: inline-flex;
 	align-items: center;
-	gap: 8px;
+	gap: 10px;
 }
 
 .drawer-technology {
-	min-height: 48px;
-	padding: 10px 14px;
+	min-height: 58px;
+	padding: 13px 18px;
 	border: 1px solid rgb(255 255 255 / 10%);
 	border-radius: 999px;
 	background: rgb(255 255 255 / 3%);
@@ -1856,8 +1843,8 @@ body.motion-ready .timeline::before {
 }
 
 .drawer-technology svg {
-	width: 24px;
-	height: 24px;
+	width: 32px;
+	height: 32px;
 }
 
 .stack-drawer footer {
@@ -2174,41 +2161,6 @@ body.motion-ready [data-reveal].is-revealed {
 @keyframes backdrop-out {
 	from { opacity: 1; }
 	to { opacity: 0; }
-}
-
-@media (min-width: 1024px) {
-	.capybara-wrap {
-		left: calc(676px + var(--canvas-extra-half));
-	}
-
-	.hero-stats {
-		left: calc(1093px + var(--canvas-extra));
-	}
-
-	.experience-visual {
-		left: calc(660px + var(--canvas-extra));
-	}
-
-	.project-auto {
-		left: calc(475px + var(--canvas-extra-half));
-	}
-
-	.project-design,
-	.project-fixit {
-		right: 76px;
-		left: auto;
-	}
-
-	.bird-slot,
-	.bird-reveal {
-		left: calc(431px + var(--canvas-extra-half));
-	}
-
-	.terminal-shell,
-	.terminal-reveal {
-		right: 50px;
-		left: auto;
-	}
 }
 
 @media (max-width: 1023px) {
