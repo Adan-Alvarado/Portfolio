@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import { createPortal } from 'react-dom';
 import { Image, LayoutTemplate, MonitorCog, X } from 'lucide-react';
 import {
@@ -25,40 +25,40 @@ const groups = [
 	{
 		title: 'Front-end',
 		items: [
-			{ label: 'HTML', icon: siHtml5, motion: 'motion-rise' },
-			{ label: 'CSS', icon: siCss, motion: 'motion-tilt' },
-			{ label: 'JavaScript', icon: siJavascript, motion: 'motion-pulse' },
-			{ label: 'TypeScript', icon: siTypescript, motion: 'motion-rise' },
-			{ label: 'React', icon: siReact, motion: 'motion-spin' },
-			{ label: 'Astro', icon: siAstro, motion: 'motion-orbit' },
-			{ label: 'Tailwind CSS', icon: siTailwindcss, motion: 'motion-wave' },
+			{ label: 'HTML', icon: siHtml5, color: `#${siHtml5.hex}`, motion: 'motion-rise' },
+			{ label: 'CSS', icon: siCss, color: `#${siCss.hex}`, motion: 'motion-tilt' },
+			{ label: 'JavaScript', icon: siJavascript, color: `#${siJavascript.hex}`, motion: 'motion-pulse' },
+			{ label: 'TypeScript', icon: siTypescript, color: `#${siTypescript.hex}`, motion: 'motion-rise' },
+			{ label: 'React', icon: siReact, color: `#${siReact.hex}`, motion: 'motion-spin' },
+			{ label: 'Astro', icon: siAstro, color: `#${siAstro.hex}`, motion: 'motion-orbit' },
+			{ label: 'Tailwind CSS', icon: siTailwindcss, color: `#${siTailwindcss.hex}`, motion: 'motion-wave' },
 		],
 	},
 	{
 		title: 'Back-end',
 		items: [
-			{ label: 'Node.js', icon: siNodedotjs, motion: 'motion-tilt' },
-			{ label: 'C#', icon: siDotnet, motion: 'motion-pulse' },
-			{ label: 'MySQL', icon: siMysql, motion: 'motion-wave' },
-			{ label: 'PostgreSQL', icon: siPostgresql, motion: 'motion-tilt' },
+			{ label: 'Node.js', icon: siNodedotjs, color: `#${siNodedotjs.hex}`, motion: 'motion-tilt' },
+			{ label: 'C#', icon: siDotnet, color: `#${siDotnet.hex}`, motion: 'motion-pulse' },
+			{ label: 'MySQL', icon: siMysql, color: `#${siMysql.hex}`, motion: 'motion-wave' },
+			{ label: 'PostgreSQL', icon: siPostgresql, color: `#${siPostgresql.hex}`, motion: 'motion-tilt' },
 		],
 	},
 	{
 		title: 'Diseño',
 		items: [
-			{ label: 'Figma', icon: siFigma, motion: 'motion-rise' },
-			{ label: 'Photoshop', LucideIcon: Image, motion: 'motion-pulse' },
-			{ label: 'CorelDRAW', icon: siCoreldraw, motion: 'motion-tilt' },
-			{ label: 'Canva', LucideIcon: LayoutTemplate, motion: 'motion-wave' },
+			{ label: 'Figma', icon: siFigma, color: `#${siFigma.hex}`, motion: 'motion-rise' },
+			{ label: 'Photoshop', LucideIcon: Image, color: '#31a8ff', motion: 'motion-pulse' },
+			{ label: 'CorelDRAW', icon: siCoreldraw, color: `#${siCoreldraw.hex}`, motion: 'motion-tilt' },
+			{ label: 'Canva', LucideIcon: LayoutTemplate, color: '#00c4cc', motion: 'motion-wave' },
 		],
 	},
 ];
 
 const environments = [
-	{ label: 'Git', icon: siGit, motion: 'motion-orbit' },
-	{ label: 'Docker', icon: siDocker, motion: 'motion-float' },
-	{ label: 'Linux', icon: siLinux, motion: 'motion-tilt' },
-	{ label: 'Windows', LucideIcon: MonitorCog, motion: 'motion-pulse' },
+	{ label: 'Git', icon: siGit, color: `#${siGit.hex}`, motion: 'motion-orbit' },
+	{ label: 'Docker', icon: siDocker, color: `#${siDocker.hex}`, motion: 'motion-float' },
+	{ label: 'Linux', icon: siLinux, color: `#${siLinux.hex}`, motion: 'motion-tilt' },
+	{ label: 'Windows', LucideIcon: MonitorCog, color: '#0078d4', motion: 'motion-pulse' },
 ];
 
 export default function StackDrawer() {
@@ -136,7 +136,7 @@ export default function StackDrawer() {
 								<section key={group.title} className={index === 0 ? 'primary-group' : ''}>
 									<h3>{group.title}</h3>
 									<ul>
-										{group.items.map((item) => <li key={item.label} className={`drawer-technology ${item.motion}`} tabIndex={0}>{'icon' in item ? <BrandIcon icon={item.icon} width="15" height="15" aria-hidden="true" /> : <item.LucideIcon width="15" height="15" aria-hidden="true" />}{item.label}</li>)}
+										{group.items.map((item) => <li key={item.label} className={`drawer-technology ${item.motion}`} style={{ '--technology-color': item.color } as CSSProperties} tabIndex={0}>{'icon' in item ? <BrandIcon icon={item.icon} width="15" height="15" aria-hidden="true" /> : <item.LucideIcon width="15" height="15" aria-hidden="true" />}{item.label}</li>)}
 									</ul>
 								</section>
 							))}
@@ -144,7 +144,7 @@ export default function StackDrawer() {
 
 						<footer>
 							<span>Herramientas y entornos</span>
-							<ul>{environments.map((item) => <li key={item.label} className={`drawer-technology ${item.motion}`} tabIndex={0}>{'icon' in item ? <BrandIcon icon={item.icon} width="15" height="15" aria-hidden="true" /> : <item.LucideIcon width="15" height="15" aria-hidden="true" />}{item.label}</li>)}</ul>
+							<ul>{environments.map((item) => <li key={item.label} className={`drawer-technology ${item.motion}`} style={{ '--technology-color': item.color } as CSSProperties} tabIndex={0}>{'icon' in item ? <BrandIcon icon={item.icon} width="15" height="15" aria-hidden="true" /> : <item.LucideIcon width="15" height="15" aria-hidden="true" />}{item.label}</li>)}</ul>
 						</footer>
 					</aside>
 				</div>,
