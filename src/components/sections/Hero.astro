@@ -1,0 +1,71 @@
+---
+import { Icon } from 'astro-iconset/components';
+import TechStrip from '../TechStrip.astro';
+---
+
+<section id="inicio" class="portfolio-screen home-screen">
+	<div class="screen-inner">
+		<div class="home-stage">
+			<div class="hero-copy">
+				<p class="section-kicker hero-kicker">[ “ Trabajemos Juntos ” ]</p>
+				<h1 class="hero-title" aria-label="Developer más designer" data-reveal style="--reveal-delay: 40ms">
+					<span class="developer-word" aria-hidden="true">
+						<span class="script-letter script-d">D</span>
+						<span class="developer-eve">eve</span>
+						<span class="script-letter script-l">l</span>
+						<span class="developer-oper">oper</span>
+					</span>
+					<span class="designer-word"><span class="plus">+</span> designer</span>
+				</h1>
+
+				<div class="hero-profile-reveal" data-reveal style="--reveal-delay: 130ms">
+					<div class="profile-ticket">
+						<div class="profile-dark">
+							<div class="github-mark" aria-hidden="true"><Icon name="lucide:github" width="52" height="52" /></div>
+							<div>
+								<strong>Fabricio Alvarado</strong>
+								<a class="cv-download" href="/Fabricio-Alvarado-CV.pdf" download>Descargar CV <span><Icon name="lucide:download" width="15" height="15" aria-hidden="true" /></span></a>
+							</div>
+						</div>
+						<p>Disponible para proyectos<br />freelance o ver One Piece</p>
+					</div>
+				</div>
+			</div>
+
+			<div class="capybara-wrap" data-reveal style="--reveal-delay: 90ms">
+				<div class="capybara-glow"></div>
+				<img src="/assets/capybara.png" alt="Capibara pixelada sosteniendo una taza" />
+			</div>
+
+			<aside class="hero-stats" aria-label="Resumen de experiencia" data-reveal style="--reveal-delay: 190ms">
+				<div><strong>+3</strong><p><b>años</b><br />de experiencia</p></div>
+				<div><strong>+4300</strong><p>piezas gráficas<br /><b>completadas</b></p></div>
+				<div><strong>+4</strong><p><b>proyectos</b><br />desarrollados</p></div>
+			</aside>
+		</div>
+
+		<TechStrip revealDelay="240ms" />
+	</div>
+</section>
+
+<style>
+	.home-screen .profile-dark .cv-download {
+		outline-offset: 4px;
+	}
+
+	.home-screen .profile-dark .cv-download:focus-visible {
+		outline: 2px solid #f2f1ef;
+	}
+
+	.home-screen .profile-dark .cv-download span {
+		border-radius: 0;
+		background: transparent;
+		color: #171717;
+	}
+
+	.home-screen .profile-ticket > p {
+		font-family: "Inter", Arial, sans-serif;
+		font-weight: 300;
+		font-style: normal;
+	}
+</style>

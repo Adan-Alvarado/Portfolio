@@ -1,0 +1,31 @@
+---
+import { Icon } from 'astro-iconset/components';
+
+const links = [
+	{ label: 'Inicio', href: '#inicio', icon: 'lucide:house', motion: 'nav-icon-home' },
+	{ label: 'Experiencia', href: '#experiencia', icon: 'lucide:user-round', motion: 'nav-icon-user' },
+	{ label: 'Proyectos', href: '#proyectos', icon: 'lucide:folder', motion: 'nav-icon-folder' },
+	{ label: 'Contacto', href: '#contacto', icon: 'lucide:smartphone', motion: 'nav-icon-phone' },
+];
+---
+
+<div class="nav-canvas">
+	<nav class="portfolio-nav" aria-label="Navegación principal">
+		<ul>
+			{links.map((link, index) => (
+				<li class={link.motion}>
+					<a
+						href={link.href}
+						data-nav-link={link.href.slice(1)}
+						class:list={{ active: index === 0 }}
+						aria-current={index === 0 ? 'page' : undefined}
+						aria-label={link.label}
+					>
+						<Icon name={link.icon} width="24" height="24" aria-hidden="true" />
+						<span>{link.label}</span>
+					</a>
+				</li>
+			))}
+		</ul>
+	</nav>
+</div>

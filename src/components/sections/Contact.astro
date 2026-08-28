@@ -1,0 +1,36 @@
+---
+import { Icon } from 'astro-iconset/components';
+import ContactTerminal from '../ContactTerminal';
+---
+
+<section id="contacto" class="portfolio-screen contact-screen">
+	<div class="screen-inner">
+		<div class="contact-stage">
+			<div class="contact-copy" data-reveal style="--reveal-delay: 40ms">
+				<p class="section-kicker">[ Hablemos ]</p>
+				<h2>¿Tienes algo<br /> en <em>mente?</em></h2>
+				<div class="intro-rule"></div>
+				<p>Estoy siempre abierto a nuevos<br /> desafíos colaboraciones y<br /> oportunidades creativas.<br /> Cuéntame tu idea y veamos<br /> cómo podemos construir algo<br /> increíble juntos.</p>
+			</div>
+
+			<div class="bird-reveal" data-reveal style="--reveal-delay: 100ms">
+				<div class="bird-slot">
+					<img src="/images/Paloma con taza de cafe.png" width="1298" height="1222" alt="Paloma pixelada sosteniendo una taza de café" />
+				</div>
+			</div>
+
+			<div class="terminal-reveal" data-reveal style="--reveal-delay: 150ms"><ContactTerminal client:visible={{ rootMargin: '240px' }} /></div>
+		</div>
+
+		<dl class="contact-details" data-reveal style="--reveal-delay: 200ms">
+			<div><dt>Ubicación <Icon name="lucide:map-pin" width="17" height="17" aria-hidden="true" /></dt><dd>Copán, Honduras</dd></div>
+			<div><dt>Email <Icon name="lucide:mail" width="17" height="17" aria-hidden="true" /></dt><dd><a href="mailto:alvaradoadan55@gmail.com">alvaradoadan55@gmail.com</a></dd></div>
+			<div><dt>Disponibilidad <Icon name="lucide:clock-3" width="17" height="17" aria-hidden="true" /></dt><dd>Lunes a Sábado</dd></div>
+		</dl>
+
+		<footer class="portfolio-footer" data-reveal style="--reveal-delay: 250ms">
+			<p>@2026 --- Fabricio Alvarado <span>|</span> Todos los derechos reservados</p>
+			<p>&lt;/&gt; Hecho con pasión y un poco de café</p>
+		</footer>
+	</div>
+</section>

@@ -1,0 +1,60 @@
+.terminal-shell {
+	--terminal-interactive-border: var(--interactive-border, rgb(224 224 224 / 68%));
+	--terminal-focus-ring: rgb(242 241 239 / 82%);
+}
+
+.terminal-shell .terminal-card {
+	transition:
+		border-color 220ms ease,
+		box-shadow 280ms var(--ease-out);
+}
+
+.terminal-shell:hover .terminal-card,
+.terminal-shell:focus-within .terminal-card {
+	border-color: var(--terminal-interactive-border);
+	box-shadow: 0 24px 70px rgb(0 0 0 / 30%);
+}
+
+.terminal-shell .terminal-reset:hover {
+	color: #f2f1ef;
+}
+
+.terminal-shell .terminal-reset:focus-visible,
+.terminal-shell .terminal-send-button:focus-visible {
+	outline: 2px solid var(--terminal-focus-ring);
+	outline-offset: 3px;
+}
+
+.terminal-shell .terminal-feedback[data-tone='error'] {
+	color: #e28a86;
+}
+
+.terminal-shell .terminal-feedback[data-tone='success'] {
+	color: #9fc5a7;
+}
+
+.terminal-shell .terminal-feedback[data-tone='info'] {
+	color: #bdb9b7;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.terminal-shell .terminal-card,
+	.terminal-shell .terminal-reset,
+	.terminal-shell .terminal-body label,
+	.terminal-shell .terminal-feedback,
+	.terminal-shell .terminal-send-button,
+	.terminal-shell .terminal-send-button svg {
+		transition: none;
+	}
+
+	.terminal-shell .terminal-reset,
+	.terminal-shell .terminal-send-button,
+	.terminal-shell .terminal-send-button svg {
+		transform: none;
+	}
+
+	.terminal-shell .terminal-block-cursor {
+		animation: none;
+		opacity: 1;
+	}
+}

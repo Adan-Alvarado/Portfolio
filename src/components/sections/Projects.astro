@@ -1,0 +1,36 @@
+---
+import { Icon } from 'astro-iconset/components';
+import ProjectGallery from '../ProjectGallery';
+import StackDrawer from '../StackDrawer';
+import TechStrip from '../TechStrip.astro';
+---
+
+<section id="proyectos" class="portfolio-screen projects-screen">
+	<div class="screen-inner">
+		<div class="projects-stage">
+			<div class="projects-intro" data-reveal style="--reveal-delay: 40ms">
+				<p class="section-kicker">[ ¿Tienes algo en mente? ]</p>
+				<h2>Vamos a<br /> construir <em>algo</em></h2>
+				<span class="doodle-arrow" aria-hidden="true"><Icon name="lucide:corner-down-right" width="42" height="42" /></span>
+				<div class="intro-rule"></div>
+
+				<div class="astronaut-slot">
+					<img src="/images/pinguino.png" width="2000" height="1954" alt="Pingüino pixelado sosteniendo una herramienta" />
+				</div>
+
+				<p class="projects-bio">Soy una persona <span>alegre,<br /> propositiva y autodidacta.</span><br /> Siempre busco ir más allá de lo<br /> esperado, optimizar procesos y<br /> aportar soluciones creativas.</p>
+			</div>
+
+			<div class="projects-gallery-reveal" data-reveal style="--reveal-delay: 120ms"><ProjectGallery client:visible={{ rootMargin: '240px' }} /></div>
+		</div>
+
+		<div class="stack-ticket-reveal" data-reveal style="--reveal-delay: 180ms">
+			<div class="stack-ticket">
+				<div class="github-mark" aria-hidden="true"><Icon name="lucide:github" width="44" height="44" /></div>
+				<div><strong>Stack Tecnológico</strong><StackDrawer client:visible={{ rootMargin: '240px' }} /></div>
+			</div>
+		</div>
+
+		<TechStrip compact revealDelay="230ms" />
+	</div>
+</section>

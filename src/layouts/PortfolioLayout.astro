@@ -1,0 +1,33 @@
+---
+import '../styles/global.css';
+import Navigation from '../components/Navigation.astro';
+
+interface Props {
+	title: string;
+	description: string;
+}
+
+const { title, description } = Astro.props;
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+		<meta name="description" content={description} />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<title>{title}</title>
+	</head>
+	<body>
+		<a class="skip-link" href="#inicio">Saltar al contenido</a>
+		<Navigation />
+		<main><slot /></main>
+
+		<script>
+			import { initPortfolioInteractions } from '../scripts/portfolio-interactions';
+
+			initPortfolioInteractions();
+		</script>
+	</body>
+</html>

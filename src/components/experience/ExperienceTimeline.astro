@@ -1,0 +1,20 @@
+---
+import { experienceEntries } from '../../data/experience';
+---
+
+<div class="timeline" data-timeline>
+	<article>
+		<p class="role-muted">Estudiante de<br />Ingeniería en Sistemas</p>
+		<h3>{experienceEntries[0].role}</h3>
+		<p class="year">{experienceEntries[0].year}</p>
+		<p>{experienceEntries[0].description}</p>
+	</article>
+
+	{experienceEntries.slice(1).map((entry) => (
+		<article class={entry.className}>
+			<h3>{entry.role.split('\n').map((line, index) => <>{index > 0 && <br />}{line}</>)}</h3>
+			<p class="year">{entry.year}</p>
+			<p>{entry.description}</p>
+		</article>
+	))}
+</div>
