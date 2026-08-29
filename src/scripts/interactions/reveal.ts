@@ -31,7 +31,7 @@ export const initReveals = () => {
 			(entries) => entries.forEach((entry) => {
 				if (entry.isIntersecting && entry.target instanceof HTMLElement) entry.target.classList.add('is-revealed');
 			}),
-			{ rootMargin: '-18% 0px -18% 0px', threshold: 0.1 },
+			{ rootMargin: '-1px 0px -1px 0px', threshold: 0.01 },
 		);
 
 		resetObserver = new IntersectionObserver(
