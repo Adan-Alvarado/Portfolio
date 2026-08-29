@@ -377,7 +377,7 @@
 	color: var(--technology-color);
 	border-color: color-mix(in srgb, var(--technology-color) 68%, transparent);
 	background: color-mix(in srgb, var(--technology-color) 10%, #121212);
-	box-shadow: 0 12px 28px color-mix(in srgb, var(--technology-color) 18%, transparent);
+	box-shadow: 0 7px 17px color-mix(in srgb, var(--technology-color) 11%, transparent);
 	text-shadow: none;
 	transform: translateY(-2px);
 }

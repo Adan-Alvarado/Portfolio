@@ -19,6 +19,7 @@
 	border-color: rgb(255 255 255 / 8%);
 	border-radius: 16px;
 	background: #101010;
+	box-shadow: 0 20px 46px -20px rgb(0 0 0 / 82%);
 	isolation: isolate;
 	pointer-events: auto;
 }
@@ -26,7 +27,7 @@
 .projects-gallery .project-card.pg-card:hover,
 .projects-gallery .project-card.pg-card:focus-within {
 	border-color: var(--interactive-border, rgb(224 224 224 / 68%));
-	box-shadow: 0 24px 54px rgb(0 0 0 / 28%);
+	box-shadow: 0 30px 64px -22px rgb(0 0 0 / 92%);
 	transform: translateY(-3px);
 }
 
