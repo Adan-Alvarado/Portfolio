@@ -31,11 +31,6 @@ body.motion-ready [data-reveal="project-cards"].is-revealed .pg-card-content {
 body.motion-ready [data-reveal="project-cards"].is-revealed .pg-card:nth-child(2) .pg-card-content { animation-delay: 70ms; }
 body.motion-ready [data-reveal="project-cards"].is-revealed .pg-card:nth-child(3) .pg-card-content { animation-delay: 140ms; }
 
-.skills-strip--static .skills-track {
-	animation: none;
-	transform: none;
-}
-
 body.motion-ready .skills-strip:not(.is-revealed) .skills-track,
 .contact-screen:not(.is-visible) .terminal-block-cursor,
 .page-hidden *,
@@ -143,4 +138,5 @@ body.motion-ready .skills-strip:not(.is-revealed) .skills-track,
 	}
 
 	.credential-moving-column { transform: none !important; }
+	.cursor-dot { display: none; }
 }

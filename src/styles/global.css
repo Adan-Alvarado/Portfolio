@@ -514,9 +514,9 @@ body.motion-ready .timeline::before {
 	inset: 0;
 	overflow: visible;
 	-webkit-mask-image:
-		linear-gradient(to bottom, transparent 0, #000 2%, #000 98%, transparent 100%);
+		linear-gradient(to bottom, transparent 0%, rgb(0 0 0 / 45%) 3%, #000 8%, #000 92%, rgb(0 0 0 / 45%) 97%, transparent 100%);
 	mask-image:
-		linear-gradient(to bottom, transparent 0, #000 2%, #000 98%, transparent 100%);
+		linear-gradient(to bottom, transparent 0%, rgb(0 0 0 / 45%) 3%, #000 8%, #000 92%, rgb(0 0 0 / 45%) 97%, transparent 100%);
 }
 
 .credential-background-card {
@@ -1677,6 +1677,12 @@ body.motion-ready .timeline::before {
 		width: calc(100% - 40px);
 		height: 74px;
 		margin: 26px auto 48px;
+	}
+
+	.home-screen .skills-strip {
+		width: 100%;
+		margin-right: 0;
+		margin-left: 0;
 	}
 
 	.experience-stage,

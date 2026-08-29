@@ -109,3 +109,26 @@
 	font-weight: 300;
 }
 
+.cursor-dot {
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 130;
+	width: 9px;
+	height: 9px;
+	border-radius: 50%;
+	background: #c55007;
+	box-shadow: 0 3px 10px rgb(197 80 7 / 34%);
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity 140ms ease;
+}
+
+.cursor-dot.is-visible {
+	opacity: 1;
+	will-change: transform;
+}
+
+@media (hover: none), (pointer: coarse) {
+	.cursor-dot { display: none; }
+}

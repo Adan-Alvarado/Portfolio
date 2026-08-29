@@ -7,18 +7,27 @@
 	* { box-sizing: border-box; }
 
 	body {
+		position: relative;
+		isolation: isolate;
 		margin: 0;
 		min-width: 320px;
 		overflow-x: hidden;
 		background-color: #121212;
-		background-image:
-			linear-gradient(var(--grid-line) 1px, transparent 1px),
-			linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
-		background-attachment: fixed;
-		background-size: 50px 50px;
 		color: #f2f1ef;
 		font-family: "Inter", Arial, sans-serif;
 		font-weight: 300;
+	}
+
+	body::before {
+		position: fixed;
+		inset: 0;
+		z-index: -1;
+		content: "";
+		background-image:
+			linear-gradient(var(--grid-line) 1px, transparent 1px),
+			linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+		background-size: 50px 50px;
+		pointer-events: none;
 	}
 
 	button,
@@ -30,4 +39,3 @@
 
 	::selection { background: #c55007; color: #fff; }
 }
-

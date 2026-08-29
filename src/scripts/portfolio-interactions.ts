@@ -1,4 +1,5 @@
 import { initCanvasScale } from './interactions/canvas';
+import { initCursorFollower } from './interactions/cursor';
 import { initActiveNavigation } from './interactions/navigation';
 import { initReveals } from './interactions/reveal';
 import { initTimelineProgress } from './interactions/timeline';
@@ -12,6 +13,7 @@ export const initPortfolioInteractions = () => {
 	cleanupCurrent?.();
 	const cleanups = [
 		initCanvasScale(),
+		initCursorFollower(),
 		initActiveNavigation(),
 		initReveals(),
 		initTimelineProgress(),
