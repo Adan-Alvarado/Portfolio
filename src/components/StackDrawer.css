@@ -20,13 +20,13 @@
 	right: 0;
 	display: flex;
 	flex-direction: column;
-	width: min(860px, 100%);
+	width: min(645px, 100%);
 	height: 100%;
 	overflow-y: auto;
 	overscroll-behavior: contain;
 	scrollbar-width: thin;
 	scrollbar-color: rgb(197 80 7 / 62%) transparent;
-	padding: 32px 36px;
+	padding: 24px 27px;
 	border-left: 1px solid rgb(255 255 255 / 14%);
 	background: #101010;
 	box-shadow: -24px 0 70px rgb(0 0 0 / 50%);
@@ -49,12 +49,12 @@
 	display: flex;
 	align-items: flex-start;
 	justify-content: space-between;
-	padding-bottom: 16px;
+	padding-bottom: 12px;
 	border-bottom: 1px solid rgb(255 255 255 / 12%);
 }
 
-.stack-drawer header p { margin: 0; color: #c55007; font-size: 13px; }
-.stack-drawer h2 { margin: 4px 0 0; font-size: 36px; font-weight: 500; }
+.stack-drawer header p { margin: 0; color: #c55007; font-size: 11px; }
+.stack-drawer h2 { margin: 3px 0 0; font-size: 27px; font-weight: 500; }
 
 .stack-drawer header button {
 	display: grid;
@@ -75,15 +75,15 @@
 .drawer-groups {
 	display: grid;
 	grid-template-columns: repeat(2, minmax(0, 1fr));
-	gap: 14px;
-	margin-top: 20px;
+	gap: 11px;
+	margin-top: 15px;
 }
 
 .drawer-groups section {
 	min-width: 0;
-	padding: 18px;
+	padding: 14px;
 	border: 1px solid rgb(255 255 255 / 14%);
-	border-radius: 22px;
+	border-radius: 17px;
 }
 
 .drawer-groups .primary-group {
@@ -93,27 +93,27 @@
 }
 .drawer-groups h3,
 .drawer-groups ul { margin: 0; }
-.drawer-groups h3 { font-size: 19px; font-weight: 600; }
+.drawer-groups h3 { font-size: 15px; font-weight: 600; }
 
 .drawer-groups ul {
 	display: flex;
 	flex-wrap: wrap;
-	gap: 8px;
-	margin-top: 10px;
+	gap: 6px;
+	margin-top: 8px;
 	padding: 0;
 	list-style: none;
-	font-size: 17px;
+	font-size: 13px;
 	opacity: 1;
 }
 
 .stack-drawer footer {
-	margin-top: 18px;
+	margin-top: 14px;
 	color: #777;
-	font-size: 15px;
+	font-size: 12px;
 	line-height: 1.4;
 }
-.stack-drawer footer > span { display: block; margin-bottom: 6px; }
-.stack-drawer footer ul { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.stack-drawer footer > span { display: block; margin-bottom: 5px; }
+.stack-drawer footer ul { display: flex; flex-wrap: wrap; gap: 6px; margin: 0; padding: 0; list-style: none; }
 
 @media (max-width: 1023px) {
 	.stack-drawer {

@@ -128,7 +128,7 @@ export default function ContactTerminal() {
 			</div>
 
 			<button type="button" className="terminal-send-button" onClick={sendMessage} aria-label="Enviar DM">
-				Enviar DM <Send width="20" height="20" aria-hidden="true" />
+				Enviar Mensaje <Send width="20" height="20" aria-hidden="true" />
 			</button>
 		</div>
 	);

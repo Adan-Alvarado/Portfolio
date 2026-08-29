@@ -3,24 +3,24 @@ import { technologyCatalog } from './technologies';
 
 export const projects = [
 	{
-		id: 'auto-care',
-		preview: 'auto-care',
-		title: 'Auto Care Club',
-		className: 'project-auto',
-		description: 'Concepto de plataforma para organizar mantenimientos, alertas y el historial de un vehículo desde una experiencia clara y directa.',
-		role: 'Diseño de producto y desarrollo frontend',
-		repositoryUrl: 'https://github.com/fabricio-portfolio-demo-inexistente/auto-care-club-demo',
-		technologies: [technologyCatalog.astro, technologyCatalog.react, technologyCatalog.typescript, technologyCatalog.tailwind],
-	},
-	{
 		id: 'diseno',
 		preview: 'diseno',
 		title: 'Diseño Gráfico',
-		className: 'project-design',
+		className: 'project-auto',
 		description: 'Selección conceptual de piezas editoriales y sistemas visuales creada para demostrar dirección de arte, composición y consistencia.',
 		role: 'Dirección de arte y diseño gráfico',
 		repositoryUrl: 'https://github.com/fabricio-portfolio-demo-inexistente/diseno-grafico-demo',
 		technologies: [technologyCatalog.photoshop, technologyCatalog.corel, technologyCatalog.canva, technologyCatalog.figma],
+	},
+	{
+		id: 'auto-care',
+		preview: 'auto-care',
+		title: 'Auto Care Club',
+		className: 'project-design',
+		description: 'Concepto de plataforma para organizar mantenimientos, alertas y el historial de un vehículo desde una experiencia clara y directa.',
+		role: 'Diseño de producto y desarrollo frontend',
+		repositoryUrl: 'https://github.com/fabricio-portfolio-demo-inexistente/auto-care-club-demo',
+		technologies: [technologyCatalog.astro, technologyCatalog.react, technologyCatalog.typescript, technologyCatalog.tailwind],
 	},
 	{
 		id: 'fixit',

@@ -37,14 +37,14 @@
 }
 
 .technology-pill--drawer {
-	min-height: 56px;
-	padding: 10px 14px;
-	font-size: 17px;
+	min-height: 42px;
+	padding: 8px 11px;
+	font-size: 13px;
 }
 
 .technology-pill--drawer svg {
-	width: 28px;
-	height: 28px;
+	width: 21px;
+	height: 21px;
 }
 
 .technology-pill--project {

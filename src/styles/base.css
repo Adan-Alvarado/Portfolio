@@ -12,22 +12,39 @@
 		margin: 0;
 		min-width: 320px;
 		overflow-x: hidden;
-		background-color: #121212;
+		background-color: var(--canvas-surface);
 		color: #f2f1ef;
 		font-family: "Inter", Arial, sans-serif;
 		font-weight: 300;
 	}
 
-	body::before {
+	body::before,
+	body::after {
 		position: fixed;
+		content: "";
+		pointer-events: none;
+	}
+
+	body::before {
+		inset: -12%;
+		z-index: -2;
+		background-image:
+			radial-gradient(ellipse 86% 120% at -5% 48%, rgb(58 27 14 / 8%), transparent 70%),
+			radial-gradient(ellipse 44% 78% at 26% 53%, rgb(106 29 6 / 20%), transparent 72%),
+			radial-gradient(ellipse 32% 72% at 91% 57%, rgb(74 8 32 / 16%), transparent 72%),
+			radial-gradient(ellipse 52% 34% at 49% 100%, rgb(66 36 14 / 10%), transparent 72%);
+		filter: blur(84px);
+		transform: translateZ(0);
+	}
+
+	body::after {
 		inset: 0;
 		z-index: -1;
-		content: "";
 		background-image:
-			linear-gradient(var(--grid-line) 1px, transparent 1px),
-			linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
-		background-size: 50px 50px;
-		pointer-events: none;
+			linear-gradient(var(--grid-line) var(--grid-weight), transparent var(--grid-weight)),
+			linear-gradient(90deg, var(--grid-line) var(--grid-weight), transparent var(--grid-weight));
+		background-position: 36px 19px;
+		background-size: var(--grid-size) var(--grid-size);
 	}
 
 	button,

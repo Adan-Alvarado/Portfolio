@@ -34,7 +34,7 @@ export default function StackDrawer() {
 								<p>[ Stack tecnológico ]</p>
 								<h2 id="stack-drawer-title">Mis herramientas</h2>
 							</div>
-							<button ref={closeButtonRef} type="button" onClick={close} aria-label="Cerrar"><X width="25" height="25" aria-hidden="true" /></button>
+							<button ref={closeButtonRef} type="button" onClick={close} aria-label="Cerrar"><X width="19" height="19" aria-hidden="true" /></button>
 						</header>
 
 						<div className="drawer-groups">
