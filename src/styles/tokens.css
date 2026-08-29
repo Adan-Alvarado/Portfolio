@@ -14,7 +14,7 @@
 		--motion-feedback: 180ms;
 		--motion-state: 280ms;
 		--motion-entrance: 560ms;
-		--grid-line: rgb(255 255 255 / 6%);
+		--grid-line: rgb(255 255 255 / 3%);
 		--interactive-border: rgb(224 224 224 / 68%);
 		color-scheme: dark;
 		scroll-behavior: smooth;
