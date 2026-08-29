@@ -1,4 +1,3 @@
-import type { SimpleIcon } from 'simple-icons';
 import {
 	siAstro,
 	siCss,
@@ -17,23 +16,11 @@ import {
 	siTailwindcss,
 	siTypescript,
 } from 'simple-icons';
-import type { TechnologyFallbackIcon } from '../types/portfolio';
+import type { Technology, TechnologyGroup } from '../types/technology';
 
-export interface Technology {
-	label: string;
-	iconName: string;
-	color: string;
-	size: number;
-	simpleIcon?: SimpleIcon;
-	fallbackIcon?: TechnologyFallbackIcon;
-}
+export type { Technology, TechnologyGroup } from '../types/technology';
 
-export interface TechnologyGroup {
-	title: string;
-	items: readonly Technology[];
-}
-
-const technologyCatalog = {
+export const technologyCatalog = {
 	html: { label: 'HTML', iconName: 'simple-icons:html5', color: `#${siHtml5.hex}`, size: 20, simpleIcon: siHtml5 },
 	css: { label: 'CSS', iconName: 'simple-icons:css', color: `#${siCss.hex}`, size: 20, simpleIcon: siCss },
 	javascript: { label: 'JavaScript', iconName: 'simple-icons:javascript', color: `#${siJavascript.hex}`, size: 18, simpleIcon: siJavascript },
@@ -42,6 +29,7 @@ const technologyCatalog = {
 	astro: { label: 'Astro', iconName: 'simple-icons:astro', color: `#${siAstro.hex}`, size: 20, simpleIcon: siAstro },
 	tailwind: { label: 'Tailwind CSS', iconName: 'simple-icons:tailwindcss', color: `#${siTailwindcss.hex}`, size: 21, simpleIcon: siTailwindcss },
 	node: { label: 'Node.js', iconName: 'simple-icons:nodedotjs', color: `#${siNodedotjs.hex}`, size: 19, simpleIcon: siNodedotjs },
+	dotnet: { label: '.NET', iconName: 'simple-icons:dotnet', color: `#${siDotnet.hex}`, size: 19, simpleIcon: siDotnet },
 	csharp: { label: 'C#', iconName: 'simple-icons:csharp', color: `#${siDotnet.hex}`, size: 19, simpleIcon: siDotnet },
 	mysql: { label: 'MySQL', iconName: 'simple-icons:mysql', color: `#${siMysql.hex}`, size: 23, simpleIcon: siMysql },
 	postgresql: { label: 'PostgreSQL', iconName: 'simple-icons:postgresql', color: `#${siPostgresql.hex}`, size: 20, simpleIcon: siPostgresql },
@@ -84,4 +72,3 @@ export const environmentTechnologies: readonly Technology[] = [
 	technologyCatalog.linux,
 	technologyCatalog.windows,
 ];
-

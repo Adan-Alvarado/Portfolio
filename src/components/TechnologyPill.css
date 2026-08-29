@@ -1,0 +1,78 @@
+.technology-pill {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	border: 1px solid rgb(255 255 255 / 12%);
+	border-radius: 999px;
+	background: rgb(255 255 255 / 3%);
+	color: #d0cfcc;
+	line-height: 1;
+	outline: none;
+	transition:
+		color 220ms ease,
+		border-color 220ms ease,
+		background 220ms ease,
+		box-shadow 260ms var(--ease-out),
+		transform 260ms var(--ease-out);
+}
+
+.technology-pill svg {
+	flex: 0 0 auto;
+	color: currentColor;
+	transition: transform 220ms var(--ease-out);
+}
+
+.technology-pill:hover,
+.technology-pill:focus-visible {
+	border-color: color-mix(in srgb, var(--technology-color) 72%, transparent);
+	background: color-mix(in srgb, var(--technology-color) 13%, #101010);
+	box-shadow: 0 12px 30px color-mix(in srgb, var(--technology-color) 20%, transparent);
+	color: var(--technology-color);
+	transform: translateY(-2px);
+}
+
+.technology-pill:hover svg,
+.technology-pill:focus-visible svg {
+	transform: translateY(-1px) scale(1.04);
+}
+
+.technology-pill--drawer {
+	min-height: 56px;
+	padding: 10px 14px;
+	font-size: 17px;
+}
+
+.technology-pill--drawer svg {
+	width: 28px;
+	height: 28px;
+}
+
+.technology-pill--project {
+	min-height: 38px;
+	padding: 8px 11px;
+	font-size: 12px;
+}
+
+.technology-pill--project svg {
+	width: 18px;
+	height: 18px;
+}
+
+@media (max-width: 540px) {
+	.technology-pill--drawer {
+		min-height: 48px;
+		font-size: 15px;
+	}
+}
+
+@media (hover: none) {
+	.technology-pill {
+		border-color: rgb(197 80 7 / 34%);
+		background: rgb(197 80 7 / 8%);
+		color: #f2f1ef;
+	}
+}
+
+@media (forced-colors: active) {
+	.technology-pill { border-color: CanvasText; }
+}

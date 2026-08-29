@@ -1,37 +1,12 @@
-import { useRef, useState, type CSSProperties } from 'react';
-import { Image, LayoutTemplate, MonitorCog, X, type LucideIcon } from 'lucide-react';
+import { useRef, useState } from 'react';
+import { X } from 'lucide-react';
 import {
 	environmentTechnologies,
 	technologyGroups,
-	type Technology,
 } from '../data/technologies';
-import BrandIcon from './BrandIcon';
+import TechnologyPill from './TechnologyPill';
 import Dialog from './ui/Dialog';
 import './StackDrawer.css';
-
-const fallbackIcons: Record<NonNullable<Technology['fallbackIcon']>, LucideIcon> = {
-	image: Image,
-	layout: LayoutTemplate,
-	monitor: MonitorCog,
-};
-
-function TechnologyItem({ technology }: { technology: Technology }) {
-	const FallbackIcon = technology.fallbackIcon ? fallbackIcons[technology.fallbackIcon] : null;
-	return (
-		<li
-			className="drawer-technology"
-			style={{ '--technology-color': technology.color } as CSSProperties}
-			tabIndex={0}
-		>
-			{technology.simpleIcon ? (
-				<BrandIcon icon={technology.simpleIcon} width="15" height="15" aria-hidden="true" />
-			) : FallbackIcon ? (
-				<FallbackIcon width="15" height="15" aria-hidden="true" />
-			) : null}
-			{technology.label}
-		</li>
-	);
-}
 export default function StackDrawer() {
 	const [open, setOpen] = useState(false);
 	const triggerRef = useRef<HTMLButtonElement>(null);
@@ -66,14 +41,14 @@ export default function StackDrawer() {
 							{technologyGroups.map((group, index) => (
 								<section key={group.title} className={index === 0 ? 'primary-group' : ''}>
 									<h3>{group.title}</h3>
-									<ul>{group.items.map((technology) => <TechnologyItem key={technology.label} technology={technology} />)}</ul>
+									<ul>{group.items.map((technology) => <TechnologyPill key={technology.label} technology={technology} variant="drawer" interactive />)}</ul>
 								</section>
 							))}
 						</div>
 
 						<footer>
 							<span>Herramientas y entornos</span>
-							<ul>{environmentTechnologies.map((technology) => <TechnologyItem key={technology.label} technology={technology} />)}</ul>
+							<ul>{environmentTechnologies.map((technology) => <TechnologyPill key={technology.label} technology={technology} variant="drawer" interactive />)}</ul>
 						</footer>
 					</>
 				)}

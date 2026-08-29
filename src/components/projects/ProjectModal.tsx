@@ -1,6 +1,9 @@
 import type { RefObject } from 'react';
 import { X } from 'lucide-react';
+import { siGithub } from 'simple-icons';
 import type { Project } from '../../types/portfolio';
+import BrandIcon from '../BrandIcon';
+import TechnologyPill from '../TechnologyPill';
 import Dialog from '../ui/Dialog';
 import ProjectPreview from './ProjectPreview';
 
@@ -46,9 +49,13 @@ export default function ProjectModal({ project, returnFocusRef, onAfterClose }: 
 								<div><dt>Rol</dt><dd>{project.role}</dd></div>
 								<div><dt>Estado</dt><dd>Ejemplo ficticio para el portfolio</dd></div>
 							</dl>
+							<a className="pg-repository" href={project.repositoryUrl} target="_blank" rel="noreferrer">
+								<BrandIcon icon={siGithub} width="19" height="19" aria-hidden="true" />
+								<span><strong>Código de ejemplo</strong><small>Repositorio demostrativo no publicado</small></span>
+							</a>
 							<div className="pg-stack">
 								<h3>Tecnologías</h3>
-								<ul>{project.technologies.map((technology) => <li key={technology}>{technology}</li>)}</ul>
+								<ul>{project.technologies.map((technology) => <TechnologyPill key={technology.label} technology={technology} />)}</ul>
 							</div>
 						</div>
 					</div>
@@ -57,4 +64,3 @@ export default function ProjectModal({ project, returnFocusRef, onAfterClose }: 
 		</Dialog>
 	);
 }
-

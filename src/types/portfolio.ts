@@ -1,3 +1,5 @@
+import type { Technology } from './technology';
+
 export type ProjectId = 'auto-care' | 'diseno' | 'fixit';
 
 export type ProjectPreviewKind = ProjectId;
@@ -9,8 +11,6 @@ export interface Project {
 	className: string;
 	description: string;
 	role: string;
-	technologies: readonly string[];
+	repositoryUrl: string;
+	technologies: readonly Technology[];
 }
-
-export type TechnologyFallbackIcon = 'image' | 'layout' | 'monitor';
-
