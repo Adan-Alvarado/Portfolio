@@ -1,0 +1,24 @@
+@theme {
+	--color-brand-orange: #c55007;
+	--color-ink: #121212;
+	--color-paper: #f2f1ef;
+	--color-muted: #999693;
+	--font-body: "Inter", Arial, sans-serif;
+}
+
+@layer base {
+	:root {
+		--canvas-scale: 1;
+		--ease-out: cubic-bezier(.16, 1, .3, 1);
+		--ease-smooth: cubic-bezier(.22, 1, .36, 1);
+		--motion-feedback: 180ms;
+		--motion-state: 280ms;
+		--motion-entrance: 560ms;
+		--grid-line: rgb(255 255 255 / 20%);
+		--interactive-border: rgb(224 224 224 / 68%);
+		color-scheme: dark;
+		scroll-behavior: smooth;
+		scrollbar-color: #8d3908 #121212;
+		scrollbar-width: thin;
+	}
+}

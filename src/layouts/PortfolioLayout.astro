@@ -27,7 +27,8 @@ const { title, description } = Astro.props;
 		<script>
 			import { initPortfolioInteractions } from '../scripts/portfolio-interactions';
 
-			initPortfolioInteractions();
+			const cleanup = initPortfolioInteractions();
+			window.addEventListener('pagehide', cleanup, { once: true });
 		</script>
 	</body>
 </html>

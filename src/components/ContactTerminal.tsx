@@ -1,106 +1,86 @@
-import { useRef, useState, type CSSProperties, type KeyboardEvent } from 'react';
+import { useReducer, useRef, type CSSProperties, type KeyboardEvent } from 'react';
 import { Send, X } from 'lucide-react';
+import {
+	buildContactMailto,
+	initialTerminalState,
+	isValidEmail,
+	terminalReducer,
+	type TerminalField,
+} from './contact/contactTerminal';
 import './ContactTerminal.css';
 
-type Step = 'email' | 'subject' | 'message' | 'ready';
-type FeedbackTone = 'idle' | 'error' | 'success' | 'info';
-
-const validEmail = (value: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim());
-
 export default function ContactTerminal() {
-	const [step, setStep] = useState<Step>('email');
-	const [email, setEmail] = useState('');
-	const [subject, setSubject] = useState('');
-	const [message, setMessage] = useState('');
-	const [feedback, setFeedback] = useState('');
-	const [feedbackTone, setFeedbackTone] = useState<FeedbackTone>('idle');
+	const [state, dispatch] = useReducer(terminalReducer, initialTerminalState);
 	const emailInput = useRef<HTMLInputElement>(null);
 	const subjectInput = useRef<HTMLInputElement>(null);
 	const messageInput = useRef<HTMLInputElement>(null);
+	const { step, email, subject, message, feedback, feedbackTone } = state;
 
-	const showFeedback = (message: string, tone: FeedbackTone) => {
-		setFeedback(message);
-		setFeedbackTone(tone);
-	};
-
-	const clearFeedback = () => {
-		setFeedback('');
-		setFeedbackTone('idle');
-	};
-
-	const focusStep = (nextStep: Exclude<Step, 'ready'>) => {
+	const focusStep = (nextStep: TerminalField) => {
 		requestAnimationFrame(() => {
 			const target = nextStep === 'email' ? emailInput.current : nextStep === 'subject' ? subjectInput.current : messageInput.current;
 			target?.focus({ preventScroll: true });
 		});
 	};
 
-	const advance = (event: KeyboardEvent<HTMLInputElement>, current: Exclude<Step, 'ready'>) => {
+	const showFieldError = (field: TerminalField, error: string) => {
+		dispatch({ type: 'advance', step: field });
+		dispatch({ type: 'feedback', message: error, tone: 'error' });
+		focusStep(field);
+	};
+
+	const advance = (event: KeyboardEvent<HTMLInputElement>, current: TerminalField) => {
 		if (event.key !== 'Enter') return;
 		event.preventDefault();
-		clearFeedback();
 
 		if (current === 'email') {
-			if (!validEmail(email)) {
-				showFeedback(email.trim() ? 'El correo no tiene un formato válido.' : 'Debes ingresar tu correo.', 'error');
+			if (!isValidEmail(email)) {
+				showFieldError('email', email.trim() ? 'El correo no tiene un formato válido.' : 'Debes ingresar tu correo.');
 				return;
 			}
-			setStep('subject');
+			dispatch({ type: 'advance', step: 'subject' });
 			focusStep('subject');
 			return;
 		}
 
 		if (current === 'subject') {
 			if (!subject.trim()) {
-				showFeedback('Debes ingresar el asunto.', 'error');
+				showFieldError('subject', 'Debes ingresar el asunto.');
 				return;
 			}
-			setStep('message');
+			dispatch({ type: 'advance', step: 'message' });
 			focusStep('message');
 			return;
 		}
 
 		if (!message.trim()) {
-			showFeedback('Debes escribir un mensaje.', 'error');
+			showFieldError('message', 'Debes escribir un mensaje.');
 			return;
 		}
-		setStep('ready');
-		showFeedback('Mensaje listo. Puedes enviarlo.', 'success');
+		dispatch({ type: 'advance', step: 'ready', feedback: 'Mensaje listo. Puedes enviarlo.', tone: 'success' });
 	};
 
 	const resetTerminal = () => {
-		setEmail('');
-		setSubject('');
-		setMessage('');
-		showFeedback('Terminal reiniciada.', 'info');
-		setStep('email');
+		dispatch({ type: 'reset' });
 		focusStep('email');
 	};
 
 	const entryWidth = (value: string) => ({ '--entry-length': Math.max(value.length, 0) }) as CSSProperties;
 
 	const sendMessage = () => {
-		if (!validEmail(email)) {
-			setStep('email');
-			showFeedback('Debes ingresar un correo válido.', 'error');
-			focusStep('email');
+		if (!isValidEmail(email)) {
+			showFieldError('email', 'Debes ingresar un correo válido.');
 			return;
 		}
 		if (!subject.trim()) {
-			setStep('subject');
-			showFeedback('Debes ingresar el asunto.', 'error');
-			focusStep('subject');
+			showFieldError('subject', 'Debes ingresar el asunto.');
 			return;
 		}
 		if (!message.trim()) {
-			setStep('message');
-			showFeedback('Debes escribir un mensaje.', 'error');
-			focusStep('message');
+			showFieldError('message', 'Debes escribir un mensaje.');
 			return;
 		}
-
-		const body = `${message.trim()}\n\nCorreo de contacto: ${email.trim()}`;
-		window.location.href = `mailto:alvaradoadan55@gmail.com?subject=${encodeURIComponent(subject.trim())}&body=${encodeURIComponent(body)}`;
+		window.location.href = buildContactMailto(state);
 	};
 
 	return (
@@ -122,7 +102,7 @@ export default function ContactTerminal() {
 					<label className={step === 'email' ? 'current-command' : ''}>
 						<span className="terminal-prompt">Tu@mensaje: ~$ correo:</span>
 						<span className={`terminal-entry ${email ? 'has-value' : ''}`} style={entryWidth(email)}>
-							<input ref={emailInput} type="email" value={email} onChange={(event) => { setEmail(event.target.value); clearFeedback(); }} onKeyDown={(event) => advance(event, 'email')} readOnly={step !== 'email'} aria-label="Correo" aria-invalid={feedbackTone === 'error' && step === 'email'} aria-describedby="terminal-feedback" autoComplete="email" />
+							<input ref={emailInput} type="email" value={email} onChange={(event) => dispatch({ type: 'change', field: 'email', value: event.target.value })} onKeyDown={(event) => advance(event, 'email')} readOnly={step !== 'email'} aria-label="Correo" aria-invalid={feedbackTone === 'error' && step === 'email'} aria-describedby="terminal-feedback" autoComplete="email" />
 							{step === 'email' && <span className="terminal-block-cursor" aria-hidden="true"></span>}
 						</span>
 					</label>
@@ -130,7 +110,7 @@ export default function ContactTerminal() {
 					<label className={step === 'subject' ? 'current-command' : step === 'email' ? 'future-command' : ''}>
 						<span className="terminal-prompt">Tu@mensaje: ~$ asunto:</span>
 						<span className={`terminal-entry ${subject ? 'has-value' : ''}`} style={entryWidth(subject)}>
-							<input ref={subjectInput} type="text" value={subject} onChange={(event) => { setSubject(event.target.value); clearFeedback(); }} onKeyDown={(event) => advance(event, 'subject')} readOnly={step !== 'subject'} aria-label="Asunto" aria-invalid={feedbackTone === 'error' && step === 'subject'} aria-describedby="terminal-feedback" />
+							<input ref={subjectInput} type="text" value={subject} onChange={(event) => dispatch({ type: 'change', field: 'subject', value: event.target.value })} onKeyDown={(event) => advance(event, 'subject')} readOnly={step !== 'subject'} aria-label="Asunto" aria-invalid={feedbackTone === 'error' && step === 'subject'} aria-describedby="terminal-feedback" />
 							{step === 'subject' && <span className="terminal-block-cursor" aria-hidden="true"></span>}
 						</span>
 					</label>
@@ -138,7 +118,7 @@ export default function ContactTerminal() {
 					<label className={step === 'message' ? 'current-command' : step === 'ready' ? '' : 'future-command'}>
 						<span className="terminal-prompt">Tu@mensaje: ~$ mensaje:</span>
 						<span className={`terminal-entry ${message ? 'has-value' : ''}`} style={entryWidth(message)}>
-							<input ref={messageInput} type="text" value={message} onChange={(event) => { setMessage(event.target.value); clearFeedback(); }} onKeyDown={(event) => advance(event, 'message')} readOnly={step !== 'message'} aria-label="Mensaje" aria-invalid={feedbackTone === 'error' && step === 'message'} aria-describedby="terminal-feedback" />
+							<input ref={messageInput} type="text" value={message} onChange={(event) => dispatch({ type: 'change', field: 'message', value: event.target.value })} onKeyDown={(event) => advance(event, 'message')} readOnly={step !== 'message'} aria-label="Mensaje" aria-invalid={feedbackTone === 'error' && step === 'message'} aria-describedby="terminal-feedback" />
 							{step === 'message' && <span className="terminal-block-cursor" aria-hidden="true"></span>}
 						</span>
 					</label>

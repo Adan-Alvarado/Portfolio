@@ -44,7 +44,7 @@
 	.terminal-shell .terminal-feedback,
 	.terminal-shell .terminal-send-button,
 	.terminal-shell .terminal-send-button svg {
-		transition: none;
+		transition-duration: 120ms;
 	}
 
 	.terminal-shell .terminal-reset,

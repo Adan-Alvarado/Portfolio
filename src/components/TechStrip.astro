@@ -1,68 +1,35 @@
 ---
 import { Icon } from 'astro-iconset/components';
-import {
-	siAstro,
-	siCss,
-	siDocker,
-	siDotnet,
-	siFigma,
-	siGit,
-	siHtml5,
-	siJavascript,
-	siMysql,
-	siNodedotjs,
-	siPostgresql,
-	siReact,
-	siTailwindcss,
-	siTypescript,
-} from 'simple-icons';
+import { stripTechnologies } from '../data/technologies';
 
 interface Props {
 	compact?: boolean;
-	revealDelay?: string;
+	revealOrder?: number;
 }
 
-const { compact = false, revealDelay } = Astro.props;
-
-const technologies = [
-	{ label: 'HTML', icon: 'simple-icons:html5', color: siHtml5.hex, motion: 'motion-rise', size: 20 },
-	{ label: 'CSS', icon: 'simple-icons:css', color: siCss.hex, motion: 'motion-tilt', size: 20 },
-	{ label: 'JavaScript', icon: 'simple-icons:javascript', color: siJavascript.hex, motion: 'motion-pulse', size: 18 },
-	{ label: 'TypeScript', icon: 'simple-icons:typescript', color: siTypescript.hex, motion: 'motion-rise', size: 18 },
-	{ label: 'React', icon: 'simple-icons:react', color: siReact.hex, motion: 'motion-spin', size: 19 },
-	{ label: 'Astro', icon: 'simple-icons:astro', color: siAstro.hex, motion: 'motion-orbit', size: 20 },
-	{ label: 'Tailwind CSS', icon: 'simple-icons:tailwindcss', color: siTailwindcss.hex, motion: 'motion-wave', size: 21 },
-	{ label: 'Node.js', icon: 'simple-icons:nodedotjs', color: siNodedotjs.hex, motion: 'motion-tilt', size: 19 },
-	{ label: 'C#', icon: 'simple-icons:csharp', color: siDotnet.hex, motion: 'motion-pulse', size: 19 },
-	{ label: 'MySQL', icon: 'simple-icons:mysql', color: siMysql.hex, motion: 'motion-wave', size: 23 },
-	{ label: 'PostgreSQL', icon: 'simple-icons:postgresql', color: siPostgresql.hex, motion: 'motion-tilt', size: 20 },
-	{ label: 'Docker', icon: 'simple-icons:docker', color: siDocker.hex, motion: 'motion-float', size: 22 },
-	{ label: 'Figma', icon: 'simple-icons:figma', color: siFigma.hex, motion: 'motion-rise', size: 18 },
-	{ label: 'Git', icon: 'simple-icons:git', color: siGit.hex, motion: 'motion-orbit', size: 19 },
-];
-
+const { compact = false, revealOrder } = Astro.props;
 const copies = [0, 1];
 ---
 
 <div
-	class:list={['skills-strip', { 'projects-skills': compact }]}
+	class:list={['skills-strip', { 'projects-skills': compact, 'skills-strip--static': !compact }]}
 	role="list"
 	aria-label="Tecnologías utilizadas"
-	data-reveal={revealDelay ? true : undefined}
-	style={revealDelay ? `--reveal-delay: ${revealDelay}` : undefined}
+	data-reveal={revealOrder !== undefined ? 'technology-strip' : undefined}
+	data-reveal-order={revealOrder}
 >
 	<div class="skills-track">
 		{copies.map((copy) => (
 			<div class="technology-group" aria-hidden={copy === 1 ? 'true' : undefined}>
-				{technologies.map((technology) => (
+				{stripTechnologies.map((technology) => (
 					<span
-						class:list={['technology-item', technology.motion]}
+						class="technology-item"
 						role={copy === 0 ? 'listitem' : undefined}
 						tabindex={copy === 0 ? 0 : -1}
-						style={`--technology-color: #${technology.color}`}
+						style={`--technology-color: ${technology.color}`}
 					>
 						<Icon
-							name={technology.icon}
+							name={technology.iconName}
 							width={compact ? Math.round(technology.size * 0.9) : technology.size}
 							height={compact ? Math.round(technology.size * 0.9) : technology.size}
 							aria-hidden="true"

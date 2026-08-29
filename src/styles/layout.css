@@ -1,0 +1,111 @@
+.skip-link {
+	position: fixed;
+	left: 1rem;
+	transform: translateY(-140%);
+	z-index: 100;
+	background: #fff;
+	color: #111;
+	padding: .65rem 1rem;
+	border-radius: 0 0 .6rem .6rem;
+}
+
+.skip-link:focus { transform: translateY(0); }
+
+.portfolio-screen {
+	position: relative;
+	height: 100svh;
+	overflow: hidden;
+	background: transparent;
+}
+
+.screen-inner {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 1366px;
+	height: 768px;
+	overflow: hidden;
+	transform: translate(-50%, -50%) scale(var(--canvas-scale));
+	transform-origin: center;
+}
+
+.nav-canvas {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	z-index: 80;
+	width: 1366px;
+	height: 768px;
+	pointer-events: none;
+	transform: translate(-50%, -50%) scale(var(--canvas-scale));
+	transform-origin: center;
+}
+
+.portfolio-nav {
+	position: absolute;
+	top: 39px;
+	left: 50%;
+	z-index: 20;
+	pointer-events: auto;
+	transform: translateX(calc(-50% + 22px));
+}
+
+.portfolio-nav ul {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.portfolio-nav a {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	height: 46px;
+	padding: 0 15px;
+	border-radius: 24px;
+	color: #f4f3f1;
+	font-size: 21px;
+	font-weight: 300;
+	line-height: 1;
+	text-decoration: none;
+	transition: color var(--motion-feedback) ease, background 220ms ease, box-shadow 220ms ease, transform var(--motion-feedback) ease;
+}
+
+.portfolio-nav a:hover,
+.portfolio-nav a:focus-visible {
+	background: rgb(0 0 0 / 35%);
+	outline: none;
+	transform: translateY(-2px);
+}
+
+.portfolio-nav a.active {
+	background: rgb(6 6 6 / 84%);
+	box-shadow: 0 6px 20px rgb(0 0 0 / 26%);
+}
+
+.portfolio-nav a.active svg { color: #c55007; }
+.portfolio-nav a.active:hover,
+.portfolio-nav a.active:focus-visible { transform: none; }
+
+.portfolio-nav svg {
+	display: block;
+	width: 24px;
+	height: 24px;
+	flex: 0 0 auto;
+	transform-origin: center;
+	transition: color var(--motion-feedback) ease, transform var(--motion-feedback) var(--ease-out);
+}
+
+.portfolio-nav a:hover svg,
+.portfolio-nav a:focus-visible svg { transform: translateY(-1px); }
+
+.section-kicker {
+	margin: 0;
+	color: #b65a29;
+	font-size: 16px;
+	font-weight: 300;
+}
+

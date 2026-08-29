@@ -8,7 +8,6 @@ interface CredentialCarouselProps {
 
 export default function CredentialCarousel({ credentials }: CredentialCarouselProps) {
 	const carouselRef = useRef<HTMLDivElement>(null);
-	const [isHovered, setIsHovered] = useState(false);
 	const [hasFocus, setHasFocus] = useState(false);
 	const [isInView, setIsInView] = useState(true);
 	const [pageIsVisible, setPageIsVisible] = useState(true);
@@ -54,7 +53,7 @@ export default function CredentialCarousel({ credentials }: CredentialCarouselPr
 	const activeCredential = credentialAt(1);
 	const staticBottomCredential = credentialAt(2);
 	const movingCredentials = [credentialAt(3), credentialAt(4), credentialAt(5)];
-	const motionIsPaused = isHovered || hasFocus || !isInView || !pageIsVisible || prefersReducedMotion;
+	const motionIsPaused = hasFocus || !isInView || !pageIsVisible || prefersReducedMotion;
 
 	return (
 		<div
@@ -63,8 +62,6 @@ export default function CredentialCarousel({ credentials }: CredentialCarouselPr
 			role="region"
 			aria-label="Credencial profesional"
 			tabIndex={0}
-			onPointerEnter={() => setIsHovered(true)}
-			onPointerLeave={() => setIsHovered(false)}
 			onFocus={() => setHasFocus(true)}
 			onBlur={handleBlur}
 		>

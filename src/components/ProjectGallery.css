@@ -88,11 +88,11 @@
 }
 
 .pg-card-action > span {
-	max-width: 0;
-	overflow: hidden;
+	display: inline-block;
+	width: 46px;
 	opacity: 0;
 	transform: translateX(6px);
-	transition: max-width 320ms cubic-bezier(.16, 1, .3, 1), opacity 180ms ease, transform 320ms cubic-bezier(.16, 1, .3, 1);
+	transition: opacity 180ms ease, transform 280ms var(--ease-out);
 }
 
 .pg-card-action svg {
@@ -101,7 +101,6 @@
 
 .pg-card:hover .pg-card-action > span,
 .pg-card:focus-within .pg-card-action > span {
-	max-width: 72px;
 	opacity: 1;
 	transform: translateX(0);
 }
@@ -382,11 +381,11 @@
 }
 
 .pg-card:hover .pg-poster--one,
-.pg-card:focus-within .pg-poster--one { transform: rotate(-2deg) translateY(1px); }
+.pg-card:focus-within .pg-poster--one { transform: rotate(-2.5deg) translateY(3px); }
 .pg-card:hover .pg-poster--two,
-.pg-card:focus-within .pg-poster--two { transform: translateY(-5px); }
+.pg-card:focus-within .pg-poster--two { transform: translateY(-3px); }
 .pg-card:hover .pg-poster--three,
-.pg-card:focus-within .pg-poster--three { transform: rotate(1.5deg) translateY(1px); }
+.pg-card:focus-within .pg-poster--three { transform: rotate(2deg) translateY(3px); }
 
 /* Fixit: documentación ficticia, reconocible como API. */
 .pg-preview--fixit {
@@ -492,7 +491,7 @@
 	inset: 0;
 	background: rgb(5 5 5 / 78%);
 	backdrop-filter: blur(10px);
-	animation: pg-backdrop-in 240ms ease-out both;
+	animation: backdrop-in 240ms ease-out both;
 }
 
 .pg-modal {
@@ -508,8 +507,12 @@
 	background: #101010;
 	box-shadow: 0 34px 90px rgb(0 0 0 / 58%);
 	color: #efeeec;
-	animation: pg-modal-in 420ms cubic-bezier(.16, 1, .3, 1) both;
+	animation: dialog-panel-in 340ms var(--ease-out) both;
 }
+
+.pg-modal-layer.is-closing { pointer-events: none; }
+.pg-modal-layer.is-closing .pg-modal-backdrop { animation: backdrop-out 220ms ease-in both; }
+.pg-modal-layer.is-closing .pg-modal { animation: dialog-panel-out 280ms cubic-bezier(.4, 0, 1, 1) both; }
 
 .pg-modal:focus { outline: none; }
 
@@ -738,16 +741,6 @@
 	}
 }
 
-@keyframes pg-modal-in {
-	from { opacity: 0; filter: blur(6px); transform: translateY(18px) scale(.985); }
-	to { opacity: 1; filter: blur(0); transform: translateY(0) scale(1); }
-}
-
-@keyframes pg-backdrop-in {
-	from { opacity: 0; }
-	to { opacity: 1; }
-}
-
 @media (max-width: 1023px) {
 	.pg-modal {
 		width: min(920px, calc(100vw - 40px));
@@ -811,7 +804,6 @@
 
 @media (hover: none) {
 	.pg-card-action > span {
-		max-width: 72px;
 		opacity: 1;
 		transform: none;
 	}

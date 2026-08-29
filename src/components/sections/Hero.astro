@@ -8,7 +8,7 @@ import TechStrip from '../TechStrip.astro';
 		<div class="home-stage">
 			<div class="hero-copy">
 				<p class="section-kicker hero-kicker">[ “ Trabajemos Juntos ” ]</p>
-				<h1 class="hero-title" aria-label="Developer más designer" data-reveal style="--reveal-delay: 40ms">
+				<h1 class="hero-title" aria-label="Developer más designer" data-reveal="hero-title" data-reveal-order="0">
 					<span class="developer-word" aria-hidden="true">
 						<span class="script-letter script-d">D</span>
 						<span class="developer-eve">eve</span>
@@ -18,7 +18,7 @@ import TechStrip from '../TechStrip.astro';
 					<span class="designer-word"><span class="plus">+</span> designer</span>
 				</h1>
 
-				<div class="hero-profile-reveal" data-reveal style="--reveal-delay: 130ms">
+				<div class="hero-profile-reveal" data-reveal="hero-profile" data-reveal-order="1">
 					<div class="profile-ticket">
 						<div class="profile-dark">
 							<div class="github-mark" aria-hidden="true"><Icon name="lucide:github" width="52" height="52" /></div>
@@ -32,19 +32,19 @@ import TechStrip from '../TechStrip.astro';
 				</div>
 			</div>
 
-			<div class="capybara-wrap" data-reveal style="--reveal-delay: 90ms">
+			<div class="capybara-wrap" data-reveal="hero-character" data-reveal-order="2">
 				<div class="capybara-glow"></div>
 				<img src="/assets/capybara.png" alt="Capibara pixelada sosteniendo una taza" />
 			</div>
 
-			<aside class="hero-stats" aria-label="Resumen de experiencia" data-reveal style="--reveal-delay: 190ms">
+			<aside class="hero-stats" aria-label="Resumen de experiencia" data-reveal="hero-stats" data-reveal-order="3">
 				<div><strong>+3</strong><p><b>años</b><br />de experiencia</p></div>
 				<div><strong>+4300</strong><p>piezas gráficas<br /><b>completadas</b></p></div>
 				<div><strong>+4</strong><p><b>proyectos</b><br />desarrollados</p></div>
 			</aside>
 		</div>
 
-		<TechStrip revealDelay="240ms" />
+		<TechStrip revealOrder={4} />
 	</div>
 </section>
 

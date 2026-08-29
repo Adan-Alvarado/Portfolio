@@ -1,0 +1,33 @@
+@layer base {
+	:root::-webkit-scrollbar { width: 10px; }
+	:root::-webkit-scrollbar-track { background: #121212; }
+	:root::-webkit-scrollbar-thumb { border: 3px solid #121212; border-radius: 999px; background: #8d3908; }
+	:root::-webkit-scrollbar-thumb:hover { background: #c55007; }
+
+	* { box-sizing: border-box; }
+
+	body {
+		margin: 0;
+		min-width: 320px;
+		overflow-x: hidden;
+		background-color: #121212;
+		background-image:
+			linear-gradient(var(--grid-line) 1px, transparent 1px),
+			linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+		background-attachment: fixed;
+		background-size: 50px 50px;
+		color: #f2f1ef;
+		font-family: "Inter", Arial, sans-serif;
+		font-weight: 300;
+	}
+
+	button,
+	input,
+	textarea { font: inherit; }
+
+	button,
+	a { -webkit-tap-highlight-color: transparent; }
+
+	::selection { background: #c55007; color: #fff; }
+}
+

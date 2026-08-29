@@ -1,0 +1,169 @@
+.drawer-layer {
+	position: fixed;
+	inset: 0;
+	z-index: 100;
+}
+
+.drawer-backdrop {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	border: 0;
+	background: rgb(0 0 0 / 68%);
+	animation: backdrop-in 260ms ease-out both;
+}
+
+.stack-drawer {
+	position: absolute;
+	top: 0;
+	right: 0;
+	display: flex;
+	flex-direction: column;
+	width: min(860px, 100%);
+	height: 100%;
+	overflow-y: auto;
+	overscroll-behavior: contain;
+	scrollbar-width: thin;
+	scrollbar-color: rgb(197 80 7 / 62%) transparent;
+	padding: 48px;
+	border-left: 1px solid rgb(255 255 255 / 14%);
+	background: #101010;
+	box-shadow: -24px 0 70px rgb(0 0 0 / 50%);
+	animation: drawer-in 360ms var(--ease-out);
+}
+
+.stack-drawer:focus { outline: none; }
+.stack-drawer::-webkit-scrollbar { width: 8px; }
+.stack-drawer::-webkit-scrollbar-thumb {
+	border: 2px solid #101010;
+	border-radius: 999px;
+	background: rgb(197 80 7 / 62%);
+}
+
+.drawer-layer.is-closing { pointer-events: none; }
+.drawer-layer.is-closing .drawer-backdrop { animation: backdrop-out 220ms ease-in both; }
+.drawer-layer.is-closing .stack-drawer { animation: drawer-out 280ms cubic-bezier(.4, 0, 1, 1) both; }
+
+.stack-drawer header {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	padding-bottom: 25px;
+	border-bottom: 1px solid rgb(255 255 255 / 12%);
+}
+
+.stack-drawer header p { margin: 0; color: #c55007; font-size: 13px; }
+.stack-drawer h2 { margin: 5px 0 0; font-size: 42px; font-weight: 500; }
+
+.stack-drawer header button {
+	display: grid;
+	width: 44px;
+	height: 44px;
+	padding: 0;
+	place-items: center;
+	border: 0;
+	background: transparent;
+	color: #fff;
+	cursor: pointer;
+	transition: color var(--motion-feedback) ease;
+}
+
+.stack-drawer header button:hover,
+.stack-drawer header button:focus-visible { color: #e1661a; outline: none; }
+
+.drawer-groups { display: grid; gap: 20px; margin-top: 30px; }
+
+.drawer-groups section {
+	padding: 28px;
+	border: 1px solid rgb(255 255 255 / 14%);
+	border-radius: 22px;
+}
+
+.drawer-groups .primary-group { background: transparent; color: inherit; }
+.drawer-groups h3,
+.drawer-groups ul { margin: 0; }
+.drawer-groups h3 { font-size: 22px; font-weight: 600; }
+
+.drawer-groups ul {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 12px;
+	margin-top: 13px;
+	padding: 0;
+	list-style: none;
+	font-size: 19px;
+	opacity: 1;
+}
+
+.drawer-groups li,
+.stack-drawer footer li { display: inline-flex; align-items: center; gap: 10px; }
+
+.drawer-technology {
+	min-height: 66px;
+	padding: 15px 20px;
+	border: 1px solid rgb(255 255 255 / 10%);
+	border-radius: 999px;
+	background: rgb(255 255 255 / 3%);
+	outline: none;
+	transition:
+		color 220ms ease,
+		border-color 220ms ease,
+		background 220ms ease,
+		box-shadow 260ms var(--ease-out),
+		transform 260ms var(--ease-out);
+}
+
+.drawer-technology:hover,
+.drawer-technology:focus-visible {
+	border-color: color-mix(in srgb, var(--technology-color) 72%, transparent);
+	background: color-mix(in srgb, var(--technology-color) 13%, #101010);
+	box-shadow: 0 12px 30px color-mix(in srgb, var(--technology-color) 20%, transparent);
+	color: var(--technology-color);
+	transform: translateY(-2px);
+}
+
+.drawer-technology svg {
+	width: 36px;
+	height: 36px;
+	transition: transform 220ms var(--ease-out);
+}
+
+.drawer-technology:hover svg,
+.drawer-technology:focus-visible svg { transform: translateY(-1px) scale(1.04); }
+
+.stack-drawer footer { margin-top: auto; color: #777; font-size: 16px; line-height: 1.6; }
+.stack-drawer footer > span { display: block; margin-bottom: 8px; }
+.stack-drawer footer ul { display: flex; flex-wrap: wrap; gap: 10px; margin: 0; padding: 0; list-style: none; }
+
+@media (max-width: 1023px) {
+	.stack-drawer {
+		top: auto;
+		bottom: 0;
+		width: 100%;
+		height: min(88svh, 760px);
+		overflow-y: hidden;
+		padding: 26px 22px max(26px, env(safe-area-inset-bottom));
+		border-top: 1px solid rgb(255 255 255 / 14%);
+		border-left: 0;
+		border-radius: 22px 22px 0 0;
+		animation-name: drawer-up;
+	}
+	.drawer-layer.is-closing .stack-drawer { animation-name: drawer-down; }
+	.drawer-groups { overflow-y: auto; padding-right: 2px; }
+}
+
+@media (max-width: 540px) {
+	.stack-drawer h2 { font-size: 31px; }
+	.drawer-groups section { padding: 18px; }
+	.drawer-groups h3 { font-size: 17px; }
+	.drawer-technology { min-height: 48px; font-size: 15px; }
+}
+
+@media (hover: none) {
+	.drawer-technology {
+		color: #f2f1ef;
+		border-color: rgb(197 80 7 / 34%);
+		background: rgb(197 80 7 / 8%);
+	}
+}
