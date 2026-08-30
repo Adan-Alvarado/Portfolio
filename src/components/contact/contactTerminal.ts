@@ -24,7 +24,7 @@ export type TerminalAction =
 	| { type: 'change'; field: TerminalField; value: string }
 	| { type: 'advance'; step: TerminalStep; feedback?: string; tone?: FeedbackTone }
 	| { type: 'feedback'; message: string; tone: FeedbackTone }
-	| { type: 'reset' };
+	| { type: 'reset'; feedback?: string };
 
 export const terminalReducer = (state: TerminalState, action: TerminalAction): TerminalState => {
 	switch (action.type) {
@@ -40,7 +40,7 @@ export const terminalReducer = (state: TerminalState, action: TerminalAction): T
 		case 'feedback':
 			return { ...state, feedback: action.message, feedbackTone: action.tone };
 		case 'reset':
-			return { ...initialTerminalState, feedback: 'Terminal reiniciada.', feedbackTone: 'info' };
+			return { ...initialTerminalState, feedback: action.feedback ?? '', feedbackTone: action.feedback ? 'info' : 'idle' };
 	}
 };
 
@@ -50,4 +50,3 @@ export const buildContactMailto = ({ email, subject, message }: Pick<TerminalSta
 	const body = `${message.trim()}\n\nCorreo de contacto: ${email.trim()}`;
 	return `mailto:alvaradoadan55@gmail.com?subject=${encodeURIComponent(subject.trim())}&body=${encodeURIComponent(body)}`;
 };
-

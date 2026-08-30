@@ -1,14 +1,23 @@
 ---
 import { Icon } from 'astro-iconset/components';
+import { Image } from 'astro:assets';
 import TechStrip from '../TechStrip.astro';
+import type { LocalizedPortfolioContent } from '../../i18n/content';
+import capybara from '../../assets/capybara.png';
+
+interface Props { content: LocalizedPortfolioContent }
+
+const { content } = Astro.props;
+const copy = content.hero;
 ---
 
 <section id="inicio" class="portfolio-screen home-screen">
 	<div class="screen-inner">
 		<div class="home-stage">
 			<div class="hero-copy">
-				<p class="section-kicker hero-kicker">[ “ Trabajemos Juntos ” ]</p>
-				<h1 class="hero-title" aria-label="Developer más designer" data-reveal="hero-title" data-reveal-order="0">
+				<p class="section-kicker hero-kicker">{copy.kicker}</p>
+				<h1 class="hero-title" aria-label={copy.titleAria} data-reveal="hero-title" data-reveal-order="0">
+					<span class="hero-scan-line" aria-hidden="true"></span>
 					<span class="developer-word" aria-hidden="true">
 						<span class="script-letter script-d">D</span>
 						<span class="developer-eve">eve</span>
@@ -24,27 +33,28 @@ import TechStrip from '../TechStrip.astro';
 							<div class="github-mark" aria-hidden="true"><Icon name="lucide:github" width="52" height="52" /></div>
 							<div>
 								<strong>Fabricio Alvarado</strong>
-								<a class="cv-download" href="/Fabricio-Alvarado-CV.pdf" download>Descargar CV <span><Icon name="lucide:download" width="22" height="22" aria-hidden="true" /></span></a>
+								<a class="cv-download" href="/Fabricio-Alvarado-CV.pdf" download>{copy.downloadCv} <span><Icon name="lucide:download" width="22" height="22" aria-hidden="true" /></span></a>
 							</div>
 						</div>
-						<p>Disponible para proyectos<br />freelance o ver One Piece</p>
+						<p>{copy.availability[0]}<br />{copy.availability[1]}</p>
 					</div>
 				</div>
 			</div>
 
 			<div class="capybara-wrap" data-reveal="hero-character" data-reveal-order="2">
 				<div class="capybara-glow"></div>
-				<img src="/assets/capybara.png" alt="Capibara pixelada sosteniendo una taza" />
+				<span class="capybara-steam" data-capybara-steam aria-hidden="true"><i></i><i></i></span>
+				<Image src={capybara} alt={copy.characterAlt} width={446} height={470} format="webp" quality={95} loading="eager" />
 			</div>
 
-			<aside class="hero-stats" aria-label="Resumen de experiencia" data-reveal="hero-stats" data-reveal-order="3">
-				<div><strong>+3</strong><p><b>años</b><br />de experiencia</p></div>
-				<div><strong>+4300</strong><p>piezas gráficas<br /><b>completadas</b></p></div>
-				<div><strong>+4</strong><p><b>proyectos</b><br />desarrollados</p></div>
+			<aside class="hero-stats" aria-label={copy.statsLabel} data-reveal="hero-stats" data-reveal-order="3">
+				{copy.stats.map((stat) => (
+					<div><strong>{stat.value}</strong><p>{stat.emphasis === 0 ? <b>{stat.lines[0]}</b> : stat.lines[0]}<br />{stat.emphasis === 1 ? <b>{stat.lines[1]}</b> : stat.lines[1]}</p></div>
+				))}
 			</aside>
 		</div>
 
-		<TechStrip revealOrder={4} />
+		<TechStrip revealOrder={4} label={copy.technologiesLabel} />
 	</div>
 </section>
 

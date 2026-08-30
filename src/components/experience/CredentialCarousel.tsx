@@ -1,12 +1,14 @@
 import { useEffect, useRef, useState, type FocusEvent } from 'react';
 import type { Credential } from '../../data/credentials';
+import type { LocalizedPortfolioContent } from '../../i18n/content';
 import CredentialCard from './CredentialCard';
 
 interface CredentialCarouselProps {
 	credentials: Credential[];
+	copy: LocalizedPortfolioContent['experience'];
 }
 
-export default function CredentialCarousel({ credentials }: CredentialCarouselProps) {
+export default function CredentialCarousel({ credentials, copy }: CredentialCarouselProps) {
 	const carouselRef = useRef<HTMLDivElement>(null);
 	const [hasFocus, setHasFocus] = useState(false);
 	const [isInView, setIsInView] = useState(true);
@@ -60,7 +62,7 @@ export default function CredentialCarousel({ credentials }: CredentialCarouselPr
 			ref={carouselRef}
 			className="experience-visual focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#c55007]"
 			role="region"
-			aria-label="Credencial profesional"
+			aria-label={copy.carouselLabel}
 			tabIndex={0}
 			onFocus={() => setHasFocus(true)}
 			onBlur={handleBlur}
@@ -68,13 +70,13 @@ export default function CredentialCarousel({ credentials }: CredentialCarouselPr
 			<div className="credential-background-layer pointer-events-none absolute z-[1]" aria-hidden="true">
 				<div className="credential-background-card credential-static-card credential-static-card--top absolute">
 					<div className="credential-background-card__visual h-full w-full">
-						<CredentialCard credential={staticTopCredential} isActive={false} />
+						<CredentialCard credential={staticTopCredential} isActive={false} copy={copy} />
 					</div>
 				</div>
 
 				<div className="credential-background-card credential-static-card credential-static-card--bottom absolute">
 					<div className="credential-background-card__visual h-full w-full">
-						<CredentialCard credential={staticBottomCredential} isActive={false} />
+						<CredentialCard credential={staticBottomCredential} isActive={false} copy={copy} />
 					</div>
 				</div>
 
@@ -84,7 +86,7 @@ export default function CredentialCarousel({ credentials }: CredentialCarouselPr
 							{movingCredentials.map((credential, index) => (
 								<div className="credential-background-card credential-moving-card relative" key={`moving-${cycle}-${index}-${credential.id}`}>
 									<div className="credential-background-card__visual h-full w-full">
-										<CredentialCard credential={credential} isActive={false} />
+										<CredentialCard credential={credential} isActive={false} copy={copy} />
 									</div>
 								</div>
 							))}
@@ -95,9 +97,9 @@ export default function CredentialCarousel({ credentials }: CredentialCarouselPr
 
 			<article
 				className="credential-card active-credential absolute z-[3] transition-[transform,opacity,filter] duration-[1000ms] ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none"
-				aria-label="Credencial profesional de Fabricio Alvarado"
+				aria-label={copy.credentialLabel}
 			>
-				<CredentialCard credential={activeCredential} isActive />
+				<CredentialCard credential={activeCredential} isActive copy={copy} />
 			</article>
 		</div>
 	);

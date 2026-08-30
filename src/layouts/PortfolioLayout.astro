@@ -1,35 +1,65 @@
 ---
 import '../styles/global.css';
+import '../styles/mobile.css';
+import { ClientRouter } from 'astro:transitions';
 import Navigation from '../components/Navigation.astro';
+import AmbientDock from '../components/AmbientDock';
+import { ambientTrack } from '../data/audio';
+import type { Locale, LocalizedPortfolioContent } from '../i18n/content';
 
 interface Props {
-	title: string;
-	description: string;
+	locale: Locale;
+	content: LocalizedPortfolioContent;
 }
 
-const { title, description } = Astro.props;
+const { locale, content } = Astro.props;
+const canonicalPath = locale === 'es' ? '/' : '/en/';
+const canonical = new URL(canonicalPath, Astro.url.origin);
+const spanishUrl = new URL('/', Astro.url.origin);
+const englishUrl = new URL('/en/', Astro.url.origin);
 ---
 
 <!doctype html>
-<html lang="es">
+<html lang={locale}>
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-		<meta name="description" content={description} />
+		<meta name="description" content={content.meta.description} />
+		<link rel="canonical" href={canonical} />
+		<link rel="alternate" hreflang="es" href={spanishUrl} />
+		<link rel="alternate" hreflang="en" href={englishUrl} />
+		<link rel="alternate" hreflang="x-default" href={spanishUrl} />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<title>{title}</title>
+		<title>{content.meta.title}</title>
+		<ClientRouter />
 	</head>
 	<body>
-		<a class="skip-link" href="#inicio">Saltar al contenido</a>
+		<a class="skip-link" href="#inicio">{content.skipLink}</a>
 		<span class="cursor-dot" data-cursor-dot aria-hidden="true" hidden></span>
-		<Navigation />
+		<Navigation navigation={content.navigation} />
 		<main><slot /></main>
+		<audio
+			id="portfolio-ambient-audio"
+			src={ambientTrack.src}
+			loop
+			preload="metadata"
+			transition:persist="ambient-audio"
+		></audio>
+		<AmbientDock
+			client:load
+			transition:persist="ambient-controls"
+			locale={locale}
+			copy={content.dock}
+			track={ambientTrack}
+		/>
 
 		<script>
 			import { initPortfolioInteractions } from '../scripts/portfolio-interactions';
 
-			const cleanup = initPortfolioInteractions();
-			window.addEventListener('pagehide', cleanup, { once: true });
+			let cleanup = initPortfolioInteractions();
+			const restart = () => { cleanup(); cleanup = initPortfolioInteractions(); };
+			document.addEventListener('astro:page-load', restart);
+			window.addEventListener('pagehide', () => cleanup(), { once: true });
 		</script>
 	</body>
 </html>

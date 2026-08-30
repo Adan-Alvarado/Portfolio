@@ -4,6 +4,7 @@ import { initActiveNavigation } from './interactions/navigation';
 import { initReveals } from './interactions/reveal';
 import { initTimelineProgress } from './interactions/timeline';
 import { initPageVisibility } from './interactions/visibility';
+import { initCharacterReactions } from './interactions/reactions';
 
 type Cleanup = () => void;
 
@@ -18,6 +19,7 @@ export const initPortfolioInteractions = () => {
 		initReveals(),
 		initTimelineProgress(),
 		initPageVisibility(),
+		initCharacterReactions(),
 	];
 
 	cleanupCurrent = () => {

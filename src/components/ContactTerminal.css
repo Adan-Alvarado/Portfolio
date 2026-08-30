@@ -37,6 +37,24 @@
 	color: #bdb9b7;
 }
 
+.terminal-shell .terminal-body label {
+	transition: opacity 160ms ease, color 160ms ease, transform 180ms var(--ease-out);
+}
+
+.terminal-shell .terminal-body label.current-command {
+	transform: translateX(2px);
+}
+
+.terminal-shell[data-terminal-step='subject'] .terminal-body label:first-of-type,
+.terminal-shell[data-terminal-step='message'] .terminal-body label:nth-of-type(-n + 2),
+.terminal-shell[data-terminal-step='ready'] .terminal-body label {
+	opacity: .72;
+}
+
+.terminal-shell .terminal-body label.current-command .terminal-prompt {
+	color: #d86b28;
+}
+
 @media (prefers-reduced-motion: reduce) {
 	.terminal-shell .terminal-card,
 	.terminal-shell .terminal-reset,

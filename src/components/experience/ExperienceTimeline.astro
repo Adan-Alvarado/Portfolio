@@ -1,17 +1,23 @@
 ---
-import { experienceEntries } from '../../data/experience';
+import { getExperienceEntries } from '../../data/experience';
+import type { Locale } from '../../i18n/content';
+
+interface Props { locale: Locale; student: readonly [string, string] }
+
+const { locale, student } = Astro.props;
+const experienceEntries = getExperienceEntries(locale);
 ---
 
 <div class="timeline" data-timeline>
-	<article>
-		<p class="role-muted">Estudiante de<br />Ingeniería en Sistemas</p>
+	<article data-timeline-entry>
+		<p class="role-muted">{student[0]}<br />{student[1]}</p>
 		<h3>{experienceEntries[0].role}</h3>
 		<p class="year">{experienceEntries[0].year}</p>
 		<p>{experienceEntries[0].description}</p>
 	</article>
 
 	{experienceEntries.slice(1).map((entry) => (
-		<article class={entry.className}>
+		<article class={entry.className} data-timeline-entry>
 			<h3>{entry.role.split('\n').map((line, index) => <>{index > 0 && <br />}{line}</>)}</h3>
 			<p class="year">{entry.year}</p>
 			<p>{entry.description}</p>

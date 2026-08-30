@@ -5,16 +5,17 @@ import { stripTechnologies } from '../data/technologies';
 interface Props {
 	compact?: boolean;
 	revealOrder?: number;
+	label?: string;
 }
 
-const { compact = false, revealOrder } = Astro.props;
+const { compact = false, revealOrder, label = 'Tecnologías utilizadas' } = Astro.props;
 const copies = [0, 1];
 ---
 
 <div
 	class:list={['skills-strip', { 'projects-skills': compact }]}
 	role="list"
-	aria-label="Tecnologías utilizadas"
+	aria-label={label}
 	data-reveal={revealOrder !== undefined ? 'technology-strip' : undefined}
 	data-reveal-order={revealOrder}
 >

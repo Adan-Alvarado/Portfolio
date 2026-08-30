@@ -7,9 +7,12 @@ import {
 	terminalReducer,
 	type TerminalField,
 } from './contact/contactTerminal';
+import type { LocalizedPortfolioContent } from '../i18n/content';
 import './ContactTerminal.css';
 
-export default function ContactTerminal() {
+interface ContactTerminalProps { copy: LocalizedPortfolioContent['contact']['terminal'] }
+
+export default function ContactTerminal({ copy }: ContactTerminalProps) {
 	const [state, dispatch] = useReducer(terminalReducer, initialTerminalState);
 	const emailInput = useRef<HTMLInputElement>(null);
 	const subjectInput = useRef<HTMLInputElement>(null);
@@ -35,7 +38,7 @@ export default function ContactTerminal() {
 
 		if (current === 'email') {
 			if (!isValidEmail(email)) {
-				showFieldError('email', email.trim() ? 'El correo no tiene un formato válido.' : 'Debes ingresar tu correo.');
+				showFieldError('email', email.trim() ? copy.errors[0] : copy.errors[1]);
 				return;
 			}
 			dispatch({ type: 'advance', step: 'subject' });
@@ -45,7 +48,7 @@ export default function ContactTerminal() {
 
 		if (current === 'subject') {
 			if (!subject.trim()) {
-				showFieldError('subject', 'Debes ingresar el asunto.');
+				showFieldError('subject', copy.errors[2]);
 				return;
 			}
 			dispatch({ type: 'advance', step: 'message' });
@@ -54,14 +57,15 @@ export default function ContactTerminal() {
 		}
 
 		if (!message.trim()) {
-			showFieldError('message', 'Debes escribir un mensaje.');
+			showFieldError('message', copy.errors[3]);
 			return;
 		}
-		dispatch({ type: 'advance', step: 'ready', feedback: 'Mensaje listo. Puedes enviarlo.', tone: 'success' });
+		dispatch({ type: 'advance', step: 'ready', feedback: copy.ready, tone: 'success' });
+		window.dispatchEvent(new CustomEvent('portfolio:contact-ready'));
 	};
 
 	const resetTerminal = () => {
-		dispatch({ type: 'reset' });
+		dispatch({ type: 'reset', feedback: copy.resetFeedback });
 		focusStep('email');
 	};
 
@@ -69,27 +73,27 @@ export default function ContactTerminal() {
 
 	const sendMessage = () => {
 		if (!isValidEmail(email)) {
-			showFieldError('email', 'Debes ingresar un correo válido.');
+			showFieldError('email', copy.errors[0]);
 			return;
 		}
 		if (!subject.trim()) {
-			showFieldError('subject', 'Debes ingresar el asunto.');
+			showFieldError('subject', copy.errors[2]);
 			return;
 		}
 		if (!message.trim()) {
-			showFieldError('message', 'Debes escribir un mensaje.');
+			showFieldError('message', copy.errors[3]);
 			return;
 		}
 		window.location.href = buildContactMailto(state);
 	};
 
 	return (
-		<div className="terminal-shell">
+		<div className="terminal-shell" data-terminal-step={step}>
 			<div className="terminal-card" role="group" aria-labelledby="terminal-title">
 				<div className="terminal-head">
 					<div className="terminal-dots" aria-hidden="true"><span></span><span></span><span></span></div>
-					<strong id="terminal-title">terminal@contacto</strong>
-					<button type="button" className="terminal-reset" onClick={resetTerminal} aria-label="Reiniciar terminal" title="Reiniciar terminal"><X width="25" height="25" aria-hidden="true" /></button>
+					<strong id="terminal-title">{copy.title}</strong>
+					<button type="button" className="terminal-reset" onClick={resetTerminal} aria-label={copy.reset} title={copy.reset}><X width="25" height="25" aria-hidden="true" /></button>
 				</div>
 
 				<div className="terminal-body" onClick={() => {
@@ -97,28 +101,28 @@ export default function ContactTerminal() {
 					if (step === 'subject') subjectInput.current?.focus();
 					if (step === 'message') messageInput.current?.focus();
 				}}>
-					<p>&gt; Cuéntame sobre tu proyecto, idea o simplemente<br />salúdame. Estoy aquí para leerte...</p>
+					<p>{copy.intro[0]}<br />{copy.intro[1]}</p>
 
 					<label className={step === 'email' ? 'current-command' : ''}>
-						<span className="terminal-prompt">Tu@mensaje: ~$ correo:</span>
+						<span className="terminal-prompt">{copy.prompts[0]}</span>
 						<span className={`terminal-entry ${email ? 'has-value' : ''}`} style={entryWidth(email)}>
-							<input ref={emailInput} type="email" value={email} onChange={(event) => dispatch({ type: 'change', field: 'email', value: event.target.value })} onKeyDown={(event) => advance(event, 'email')} readOnly={step !== 'email'} aria-label="Correo" aria-invalid={feedbackTone === 'error' && step === 'email'} aria-describedby="terminal-feedback" autoComplete="email" />
+							<input ref={emailInput} type="email" value={email} onChange={(event) => dispatch({ type: 'change', field: 'email', value: event.target.value })} onKeyDown={(event) => advance(event, 'email')} readOnly={step !== 'email'} aria-label={copy.labels[0]} aria-invalid={feedbackTone === 'error' && step === 'email'} aria-describedby="terminal-feedback" autoComplete="email" />
 							{step === 'email' && <span className="terminal-block-cursor" aria-hidden="true"></span>}
 						</span>
 					</label>
 
 					<label className={step === 'subject' ? 'current-command' : step === 'email' ? 'future-command' : ''}>
-						<span className="terminal-prompt">Tu@mensaje: ~$ asunto:</span>
+						<span className="terminal-prompt">{copy.prompts[1]}</span>
 						<span className={`terminal-entry ${subject ? 'has-value' : ''}`} style={entryWidth(subject)}>
-							<input ref={subjectInput} type="text" value={subject} onChange={(event) => dispatch({ type: 'change', field: 'subject', value: event.target.value })} onKeyDown={(event) => advance(event, 'subject')} readOnly={step !== 'subject'} aria-label="Asunto" aria-invalid={feedbackTone === 'error' && step === 'subject'} aria-describedby="terminal-feedback" />
+							<input ref={subjectInput} type="text" value={subject} onChange={(event) => dispatch({ type: 'change', field: 'subject', value: event.target.value })} onKeyDown={(event) => advance(event, 'subject')} readOnly={step !== 'subject'} aria-label={copy.labels[1]} aria-invalid={feedbackTone === 'error' && step === 'subject'} aria-describedby="terminal-feedback" />
 							{step === 'subject' && <span className="terminal-block-cursor" aria-hidden="true"></span>}
 						</span>
 					</label>
 
 					<label className={step === 'message' ? 'current-command' : step === 'ready' ? '' : 'future-command'}>
-						<span className="terminal-prompt">Tu@mensaje: ~$ mensaje:</span>
+						<span className="terminal-prompt">{copy.prompts[2]}</span>
 						<span className={`terminal-entry ${message ? 'has-value' : ''}`} style={entryWidth(message)}>
-							<input ref={messageInput} type="text" value={message} onChange={(event) => dispatch({ type: 'change', field: 'message', value: event.target.value })} onKeyDown={(event) => advance(event, 'message')} readOnly={step !== 'message'} aria-label="Mensaje" aria-invalid={feedbackTone === 'error' && step === 'message'} aria-describedby="terminal-feedback" />
+							<input ref={messageInput} type="text" value={message} onChange={(event) => dispatch({ type: 'change', field: 'message', value: event.target.value })} onKeyDown={(event) => advance(event, 'message')} readOnly={step !== 'message'} aria-label={copy.labels[2]} aria-invalid={feedbackTone === 'error' && step === 'message'} aria-describedby="terminal-feedback" />
 							{step === 'message' && <span className="terminal-block-cursor" aria-hidden="true"></span>}
 						</span>
 					</label>
@@ -127,8 +131,13 @@ export default function ContactTerminal() {
 				</div>
 			</div>
 
-			<button type="button" className="terminal-send-button" onClick={sendMessage} aria-label="Enviar DM">
-				Enviar Mensaje <Send width="20" height="20" aria-hidden="true" />
+			<button
+				type="button"
+				className="terminal-send-button"
+				onClick={sendMessage}
+				aria-label={copy.send}
+			>
+				{copy.send} <Send width="20" height="20" aria-hidden="true" />
 			</button>
 		</div>
 	);

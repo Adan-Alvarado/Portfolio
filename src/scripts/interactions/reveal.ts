@@ -37,11 +37,14 @@ export const initReveals = () => {
 		resetObserver = new IntersectionObserver(
 			(entries) => entries.forEach((entry) => {
 				if (entry.intersectionRatio > 0 || !(entry.target instanceof HTMLElement)) return;
+				const bounds = entry.boundingClientRect;
+				const hasClearedViewport = bounds.bottom < -96 || bounds.top > window.innerHeight + 96;
+				if (!hasClearedViewport) return;
 				entry.target.querySelectorAll<HTMLElement>('[data-reveal]').forEach((target) => {
 					target.classList.remove('is-revealed');
 				});
 			}),
-			{ rootMargin: '-1px 0px -1px 0px', threshold: [0, 0.001] },
+			{ rootMargin: '-72px 0px -72px 0px', threshold: [0, 0.001] },
 		);
 
 		targets.forEach((target) => revealObserver?.observe(target));

@@ -1,18 +1,20 @@
 ---
 import { Icon } from 'astro-iconset/components';
+import type { LocalizedPortfolioContent } from '../i18n/content';
 
-const links = [
-	{ label: 'Inicio', href: '#inicio', icon: 'lucide:house' },
-	{ label: 'Experiencia', href: '#experiencia', icon: 'lucide:user-round' },
-	{ label: 'Proyectos', href: '#proyectos', icon: 'lucide:folder' },
-	{ label: 'Contacto', href: '#contacto', icon: 'lucide:smartphone' },
-];
+interface Props { navigation: LocalizedPortfolioContent['navigation'] }
+
+const { navigation } = Astro.props;
+const isEnglish = Astro.currentLocale === 'en';
+const menuLabel = isEnglish ? 'Menu' : 'Menú';
+const languageLabel = isEnglish ? 'Language' : 'Idioma';
 ---
 
 <div class="nav-canvas">
-	<nav class="portfolio-nav" aria-label="Navegación principal">
+	<nav class="portfolio-nav" aria-label={navigation.label} data-portfolio-nav>
+		<span class="nav-active-indicator" data-nav-indicator aria-hidden="true"></span>
 		<ul>
-			{links.map((link, index) => (
+			{navigation.items.map((link, index) => (
 				<li>
 					<a
 						href={link.href}
@@ -29,3 +31,43 @@ const links = [
 		</ul>
 	</nav>
 </div>
+
+<!-- Hallmark · atmospheric portfolio: contextual masthead, compact enough for the artwork to remain the protagonist. -->
+<header class="mobile-masthead" data-mobile-masthead>
+	<a class="mobile-masthead__identity" href="#inicio" aria-label={`Fabricio Alvarado — ${navigation.items[0]?.label}`}>FA</a>
+	<span class="mobile-masthead__current" data-mobile-current aria-live="polite">{navigation.items[0]?.label}</span>
+	<button
+		class="mobile-masthead__toggle"
+		type="button"
+		aria-expanded="false"
+		aria-controls="mobile-navigation-panel"
+		data-mobile-nav-toggle
+	>
+		<span>{menuLabel}</span>
+		<Icon name="lucide:menu" width="19" height="19" aria-hidden="true" />
+	</button>
+
+	<div class="mobile-nav-panel" id="mobile-navigation-panel" data-mobile-nav-panel hidden>
+		<nav class="mobile-nav-panel__links" aria-label={navigation.label}>
+			{navigation.items.map((link, index) => (
+				<a
+					href={link.href}
+					data-nav-link={link.href.slice(1)}
+					data-mobile-nav-link
+					class:list={{ active: index === 0 }}
+					aria-current={index === 0 ? 'page' : undefined}
+				>
+					<Icon name={link.icon} width="21" height="21" aria-hidden="true" />
+					<span>{link.label}</span>
+				</a>
+			))}
+		</nav>
+		<div class="mobile-nav-panel__language" aria-label={languageLabel}>
+			<span>{languageLabel}</span>
+			<div>
+				<a href="/" lang="es" data-mobile-locale-path="/" aria-current={!isEnglish ? 'page' : undefined}>ES</a>
+				<a href="/en/" lang="en" data-mobile-locale-path="/en/" aria-current={isEnglish ? 'page' : undefined}>EN</a>
+			</div>
+		</div>
+	</div>
+</header>

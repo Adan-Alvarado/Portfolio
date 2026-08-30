@@ -1,0 +1,20 @@
+---
+import PortfolioLayout from '../layouts/PortfolioLayout.astro';
+import Contact from './sections/Contact.astro';
+import Experience from './sections/Experience.astro';
+import Hero from './sections/Hero.astro';
+import Projects from './sections/Projects.astro';
+import { getPortfolioContent, type Locale } from '../i18n/content';
+
+interface Props { locale: Locale }
+
+const { locale } = Astro.props;
+const content = getPortfolioContent(locale);
+---
+
+<PortfolioLayout locale={locale} content={content}>
+	<Hero content={content} />
+	<Experience content={content} locale={locale} />
+	<Projects content={content} locale={locale} />
+	<Contact content={content} />
+</PortfolioLayout>

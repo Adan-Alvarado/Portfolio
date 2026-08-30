@@ -1,9 +1,11 @@
 import { MapPin } from 'lucide-react';
 import type { Credential } from '../../data/credentials';
+import type { LocalizedPortfolioContent } from '../../i18n/content';
 
 interface CredentialCardProps {
 	credential: Credential;
 	isActive: boolean;
+	copy: LocalizedPortfolioContent['experience'];
 }
 
 const InstagramMark = () => (
@@ -14,7 +16,7 @@ const InstagramMark = () => (
 	</svg>
 );
 
-export default function CredentialCard({ credential, isActive }: CredentialCardProps) {
+export default function CredentialCard({ credential, isActive, copy }: CredentialCardProps) {
 	return (
 		<>
 			<div className="credential-card-face credential-card-front">
@@ -41,15 +43,15 @@ export default function CredentialCard({ credential, isActive }: CredentialCardP
 							<p className="experience-card__location"><MapPin aria-hidden="true" /> {credential.location}</p>
 						</div>
 
-						<div className="experience-card__social" aria-label={isActive ? 'Redes sociales' : undefined}>
+						<div className="experience-card__social" aria-label={isActive ? copy.socials : undefined}>
 							<span>In</span><span>@</span><span><InstagramMark /></span>
 						</div>
 					</div>
 				</div>
 			</div>
 
-			<button className="reverse-button" type="button" disabled aria-disabled="true" title="Reverso no disponible">
-				Ver reverso
+			<button className="reverse-button" type="button" disabled aria-disabled="true" title={copy.reverseUnavailable}>
+				{copy.reverse}
 			</button>
 		</>
 	);

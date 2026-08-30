@@ -1,36 +1,45 @@
 ---
 import { Icon } from 'astro-iconset/components';
+import { Image } from 'astro:assets';
 import ContactTerminal from '../ContactTerminal';
+import type { LocalizedPortfolioContent } from '../../i18n/content';
+import pigeon from '../../assets/paloma-cafe.png';
+
+interface Props { content: LocalizedPortfolioContent }
+
+const { content } = Astro.props;
+const copy = content.contact;
+const footerParts = copy.footer[0].split('|');
 ---
 
 <section id="contacto" class="portfolio-screen contact-screen">
 	<div class="screen-inner">
 		<div class="contact-stage">
 			<div class="contact-copy" data-reveal="contact-copy" data-reveal-order="0">
-				<p class="section-kicker">[ Hablemos ]</p>
-				<h2>¿Tienes algo<br /> en <em>mente?</em></h2>
+				<p class="section-kicker">{copy.kicker}</p>
+				<h2>{copy.heading[0]}<br /> {copy.heading[1]} <em>{copy.heading[2]}</em></h2>
 				<div class="intro-rule"></div>
-				<p>Estoy siempre abierto a nuevos<br /> desafíos colaboraciones y<br /> oportunidades creativas.<br /> Cuéntame tu idea y veamos<br /> cómo podemos construir algo<br /> increíble juntos.</p>
+				<p>{copy.body.join(' ')}</p>
 			</div>
 
 			<div class="bird-reveal" data-reveal="contact-character" data-reveal-order="1">
 				<div class="bird-slot">
-					<img src="/images/Paloma con taza de cafe.png" width="1298" height="1222" alt="Paloma pixelada sosteniendo una taza de café" />
+					<Image src={pigeon} width={300} height={283} format="webp" quality={95} alt={copy.characterAlt} data-contact-character />
 				</div>
 			</div>
 
-			<div class="terminal-reveal" data-reveal="contact-terminal" data-reveal-order="2"><ContactTerminal client:visible={{ rootMargin: '240px' }} /></div>
+			<div class="terminal-reveal" data-reveal="contact-terminal" data-reveal-order="2"><ContactTerminal client:visible={{ rootMargin: '240px' }} copy={copy.terminal} /></div>
 		</div>
 
 		<dl class="contact-details" data-reveal="contact-details" data-reveal-order="3">
-			<div><dt>Ubicación <Icon name="lucide:map-pin" width="17" height="17" aria-hidden="true" /></dt><dd>Copán, Honduras</dd></div>
-			<div><dt>Email <Icon name="lucide:mail" width="17" height="17" aria-hidden="true" /></dt><dd><a href="mailto:alvaradoadan55@gmail.com">alvaradoadan55@gmail.com</a></dd></div>
-			<div><dt>Disponibilidad <Icon name="lucide:clock-3" width="17" height="17" aria-hidden="true" /></dt><dd>Lunes a Sábado</dd></div>
+			<div><dt>{copy.details[0].term} <Icon name="lucide:map-pin" width="17" height="17" aria-hidden="true" /></dt><dd>{copy.details[0].value}</dd></div>
+			<div><dt>{copy.details[1].term} <Icon name="lucide:mail" width="17" height="17" aria-hidden="true" /></dt><dd><a href="mailto:alvaradoadan55@gmail.com">{copy.details[1].value}</a></dd></div>
+			<div><dt>{copy.details[2].term} <Icon name="lucide:clock-3" width="17" height="17" aria-hidden="true" /></dt><dd>{copy.details[2].value}</dd></div>
 		</dl>
 
 		<footer class="portfolio-footer" data-reveal="contact-footer" data-reveal-order="4">
-			<p>@2026 --- Fabricio Alvarado <span>|</span> Todos los derechos reservados</p>
-			<p>&lt;/&gt; Hecho con pasión y un poco de café</p>
+			<p>{footerParts[0]}<span>|</span>{footerParts[1]}</p>
+			<p>{copy.footer[1]}</p>
 		</footer>
 	</div>
 </section>

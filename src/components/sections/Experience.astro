@@ -1,19 +1,27 @@
 ---
 import ExperienceCredential from '../experience/ExperienceCredential.astro';
 import ExperienceTimeline from '../experience/ExperienceTimeline.astro';
+import type { Locale, LocalizedPortfolioContent } from '../../i18n/content';
+
+interface Props { content: LocalizedPortfolioContent; locale: Locale }
+
+const { content, locale } = Astro.props;
+const copy = content.experience;
 ---
 
 <section id="experiencia" class="portfolio-screen experience-screen">
 	<div class="screen-inner">
 		<div class="experience-stage">
-			<div class="experience-copy" data-reveal="experience-copy" data-reveal-order="0">
-				<p class="section-kicker">[ Experiencia laboral ]</p>
-				<h2>Mi <em>recorrido</em></h2>
-
-				<ExperienceTimeline />
+			<div class="experience-heading" data-reveal="experience-copy" data-reveal-order="0">
+				<p class="section-kicker">{copy.kicker}</p>
+				<h2>{copy.titleLead} <em>{copy.titleAccent}</em></h2>
 			</div>
 
-			<ExperienceCredential />
+			<ExperienceCredential locale={locale} copy={copy} />
+
+			<div class="experience-timeline" data-reveal="experience-timeline" data-reveal-order="2">
+				<ExperienceTimeline locale={locale} student={copy.student} />
+			</div>
 		</div>
 	</div>
 </section>

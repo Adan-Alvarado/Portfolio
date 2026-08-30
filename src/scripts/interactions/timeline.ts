@@ -11,6 +11,13 @@ export const initTimelineProgress = () => {
 			const bounds = timeline.getBoundingClientRect();
 			const progress = clamp((viewportHeight * .78 - bounds.top) / (bounds.height + viewportHeight * .28), 0, 1);
 			timeline.style.setProperty('--timeline-progress', progress.toFixed(3));
+			const entries = [...timeline.querySelectorAll<HTMLElement>('[data-timeline-entry]')];
+			entries.forEach((entry, index) => {
+				const threshold = entries.length <= 1 ? 0 : index / (entries.length - 1);
+				const nextThreshold = entries.length <= 1 ? 1 : (index + 1) / entries.length;
+				entry.classList.toggle('is-complete', progress > nextThreshold);
+				entry.classList.toggle('is-current', progress >= threshold * .78 && progress <= nextThreshold + .18);
+			});
 		});
 	};
 
@@ -28,4 +35,3 @@ export const initTimelineProgress = () => {
 		window.removeEventListener('resize', requestUpdate);
 	};
 };
-

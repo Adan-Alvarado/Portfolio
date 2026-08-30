@@ -7,6 +7,11 @@ import icon from 'astro-iconset';
 // https://astro.build/config
 export default defineConfig({
 	integrations: [react(), icon()],
+	i18n: {
+		locales: ['es', 'en'],
+		defaultLocale: 'es',
+		routing: { prefixDefaultLocale: false },
+	},
 	vite: {
 		plugins: [tailwindcss()],
 	},

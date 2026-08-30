@@ -1,0 +1,8 @@
+{
+  "date": "2026-08-29",
+  "framework": "Astro 7 + React 19 islands + Tailwind CSS 4",
+  "fontStack": ["Inter", "Inspiration", "Kite One"],
+  "themeSource": "src/styles/tokens.css",
+  "motion": "CSS, IntersectionObserver and Web Animations API",
+  "direction": "Preserve the nocturnal editorial portfolio identity"
+}

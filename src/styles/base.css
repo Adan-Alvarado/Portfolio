@@ -6,12 +6,14 @@
 
 	* { box-sizing: border-box; }
 
+	html,
+	body { overflow-x: clip; }
+
 	body {
 		position: relative;
 		isolation: isolate;
 		margin: 0;
 		min-width: 320px;
-		overflow-x: hidden;
 		background-color: var(--canvas-surface);
 		color: #f2f1ef;
 		font-family: "Inter", Arial, sans-serif;
@@ -35,7 +37,14 @@
 			radial-gradient(ellipse 52% 34% at 49% 100%, rgb(66 36 14 / 10%), transparent 72%);
 		filter: blur(84px);
 		transform: translateZ(0);
+		opacity: var(--ambient-glow-opacity, 1);
+		transition: opacity 700ms var(--ease-smooth);
 	}
+
+	body[data-active-section="inicio"] { --ambient-glow-opacity: .98; }
+	body[data-active-section="experiencia"] { --ambient-glow-opacity: 1.02; }
+	body[data-active-section="proyectos"] { --ambient-glow-opacity: 1; }
+	body[data-active-section="contacto"] { --ambient-glow-opacity: .97; }
 
 	body::after {
 		inset: 0;
