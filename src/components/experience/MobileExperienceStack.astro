@@ -3,6 +3,7 @@ import { getExperienceEntries } from '../../data/experience';
 import type { Credential } from '../../data/credentials';
 import type { Locale, LocalizedPortfolioContent } from '../../i18n/content';
 import CredentialCard from './CredentialCard';
+import InteractiveCredentialCard from './InteractiveCredentialCard';
 
 interface Props {
 	locale: Locale;
@@ -41,7 +42,9 @@ const credential = credentials[1] ?? credentials[0];
 				</header>
 
 				<div class="mobile-experience-panel__credential-card" aria-label={copy.credentialLabel}>
-					<CredentialCard credential={credential} isActive copy={copy} />
+					{credential.back
+						? <InteractiveCredentialCard credential={credential} copy={copy} client:visible />
+						: <CredentialCard credential={credential} isActive copy={copy} />}
 				</div>
 			</article>
 		)}

@@ -1,7 +1,6 @@
 import {
 	siAstro,
 	siCss,
-	siCoreldraw,
 	siDocker,
 	siDotnet,
 	siFigma,
@@ -13,6 +12,7 @@ import {
 	siNodedotjs,
 	siPostgresql,
 	siReact,
+	siSqlite,
 	siTailwindcss,
 	siTypescript,
 } from 'simple-icons';
@@ -33,10 +33,10 @@ export const technologyCatalog = {
 	csharp: { label: 'C#', iconName: 'simple-icons:csharp', color: `#${siDotnet.hex}`, size: 19, simpleIcon: siDotnet },
 	mysql: { label: 'MySQL', iconName: 'simple-icons:mysql', color: `#${siMysql.hex}`, size: 23, simpleIcon: siMysql },
 	postgresql: { label: 'PostgreSQL', iconName: 'simple-icons:postgresql', color: `#${siPostgresql.hex}`, size: 20, simpleIcon: siPostgresql },
+	sqlite: { label: 'SQLite', iconName: 'simple-icons:sqlite', color: `#${siSqlite.hex}`, size: 20, simpleIcon: siSqlite },
 	docker: { label: 'Docker', iconName: 'simple-icons:docker', color: `#${siDocker.hex}`, size: 22, simpleIcon: siDocker },
 	figma: { label: 'Figma', iconName: 'simple-icons:figma', color: `#${siFigma.hex}`, size: 18, simpleIcon: siFigma },
 	git: { label: 'Git', iconName: 'simple-icons:git', color: `#${siGit.hex}`, size: 19, simpleIcon: siGit },
-	corel: { label: 'CorelDRAW', iconName: 'simple-icons:coreldraw', color: `#${siCoreldraw.hex}`, size: 18, simpleIcon: siCoreldraw },
 	linux: { label: 'Linux', iconName: 'simple-icons:linux', color: `#${siLinux.hex}`, size: 18, simpleIcon: siLinux },
 	photoshop: { label: 'Photoshop', iconName: 'lucide:image', color: '#31a8ff', size: 18, fallbackIcon: 'image' },
 	canva: { label: 'Canva', iconName: 'lucide:layout-template', color: '#00c4cc', size: 18, fallbackIcon: 'layout' },
@@ -62,8 +62,8 @@ export const stripTechnologies: readonly Technology[] = [
 
 export const technologyGroups: readonly TechnologyGroup[] = [
 	{ title: 'Front-end', items: stripTechnologies.slice(0, 7) },
-	{ title: 'Back-end', items: [technologyCatalog.node, technologyCatalog.csharp, technologyCatalog.mysql, technologyCatalog.postgresql] },
-	{ title: 'Diseño', items: [technologyCatalog.figma, technologyCatalog.photoshop, technologyCatalog.corel, technologyCatalog.canva] },
+	{ title: 'Back-end', items: [technologyCatalog.node, technologyCatalog.dotnet, technologyCatalog.csharp, technologyCatalog.mysql, technologyCatalog.postgresql, technologyCatalog.sqlite] },
+	{ title: 'Diseño', items: [technologyCatalog.figma, technologyCatalog.photoshop, technologyCatalog.canva] },
 ];
 
 export const environmentTechnologies: readonly Technology[] = [

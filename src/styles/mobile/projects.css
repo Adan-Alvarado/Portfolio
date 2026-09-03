@@ -1,4 +1,4 @@
-@media (max-width: 640px) {
+@media (max-width: 1023px) {
 	.projects-stage { padding-inline: var(--mobile-gutter); }
 
 	.projects-intro {
@@ -330,14 +330,14 @@
 	}
 }
 
-@media (max-width: 640px) and (hover: none) {
+@media (max-width: 1023px) and (hover: none) {
 	.projects-gallery .project-card.pg-card:hover,
 	.projects-gallery .project-card.pg-card:focus-within,
 	.projects-gallery .project-card.pg-card[data-active='true']:hover,
 	.projects-gallery .project-card.pg-card[data-active='true']:focus-within { transform: none; }
 }
 
-@media (max-width: 640px) and (prefers-reduced-motion: reduce) {
+@media (max-width: 1023px) and (prefers-reduced-motion: reduce) {
 	.pg-accordion-panel,
 	.pg-accordion-panel__inner > .project-card,
 	body .pg-modal,

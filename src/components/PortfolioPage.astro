@@ -13,7 +13,7 @@ const content = getPortfolioContent(locale);
 ---
 
 <PortfolioLayout locale={locale} content={content}>
-	<Hero content={content} />
+	<Hero content={content} locale={locale} />
 	<Experience content={content} locale={locale} />
 	<Projects content={content} locale={locale} />
 	<Contact content={content} />

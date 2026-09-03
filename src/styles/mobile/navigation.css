@@ -1,4 +1,4 @@
-@media (max-width: 640px) {
+@media (max-width: 1023px) {
 	.nav-canvas { display: none; }
 
 	.mobile-bottom-nav {
@@ -69,6 +69,6 @@
 	.mobile-bottom-nav a svg { width: 18px; height: 18px; }
 }
 
-@media (max-width: 640px) and (prefers-reduced-motion: reduce) {
+@media (max-width: 1023px) and (prefers-reduced-motion: reduce) {
 	.mobile-bottom-nav a { transition-duration: 100ms; }
 }

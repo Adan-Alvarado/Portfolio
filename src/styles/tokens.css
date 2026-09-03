@@ -19,6 +19,9 @@
 		--grid-weight: 5px;
 		--grid-line: rgb(255 255 255 / 0.007);
 		--interactive-border: rgb(224 224 224 / 68%);
+		--font-mono: "Cascadia Mono", "SFMono-Regular", Consolas, monospace;
+		--color-status-error: #e28a86;
+		--color-status-success: #9fc5a7;
 		--mobile-gutter: clamp(16px, 4.8vw, 20px);
 		--mobile-section-space: clamp(72px, 18vw, 96px);
 		--mobile-control-size: 48px;
@@ -40,6 +43,7 @@
 		--project-design-accent: #c55007;
 		--project-autocare-accent: #d5cbbb;
 		--project-fixit-accent: #67a884;
+		--ambient-plum: 150 0 47;
 		color-scheme: dark;
 		scroll-behavior: smooth;
 		scrollbar-color: #8d3908 #121212;

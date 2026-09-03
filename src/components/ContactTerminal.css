@@ -26,11 +26,11 @@
 }
 
 .terminal-shell .terminal-feedback[data-tone='error'] {
-	color: #e28a86;
+	color: var(--color-status-error);
 }
 
 .terminal-shell .terminal-feedback[data-tone='success'] {
-	color: #9fc5a7;
+	color: var(--color-status-success);
 }
 
 .terminal-shell .terminal-feedback[data-tone='info'] {

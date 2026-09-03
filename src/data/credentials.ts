@@ -1,4 +1,5 @@
 import { getPortfolioContent, type Locale } from '../i18n/content';
+import type { CredentialBackContent } from '../types/portfolio';
 
 export interface Credential {
 	id: string;
@@ -17,6 +18,7 @@ export interface Credential {
 		title: string;
 	};
 	location: string;
+	back?: CredentialBackContent;
 }
 
 const professionalCredential = (locale: Locale, photo: Credential['photo']) => {
@@ -29,7 +31,15 @@ const professionalCredential = (locale: Locale, photo: Credential['photo']) => {
 	} satisfies Omit<Credential, 'id'>;
 };
 
-export const getCredentials = (locale: Locale, photo: Credential['photo']): Credential[] => {
+export const getCredentials = (
+	locale: Locale,
+	photo: Credential['photo'],
+	back?: CredentialBackContent,
+): Credential[] => {
 	const credential = professionalCredential(locale, photo);
-	return Array.from({ length: 6 }, (_, index) => ({ id: `credential-0${index + 1}`, ...credential }));
+	return Array.from({ length: 6 }, (_, index) => ({
+		id: `credential-0${index + 1}`,
+		...credential,
+		...(index === 1 && back ? { back } : {}),
+	}));
 };

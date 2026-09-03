@@ -1,4 +1,4 @@
-@media (max-width: 640px) {
+@media (max-width: 1023px) {
 	.experience-screen {
 		contain: paint;
 		isolation: isolate;
@@ -33,9 +33,10 @@
 	.mobile-experience-stack__panels {
 		--experience-stack-top: max(16px, env(safe-area-inset-top));
 		--experience-stack-step: 44px;
-		--experience-panel-height: clamp(360px, 108vw, 430px);
+		--experience-entry-height: clamp(310px, 86vw, 340px);
+		--experience-credential-height: clamp(390px, 106vw, 420px);
 		display: grid;
-		gap: clamp(64px, 18vw, 84px);
+		gap: 40px;
 		isolation: isolate;
 	}
 
@@ -43,7 +44,7 @@
 		position: sticky;
 		width: 100%;
 		min-width: 0;
-		height: var(--experience-panel-height);
+		height: var(--experience-entry-height);
 		overflow: hidden;
 		border: 1px solid var(--mobile-rule);
 		border-radius: 16px;
@@ -97,9 +98,9 @@
 
 	.mobile-experience-panel__body {
 		display: flex;
-		height: calc(var(--experience-panel-height) - var(--experience-stack-step));
+		height: calc(var(--experience-entry-height) - var(--experience-stack-step));
 		min-height: 0;
-		padding: clamp(22px, 6vw, 30px);
+		padding: clamp(18px, 5vw, 24px);
 		flex-direction: column;
 		justify-content: center;
 	}
@@ -137,6 +138,7 @@
 	}
 
 	.mobile-experience-panel--credential {
+		height: var(--experience-credential-height);
 		padding-bottom: 0;
 		background: color-mix(in srgb, var(--mobile-experience-current) 14%, var(--mobile-experience-panel));
 	}
@@ -145,7 +147,7 @@
 		position: relative;
 		width: min(76vw, 300px);
 		aspect-ratio: 398.314 / 478.862;
-		margin: 12px auto 0;
+		margin: 8px auto 0;
 		container-type: inline-size;
 	}
 
@@ -163,8 +165,9 @@
 @media (max-width: 350px) {
 	.mobile-experience-stack__panels {
 		--experience-stack-step: 42px;
-		--experience-panel-height: 360px;
-		gap: 58px;
+		--experience-entry-height: 310px;
+		--experience-credential-height: 390px;
+		gap: 40px;
 	}
 	.mobile-experience-panel__header { padding-inline: 14px; }
 	.mobile-experience-panel__header span,
@@ -175,7 +178,7 @@
 	.mobile-experience-panel__credential-card { width: min(74vw, 254px); }
 }
 
-@media (max-width: 640px) and (prefers-reduced-motion: reduce) {
+@media (max-width: 1023px) and (prefers-reduced-motion: reduce) {
 	.mobile-experience-stack__panels { gap: 16px; }
 	.mobile-experience-panel,
 	.mobile-experience-panel:nth-child(1),

@@ -16,6 +16,8 @@ colors:
   past-brown: "#2a1c18"
   project-autocare: "#d5cbbb"
   project-fixit: "#67a884"
+  status-error: "#e28a86"
+  status-success: "#9fc5a7"
 typography:
   display:
     fontFamily: "Inter, Arial, sans-serif"
@@ -144,6 +146,7 @@ La paleta combina carbón cálido, papel apagado y naranja óxido; los acentos s
 **Body Font:** Inter (con Arial y sans-serif como respaldo)  
 **Accent Font:** Inspiration (con cursive como respaldo)  
 **Supporting Font:** Kite One (con sans-serif como respaldo)
+**Functional Monospace:** Cascadia Mono (con SFMono-Regular y Consolas como respaldos)
 
 **Character:** Inter aporta precisión contemporánea y lectura editorial. Inspiration rompe esa disciplina en letras puntuales, mientras Kite One sostiene pequeños acentos con personalidad sin competir con los títulos.
 
@@ -155,6 +158,7 @@ La paleta combina carbón cálido, papel apagado y naranja óxido; los acentos s
 - **Title** (400–600, 18–22px, 1.1): nombres de proyectos, bloques de experiencia y encabezados de componentes.
 - **Body** (300, 17px, 1.35): texto narrativo breve, con líneas compactas pero respirables.
 - **Label** (500, 12px, 1): metadata, pills, índices y controles secundarios.
+- **Mono funcional** (400, escala contextual): prompts, entradas y estados de la terminal; no se utiliza como recurso decorativo fuera de interfaces técnicas.
 
 **The Two-Voices Rule.** En una composición, Inter gobierna y Inspiration interviene una sola vez como gesto; no se acumulan tipografías expresivas.
 
@@ -221,7 +225,7 @@ La credencial conserva su silueta recortada y sus proporciones de identificació
 
 ### Professional Credential
 
-La credencial es el objeto protagonista de Experiencia. En escritorio permanece nítida frente a copias desenfocadas que se desplazan lentamente en diagonal; en móvil cierra una pila editorial de tres paneles, sin rotación ni fondos duplicados. “Ver reverso” conserva su presencia visual, pero permanece deshabilitado mientras no exista contenido posterior aprobado.
+La credencial es el objeto protagonista de Experiencia. En escritorio permanece nítida frente a copias desenfocadas que se desplazan lentamente en diagonal; en móvil cierra una pila editorial de tres paneles, sin rotación ni fondos duplicados. El reverso funciona como índice editorial de certificados y fotografía, y solo se habilita cuando existe contenido real aprobado.
 
 ### Project Dialog
 

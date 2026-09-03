@@ -1,4 +1,4 @@
-@media (max-width: 640px) {
+@media (max-width: 1023px) {
 	.contact-stage { display: flex; flex-direction: column; }
 
 	.contact-copy {
@@ -138,7 +138,8 @@
 		margin: 0 0 0 8px;
 	}
 
-	.terminal-entry input {
+	.terminal-entry input,
+	.terminal-entry textarea {
 		width: 100%;
 		max-width: 100%;
 		min-height: 32px;
@@ -146,12 +147,18 @@
 		font-size: 16px;
 	}
 
+	.terminal-entry--message { max-width: 100%; }
+	.terminal-entry textarea { min-width: 0; min-height: 70px; height: 70px; }
+
 	.terminal-block-cursor { display: none; }
 
-	.terminal-body label:not(.current-command):not(.future-command) input {
+	.terminal-body label:not(.current-command):not(.future-command) input,
+	.terminal-body label:not(.current-command):not(.future-command) textarea {
 		text-align: right;
 		text-overflow: ellipsis;
 	}
+
+	.terminal-shortcut { margin-top: 2px !important; font-size: 10px; }
 
 	.terminal-feedback { min-height: 20px; margin-top: 4px !important; }
 
@@ -217,11 +224,20 @@
 		margin: 34px auto 0;
 		padding: 22px 0 calc(var(--mobile-nav-height) + 30px + env(safe-area-inset-bottom));
 		gap: 10px;
+		grid-template-columns: minmax(0, 1fr);
+		justify-content: stretch;
+		justify-items: stretch;
 		font-size: 13px;
 		text-align: center;
 	}
 
-	.portfolio-footer p { margin: 0; line-height: 1.5; }
+	.portfolio-footer p {
+		display: block;
+		width: 100%;
+		margin: 0;
+		line-height: 1.5;
+		text-align: center;
+	}
 	.portfolio-footer span { display: none; }
 }
 

@@ -1,7 +1,6 @@
 import { useReducer, useRef, type CSSProperties, type KeyboardEvent } from 'react';
 import { Send, X } from 'lucide-react';
 import {
-	buildContactMailto,
 	initialTerminalState,
 	isValidEmail,
 	terminalReducer,
@@ -10,14 +9,20 @@ import {
 import type { LocalizedPortfolioContent } from '../i18n/content';
 import './ContactTerminal.css';
 
-interface ContactTerminalProps { copy: LocalizedPortfolioContent['contact']['terminal'] }
+interface ContactTerminalProps {
+	copy: LocalizedPortfolioContent['contact']['terminal'];
+	formId: string;
+}
 
-export default function ContactTerminal({ copy }: ContactTerminalProps) {
+export default function ContactTerminal({ copy, formId }: ContactTerminalProps) {
 	const [state, dispatch] = useReducer(terminalReducer, initialTerminalState);
 	const emailInput = useRef<HTMLInputElement>(null);
 	const subjectInput = useRef<HTMLInputElement>(null);
-	const messageInput = useRef<HTMLInputElement>(null);
-	const { step, email, subject, message, feedback, feedbackTone } = state;
+	const messageInput = useRef<HTMLTextAreaElement>(null);
+	const honeypotInput = useRef<HTMLInputElement>(null);
+	const { step, email, subject, message, feedback, feedbackTone, submissionStatus } = state;
+	const isConfigured = /^[a-zA-Z0-9_-]+$/.test(formId);
+	const isSubmitting = submissionStatus === 'submitting';
 
 	const focusStep = (nextStep: TerminalField) => {
 		requestAnimationFrame(() => {
@@ -32,7 +37,7 @@ export default function ContactTerminal({ copy }: ContactTerminalProps) {
 		focusStep(field);
 	};
 
-	const advance = (event: KeyboardEvent<HTMLInputElement>, current: TerminalField) => {
+	const advance = (event: KeyboardEvent<HTMLInputElement>, current: Exclude<TerminalField, 'message'>) => {
 		if (event.key !== 'Enter') return;
 		event.preventDefault();
 
@@ -56,12 +61,6 @@ export default function ContactTerminal({ copy }: ContactTerminalProps) {
 			return;
 		}
 
-		if (!message.trim()) {
-			showFieldError('message', copy.errors[3]);
-			return;
-		}
-		dispatch({ type: 'advance', step: 'ready', feedback: copy.ready, tone: 'success' });
-		window.dispatchEvent(new CustomEvent('portfolio:contact-ready'));
 	};
 
 	const resetTerminal = () => {
@@ -71,7 +70,12 @@ export default function ContactTerminal({ copy }: ContactTerminalProps) {
 
 	const entryWidth = (value: string) => ({ '--entry-length': Math.max(value.length, 0) }) as CSSProperties;
 
-	const sendMessage = () => {
+	const sendMessage = async () => {
+		if (isSubmitting) return;
+		if (!isConfigured) {
+			dispatch({ type: 'submit-error', message: copy.configurationMissing });
+			return;
+		}
 		if (!isValidEmail(email)) {
 			showFieldError('email', copy.errors[0]);
 			return;
@@ -84,11 +88,43 @@ export default function ContactTerminal({ copy }: ContactTerminalProps) {
 			showFieldError('message', copy.errors[3]);
 			return;
 		}
-		window.location.href = buildContactMailto(state);
+		dispatch({ type: 'submit-start', message: copy.sending });
+		try {
+			const response = await fetch(`https://formspree.io/f/${formId}`, {
+				method: 'POST',
+				headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+				body: JSON.stringify({
+					email: email.trim(),
+					subject: subject.trim(),
+					message: message.trim(),
+					_gotcha: honeypotInput.current?.value ?? '',
+				}),
+			});
+			if (!response.ok) throw new Error(`Formspree responded with ${response.status}`);
+			dispatch({ type: 'submit-success', message: copy.sent });
+			window.dispatchEvent(new CustomEvent('portfolio:contact-ready'));
+		} catch {
+			dispatch({ type: 'submit-error', message: copy.sendError });
+		}
 	};
 
+	const handleMessageKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>) => {
+		if (event.key !== 'Enter' || (!event.ctrlKey && !event.metaKey)) return;
+		event.preventDefault();
+		void sendMessage();
+	};
+
+	const sendLabel = submissionStatus === 'submitting'
+		? copy.sending
+		: submissionStatus === 'error'
+			? copy.retry
+			: copy.send;
+	const visibleFeedback = feedback || (!isConfigured ? copy.configurationMissing : '');
+	const visibleFeedbackTone = feedback ? feedbackTone : !isConfigured ? 'info' : 'idle';
+
 	return (
-		<div className="terminal-shell" data-terminal-step={step}>
+		<form className="terminal-shell" data-terminal-step={step} data-submission-status={submissionStatus} aria-busy={isSubmitting} onSubmit={(event) => { event.preventDefault(); void sendMessage(); }}>
+			<input ref={honeypotInput} className="terminal-honeypot" type="text" name="_gotcha" tabIndex={-1} autoComplete="off" aria-hidden="true" />
 			<div className="terminal-card" role="group" aria-labelledby="terminal-title">
 				<div className="terminal-head">
 					<div className="terminal-dots" aria-hidden="true"><span></span><span></span><span></span></div>
@@ -121,24 +157,26 @@ export default function ContactTerminal({ copy }: ContactTerminalProps) {
 
 					<label className={step === 'message' ? 'current-command' : step === 'ready' ? '' : 'future-command'}>
 						<span className="terminal-prompt">{copy.prompts[2]}</span>
-						<span className={`terminal-entry ${message ? 'has-value' : ''}`} style={entryWidth(message)}>
-							<input ref={messageInput} type="text" value={message} onChange={(event) => dispatch({ type: 'change', field: 'message', value: event.target.value })} onKeyDown={(event) => advance(event, 'message')} readOnly={step !== 'message'} aria-label={copy.labels[2]} aria-invalid={feedbackTone === 'error' && step === 'message'} aria-describedby="terminal-feedback" />
-							{step === 'message' && <span className="terminal-block-cursor" aria-hidden="true"></span>}
+						<span className={`terminal-entry terminal-entry--message ${message ? 'has-value' : ''}`}>
+							<textarea ref={messageInput} value={message} onChange={(event) => dispatch({ type: 'change', field: 'message', value: event.target.value })} onKeyDown={handleMessageKeyDown} readOnly={step !== 'message'} aria-label={copy.labels[2]} aria-invalid={feedbackTone === 'error' && step === 'message'} aria-describedby="terminal-feedback terminal-shortcut" rows={2} />
 						</span>
 					</label>
 
-					<p id="terminal-feedback" className={`terminal-feedback ${feedback ? 'is-shown' : ''}`} data-tone={feedbackTone} role="status" aria-live="polite">{feedback || '\u00a0'}</p>
+					<p id="terminal-feedback" className={`terminal-feedback ${visibleFeedback ? 'is-shown' : ''}`} data-tone={visibleFeedbackTone} role="status" aria-live="polite">{visibleFeedback || '\u00a0'}</p>
+					<p id="terminal-shortcut" className="terminal-shortcut">{step === 'message' ? copy.shortcut : '\u00a0'}</p>
 				</div>
 			</div>
 
 			<button
-				type="button"
+				type="submit"
 				className="terminal-send-button"
-				onClick={sendMessage}
-				aria-label={copy.send}
+				disabled={isSubmitting || !isConfigured}
+				aria-label={sendLabel}
+				aria-describedby={!isConfigured ? 'terminal-feedback' : undefined}
+				title={!isConfigured ? copy.configurationMissing : undefined}
 			>
-				{copy.send} <Send width="20" height="20" aria-hidden="true" />
+				{sendLabel} <Send width="20" height="20" aria-hidden="true" />
 			</button>
-		</div>
+		</form>
 	);
 }

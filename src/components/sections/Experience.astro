@@ -4,8 +4,13 @@ import ExperienceCredential from '../experience/ExperienceCredential.astro';
 import ExperienceTimeline from '../experience/ExperienceTimeline.astro';
 import MobileExperienceStack from '../experience/MobileExperienceStack.astro';
 import { getCredentials } from '../../data/credentials';
+import { createCredentialBackContent } from '../../data/credential-back';
 import type { Locale, LocalizedPortfolioContent } from '../../i18n/content';
 import credentialPhotoSource from '../../assets/imagen-card.jpeg';
+import personalPhotoOne from '../../assets/Foto-1.png';
+import personalPhotoTwo from '../../assets/Foto-2.jpeg';
+import personalPhotoThree from '../../assets/Foto-3.png';
+import personalPhotoFour from '../../assets/Foto-4.jpeg';
 
 interface Props { content: LocalizedPortfolioContent; locale: Locale }
 
@@ -13,16 +18,47 @@ const { content, locale } = Astro.props;
 const copy = content.experience;
 const optimizedCredentialPhoto = await getImage({
 	src: credentialPhotoSource,
-	width: 600,
+	width: 738,
 	format: 'webp',
-	quality: 72,
+	quality: 82,
 });
+const [optimizedPhotoOne, optimizedPhotoTwo, optimizedPhotoThree, optimizedPhotoFour] = await Promise.all([
+	getImage({ src: personalPhotoOne, width: 640, format: 'webp', quality: 76 }),
+	getImage({ src: personalPhotoTwo, width: 640, format: 'webp', quality: 76 }),
+	getImage({ src: personalPhotoThree, width: 640, format: 'webp', quality: 76 }),
+	getImage({ src: personalPhotoFour, width: 640, format: 'webp', quality: 76 }),
+]);
+const [photoOneThumbnail, photoTwoThumbnail, photoThreeThumbnail, photoFourThumbnail] = await Promise.all([
+	getImage({ src: personalPhotoOne, width: 240, format: 'webp', quality: 70 }),
+	getImage({ src: personalPhotoTwo, width: 240, format: 'webp', quality: 70 }),
+	getImage({ src: personalPhotoThree, width: 240, format: 'webp', quality: 70 }),
+	getImage({ src: personalPhotoFour, width: 240, format: 'webp', quality: 70 }),
+]);
+const certificateUrl = '/certificates/Certificado-BWAI.pdf';
+const credentialBackContent = createCredentialBackContent(
+	[
+		{
+			id: 'build-with-ai-copan-2026',
+			title: 'Certificado de reconocimiento — Build with AI Copán 2026',
+			issuer: 'GDG Santa Bárbara · GDG San Pedro Sula · DevTeam504',
+			date: locale === 'es' ? '30 de mayo de 2026' : 'May 30, 2026',
+			url: certificateUrl,
+		},
+	],
+	[
+		{ id: 'night-light', src: optimizedPhotoOne.src, width: optimizedPhotoOne.attributes.width, height: optimizedPhotoOne.attributes.height, alt: locale === 'es' ? 'Persona caminando de noche, iluminada desde atrás' : 'Person walking at night, lit from behind', caption: locale === 'es' ? 'Luz nocturna' : 'Night light', thumbnail: { src: photoOneThumbnail.src, width: photoOneThumbnail.attributes.width, height: photoOneThumbnail.attributes.height, alt: '' } },
+		{ id: 'forest-path', src: optimizedPhotoTwo.src, width: optimizedPhotoTwo.attributes.width, height: optimizedPhotoTwo.attributes.height, alt: locale === 'es' ? 'Persona caminando entre vegetación' : 'Person walking through vegetation', caption: locale === 'es' ? 'Sendero' : 'Trail', thumbnail: { src: photoTwoThumbnail.src, width: photoTwoThumbnail.attributes.width, height: photoTwoThumbnail.attributes.height, alt: '' } },
+		{ id: 'rock-study', src: optimizedPhotoThree.src, width: optimizedPhotoThree.attributes.width, height: optimizedPhotoThree.attributes.height, alt: locale === 'es' ? 'Persona sentada entre rocas bajo luz natural' : 'Person sitting among rocks in natural light', caption: locale === 'es' ? 'Materia y paisaje' : 'Material and landscape', thumbnail: { src: photoThreeThumbnail.src, width: photoThreeThumbnail.attributes.width, height: photoThreeThumbnail.attributes.height, alt: '' } },
+		{ id: 'green-depth', src: optimizedPhotoFour.src, width: optimizedPhotoFour.attributes.width, height: optimizedPhotoFour.attributes.height, alt: locale === 'es' ? 'Persona de espaldas entre vegetación densa' : 'Person seen from behind amid dense vegetation', caption: locale === 'es' ? 'Profundidad verde' : 'Green depth', thumbnail: { src: photoFourThumbnail.src, width: photoFourThumbnail.attributes.width, height: photoFourThumbnail.attributes.height, alt: '' } },
+	],
+);
+const hasCredentialBack = credentialBackContent.certificates.length > 0 || credentialBackContent.photos.length > 0;
 const credentials = getCredentials(locale, {
 	src: optimizedCredentialPhoto.src,
 	alt: 'Fabricio Alvarado en Copán, Honduras',
-	width: 738,
-	height: 1600,
-});
+	width: optimizedCredentialPhoto.attributes.width,
+	height: optimizedCredentialPhoto.attributes.height,
+}, hasCredentialBack ? credentialBackContent : undefined);
 ---
 
 <section id="experiencia" class="portfolio-screen experience-screen">

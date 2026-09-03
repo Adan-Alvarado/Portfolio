@@ -6,6 +6,9 @@ export interface LocalizedProjectCopy {
 	title: string;
 	description: string;
 	role: string;
+	challenge: string;
+	contribution: string;
+	outcome: string;
 }
 
 export interface LocalizedPortfolioContent {
@@ -16,16 +19,13 @@ export interface LocalizedPortfolioContent {
 		items: readonly { label: string; href: `#${string}`; icon: string }[];
 	};
 	dock: {
-		musicPlay: string;
-		musicPause: string;
-		musicLoading: string;
-		musicError: string;
 		languageLabel: string;
 	};
 	hero: {
 		kicker: string;
 		titleAria: string;
 		downloadCv: string;
+		cvLanguage: string;
 		availability: readonly [string, string];
 		characterAlt: string;
 		statsLabel: string;
@@ -51,6 +51,20 @@ export interface LocalizedPortfolioContent {
 		reverse: string;
 		socials: string;
 		reverseUnavailable: string;
+		back: {
+			title: string;
+			certificates: string;
+			certificateCount: string;
+			photography: string;
+			photoCount: string;
+			openCertificates: string;
+			openPhotography: string;
+			returnToFront: string;
+			close: string;
+			previous: string;
+			next: string;
+			verifiedLink: string;
+		};
 	};
 	projects: {
 		kicker: string;
@@ -63,9 +77,9 @@ export interface LocalizedPortfolioContent {
 		modalEyebrow: string;
 		close: string;
 		role: string;
-		status: string;
-		statusValue: string;
-		repositoryTitle: string;
+		challenge: string;
+		contribution: string;
+		outcome: string;
 		repositoryNote: string;
 		technologies: string;
 		galleryPrevious: string;
@@ -73,19 +87,9 @@ export interface LocalizedPortfolioContent {
 		galleryItem: string;
 		items: Record<ProjectId, LocalizedProjectCopy>;
 		preview: {
-			conceptDemo: string;
-			conceptSample: string;
-			fictionalApi: string;
-			nextService: string;
-			autoHeadline: readonly [string, string];
-			maintenance: string;
-			services: string;
-			generalStatus: string;
-			kilometers: string;
-			overview: string;
-			history: string;
-			endpoint: string;
-			ticketCreated: string;
+			productScreenshot: string;
+			designSelection: string;
+			apiScreenshot: string;
 		};
 		stack: {
 			title: string;
@@ -114,6 +118,12 @@ export interface LocalizedPortfolioContent {
 			errors: readonly [string, string, string, string];
 			ready: string;
 			resetFeedback: string;
+			sending: string;
+			sent: string;
+			sendError: string;
+			retry: string;
+			configurationMissing: string;
+			shortcut: string;
 		};
 	};
 }
@@ -131,11 +141,11 @@ export const portfolioContent: Record<Locale, LocalizedPortfolioContent> = {
 		skipLink: 'Saltar al contenido',
 		navigation: { label: 'Navegación principal', items: sharedNavigation(['Inicio', 'Experiencia', 'Proyectos', 'Contacto']) },
 		dock: {
-			musicPlay: 'Reproducir música lo-fi', musicPause: 'Pausar música lo-fi', musicLoading: 'Cargando música',
-			musicError: 'No se pudo reproducir la música. Intenta de nuevo.', languageLabel: 'Cambiar idioma',
+			languageLabel: 'Cambiar idioma',
 		},
 		hero: {
 			kicker: '[ “ Trabajemos Juntos ” ]', titleAria: 'Developer más designer', downloadCv: 'Descargar CV',
+			cvLanguage: 'Currículum disponible en español',
 			availability: ['Disponible para proyectos', 'freelance o ver One Piece'],
 			characterAlt: 'Capibara pixelada sosteniendo una taza', statsLabel: 'Resumen de experiencia',
 			stats: [
@@ -153,25 +163,27 @@ export const portfolioContent: Record<Locale, LocalizedPortfolioContent> = {
 			],
 			carouselLabel: 'Credencial profesional', credentialLabel: 'Credencial profesional de Fabricio Alvarado', location: 'Honduras',
 			primaryRole: ['DISEÑADOR', 'GRAFICO'], secondaryRole: ['DESARROLLADOR', 'JUNIOR'], reverse: 'Ver reverso', socials: 'Redes sociales', reverseUnavailable: 'Reverso no disponible',
+			back: {
+				title: 'Detrás del perfil', certificates: 'Certificados', certificateCount: 'credenciales verificables',
+				photography: 'Fotografía', photoCount: 'fotografías seleccionadas', openCertificates: 'Ver certificados',
+				openPhotography: 'Abrir colección', returnToFront: 'Volver al frente', close: 'Cerrar',
+				previous: 'Fotografía anterior', next: 'Fotografía siguiente', verifiedLink: 'Ver credencial',
+			},
 		},
 		projects: {
 			kicker: '[“¿Tienes algo en mente?”]', heading: ['Vamos a', 'construir', 'algo'],
 			bio: ['Soy una persona', 'alegre, propositiva y autodidacta.', 'Siempre busco ir más allá de lo esperado, optimizar procesos y aportar soluciones creativas.'],
-			characterAlt: 'Pingüino pixelado sosteniendo una herramienta', galleryLabel: 'Selección de proyectos conceptuales',
-			openCase: 'Abrir caso conceptual', seeCase: 'Ver caso', modalEyebrow: 'Proyecto conceptual · Demostración', close: 'Cerrar',
-			role: 'Rol', status: 'Estado', statusValue: 'Ejemplo ficticio para el portfolio', repositoryTitle: 'Código de ejemplo',
-			repositoryNote: 'Repositorio demostrativo no publicado', technologies: 'Tecnologías', galleryPrevious: 'Pieza anterior',
+			characterAlt: 'Pingüino pixelado sosteniendo una herramienta', galleryLabel: 'Selección de proyectos',
+			openCase: 'Abrir caso', seeCase: 'Ver caso', modalEyebrow: 'Caso de proyecto', close: 'Cerrar',
+			role: 'Rol', challenge: 'Contexto', contribution: 'Contribución', outcome: 'Resultado',
+			repositoryNote: 'Repositorio privado o no disponible', technologies: 'Tecnologías', galleryPrevious: 'Pieza anterior',
 			galleryNext: 'Pieza siguiente', galleryItem: 'Pieza',
 			items: {
-				diseno: { title: 'Diseño Gráfico', description: 'Selección conceptual de piezas editoriales y sistemas visuales creada para demostrar dirección de arte, composición y consistencia.', role: 'Dirección de arte y diseño gráfico' },
-				'auto-care': { title: 'Auto Care Club', description: 'Concepto de plataforma para organizar mantenimientos, alertas y el historial de un vehículo desde una experiencia clara y directa.', role: 'Diseño de producto y desarrollo frontend' },
-				fixit: { title: 'Fixit API', description: 'API ficticia para registrar incidencias, asignar responsables y consultar el estado de cada solicitud mediante endpoints predecibles.', role: 'Diseño de API y desarrollo backend' },
+				diseno: { title: 'Diseño Gráfico', description: 'Selección real de piezas de social media creadas para marcas y comunicaciones digitales.', role: 'Dirección de arte y diseño gráfico', challenge: 'Traducir distintos objetivos de comunicación en piezas claras, atractivas y consistentes.', contribution: 'Concepto visual, composición y producción gráfica con Photoshop y Canva.', outcome: 'Colección de trabajos publicada en Google Drive para su revisión.' },
+				'auto-care': { title: 'Auto Care Club', description: 'Aplicación full stack para gestionar la atención de un taller automotriz.', role: 'Desarrollo full stack', challenge: 'Unificar clientes, vehículos, servicios, carrito, citas, pagos y operación interna con acceso por roles.', contribution: 'React, TypeScript y Tailwind CSS; ASP.NET Core, PostgreSQL y Docker; Stripe de prueba, JWT y roles.', outcome: 'Flujos diferenciados para clientes, administradores y técnicos, desde la cita hasta la actualización del trabajo.' },
+				fixit: { title: 'Fixit API', description: 'API para reportar problemas urbanos y canalizarlos hacia las instituciones responsables.', role: 'Diseño de API y desarrollo backend', challenge: 'Estructurar incidencias como baches, animales muertos y otros problemas de atención municipal o de emergencia.', contribution: 'Backend desarrollado con .NET y SQLite para registrar y dar seguimiento a cada reporte.', outcome: 'Base funcional para centralizar reportes ciudadanos y dirigirlos a municipalidades, emergencias u otras entidades.' },
 			},
-			preview: {
-				conceptDemo: 'Concepto demo', conceptSample: 'Muestra conceptual', fictionalApi: 'API ficticia', nextService: 'PRÓXIMO SERVICIO · 18 DÍAS',
-				autoHeadline: ['Tu auto,', 'siempre al día.'], maintenance: 'Ver mantenimiento', services: 'Servicios', generalStatus: 'Estado general',
-				kilometers: 'Kilómetros', overview: 'Resumen', history: 'Historial', endpoint: 'ENDPOINT DE EJEMPLO', ticketCreated: 'Ticket creado',
-			},
+			preview: { productScreenshot: 'Captura del producto', designSelection: 'Selección visual', apiScreenshot: 'Captura de la API' },
 			stack: { title: 'Stack Tecnológico', open: 'Ver detalles', eyebrow: '[ Stack tecnológico ]', heading: 'Mis herramientas', close: 'Cerrar', groups: ['Front-end', 'Back-end', 'Diseño'], environment: 'Herramientas y entornos' },
 		},
 		contact: {
@@ -185,6 +197,10 @@ export const portfolioContent: Record<Locale, LocalizedPortfolioContent> = {
 				prompts: ['Tu@mensaje: ~$ correo:', 'Tu@mensaje: ~$ asunto:', 'Tu@mensaje: ~$ mensaje:'], labels: ['Correo', 'Asunto', 'Mensaje'], send: 'Enviar Mensaje',
 				errors: ['El correo no tiene un formato válido.', 'Debes ingresar tu correo.', 'Debes ingresar el asunto.', 'Debes escribir un mensaje.'],
 				ready: 'Mensaje listo. Puedes enviarlo.', resetFeedback: 'Terminal reiniciada.',
+				sending: 'Enviando mensaje…', sent: 'Mensaje enviado. Te responderé lo antes posible.',
+				sendError: 'No se pudo enviar. Revisa tu conexión e inténtalo de nuevo.', retry: 'Reintentar',
+				configurationMissing: 'El formulario aún no está configurado. Puedes escribirme al correo visible.',
+				shortcut: 'Ctrl o Cmd + Enter para enviar.',
 			},
 		},
 	},
@@ -193,11 +209,11 @@ export const portfolioContent: Record<Locale, LocalizedPortfolioContent> = {
 		skipLink: 'Skip to content',
 		navigation: { label: 'Main navigation', items: sharedNavigation(['Home', 'Experience', 'Projects', 'Contact']) },
 		dock: {
-			musicPlay: 'Play lo-fi music', musicPause: 'Pause lo-fi music', musicLoading: 'Loading music',
-			musicError: 'The music could not be played. Try again.', languageLabel: 'Change language',
+			languageLabel: 'Change language',
 		},
 		hero: {
 			kicker: '[ “ Let’s Work Together ” ]', titleAria: 'Developer plus designer', downloadCv: 'Download résumé',
+			cvLanguage: 'Résumé currently available in Spanish',
 			availability: ['Available for freelance', 'projects or watching One Piece'],
 			characterAlt: 'Pixel-art capybara holding a mug', statsLabel: 'Experience summary',
 			stats: [
@@ -215,25 +231,27 @@ export const portfolioContent: Record<Locale, LocalizedPortfolioContent> = {
 			],
 			carouselLabel: 'Professional credential', credentialLabel: 'Fabricio Alvarado professional credential', location: 'Honduras',
 			primaryRole: ['GRAPHIC', 'DESIGNER'], secondaryRole: ['DEVELOPER', 'JUNIOR'], reverse: 'View back', socials: 'Social profiles', reverseUnavailable: 'Back side unavailable',
+			back: {
+				title: 'Behind the profile', certificates: 'Certificates', certificateCount: 'verifiable credentials',
+				photography: 'Photography', photoCount: 'selected photographs', openCertificates: 'View certificates',
+				openPhotography: 'Open collection', returnToFront: 'Return to front', close: 'Close',
+				previous: 'Previous photograph', next: 'Next photograph', verifiedLink: 'View credential',
+			},
 		},
 		projects: {
 			kicker: '[“Have something in mind?”]', heading: ['Let’s', 'build', 'something'],
 			bio: ['I am a', 'cheerful, proactive and self-taught person.', 'I always aim beyond expectations, optimize processes and contribute creative solutions.'],
-			characterAlt: 'Pixel-art penguin holding a tool', galleryLabel: 'Selection of conceptual projects',
-			openCase: 'Open conceptual case', seeCase: 'View case', modalEyebrow: 'Concept project · Demonstration', close: 'Close',
-			role: 'Role', status: 'Status', statusValue: 'Fictional portfolio example', repositoryTitle: 'Example code',
-			repositoryNote: 'Unpublished demonstration repository', technologies: 'Technologies', galleryPrevious: 'Previous piece',
+			characterAlt: 'Pixel-art penguin holding a tool', galleryLabel: 'Project selection',
+			openCase: 'Open case', seeCase: 'View case', modalEyebrow: 'Project case', close: 'Close',
+			role: 'Role', challenge: 'Context', contribution: 'Contribution', outcome: 'Outcome',
+			repositoryNote: 'Private or unavailable repository', technologies: 'Technologies', galleryPrevious: 'Previous piece',
 			galleryNext: 'Next piece', galleryItem: 'Piece',
 			items: {
-				diseno: { title: 'Graphic Design', description: 'A conceptual selection of editorial pieces and visual systems demonstrating art direction, composition and consistency.', role: 'Art direction and graphic design' },
-				'auto-care': { title: 'Auto Care Club', description: 'A platform concept for organizing maintenance, reminders and a vehicle’s history through a clear and direct experience.', role: 'Product design and frontend development' },
-				fixit: { title: 'Fixit API', description: 'A fictional API for logging issues, assigning owners and checking each request through predictable endpoints.', role: 'API design and backend development' },
+				diseno: { title: 'Graphic Design', description: 'A real selection of social media pieces created for brands and digital communications.', role: 'Art direction and graphic design', challenge: 'Translate different communication goals into clear, engaging and consistent pieces.', contribution: 'Visual concept, composition and graphic production with Photoshop and Canva.', outcome: 'A published collection of work available for review on Google Drive.' },
+				'auto-care': { title: 'Auto Care Club', description: 'A full-stack application for managing an automotive workshop service process.', role: 'Full-stack development', challenge: 'Unify customers, vehicles, services, carts, appointments, payments and internal operations with role-based access.', contribution: 'React, TypeScript and Tailwind CSS; ASP.NET Core, PostgreSQL and Docker; Stripe test payments, JWT and roles.', outcome: 'Dedicated flows for customers, administrators and technicians, from booking to job-status updates.' },
+				fixit: { title: 'Fixit API', description: 'An API for reporting urban problems and routing them to the responsible institutions.', role: 'API design and backend development', challenge: 'Structure incidents such as potholes, dead animals and other municipal or emergency issues.', contribution: 'Backend built with .NET and SQLite to register and track each report.', outcome: 'A functional foundation for centralizing citizen reports and routing them to municipalities, emergency services or other entities.' },
 			},
-			preview: {
-				conceptDemo: 'Demo concept', conceptSample: 'Concept sample', fictionalApi: 'Fictional API', nextService: 'NEXT SERVICE · 18 DAYS',
-				autoHeadline: ['Your car,', 'always up to date.'], maintenance: 'View maintenance', services: 'Services', generalStatus: 'Overall health',
-				kilometers: 'Kilometres', overview: 'Overview', history: 'History', endpoint: 'EXAMPLE ENDPOINT', ticketCreated: 'Ticket created',
-			},
+			preview: { productScreenshot: 'Product screenshot', designSelection: 'Visual selection', apiScreenshot: 'API screenshot' },
 			stack: { title: 'Technology Stack', open: 'View details', eyebrow: '[ Technology stack ]', heading: 'My tools', close: 'Close', groups: ['Front-end', 'Back-end', 'Design'], environment: 'Tools and environments' },
 		},
 		contact: {
@@ -247,6 +265,10 @@ export const portfolioContent: Record<Locale, LocalizedPortfolioContent> = {
 				prompts: ['You@message: ~$ email:', 'You@message: ~$ subject:', 'You@message: ~$ message:'], labels: ['Email', 'Subject', 'Message'], send: 'Send Message',
 				errors: ['The email format is not valid.', 'Enter your email address.', 'Enter a subject.', 'Write a message.'],
 				ready: 'Your message is ready to send.', resetFeedback: 'Terminal reset.',
+				sending: 'Sending message…', sent: 'Message sent. I will get back to you soon.',
+				sendError: 'The message could not be sent. Check your connection and try again.', retry: 'Try again',
+				configurationMissing: 'The form is not configured yet. You can use the visible email address instead.',
+				shortcut: 'Press Ctrl or Cmd + Enter to send.',
 			},
 		},
 	},

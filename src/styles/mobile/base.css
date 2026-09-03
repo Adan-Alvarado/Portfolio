@@ -19,7 +19,7 @@
 	.credential-carousel { order: 2; }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 1023px) {
 	:root {
 		--mobile-section-space: clamp(52px, 14vw, 64px);
 		--mobile-nav-height: 64px;
@@ -70,7 +70,7 @@
 	[data-reveal] { scroll-margin-top: 16px; }
 }
 
-@media (max-width: 640px) and (prefers-reduced-motion: reduce) {
+@media (max-width: 1023px) and (prefers-reduced-motion: reduce) {
 	html { scroll-behavior: auto; }
 	.mobile-experience-stack { height: auto; }
 }

@@ -1,5 +1,5 @@
 import type { RefObject } from 'react';
-import { X } from 'lucide-react';
+import { ExternalLink, X } from 'lucide-react';
 import { siGithub } from 'simple-icons';
 import type { Project } from '../../types/portfolio';
 import type { LocalizedPortfolioContent } from '../../i18n/content';
@@ -18,7 +18,6 @@ interface ProjectModalProps {
 
 export default function ProjectModal({ project, copy, returnFocusRef, onAfterClose }: ProjectModalProps) {
 	const titleId = `pg-modal-title-${project.id}`;
-	const descriptionId = `pg-modal-description-${project.id}`;
 
 	return (
 		<Dialog
@@ -26,7 +25,6 @@ export default function ProjectModal({ project, copy, returnFocusRef, onAfterClo
 			onAfterClose={onAfterClose}
 			returnFocusRef={returnFocusRef}
 			labelledBy={titleId}
-			describedBy={descriptionId}
 			layerClassName="pg-modal-layer"
 			backdropClassName="pg-modal-backdrop"
 			panelClassName="pg-modal"
@@ -49,15 +47,23 @@ export default function ProjectModal({ project, copy, returnFocusRef, onAfterClo
 							{project.gallery ? <DesignGallery items={project.gallery} copy={copy} /> : <ProjectPreview project={project} copy={copy.preview} expanded />}
 						</div>
 						<div className="pg-modal-details">
-							<p id={descriptionId}>{project.description}</p>
+							<p className="pg-modal-summary">{project.description}</p>
 							<dl>
-								<div><dt>{copy.role}</dt><dd>{project.role}</dd></div>
-								<div><dt>{copy.status}</dt><dd>{copy.statusValue}</dd></div>
+								{project.challenge && <div><dt>{copy.challenge}</dt><dd>{project.challenge}</dd></div>}
+								{project.contribution && <div><dt>{copy.contribution}</dt><dd>{project.contribution}</dd></div>}
+								{project.outcome && <div><dt>{copy.outcome}</dt><dd>{project.outcome}</dd></div>}
+								{!project.challenge && !project.contribution && !project.outcome && <div><dt>{copy.role}</dt><dd>{project.role}</dd></div>}
 							</dl>
-							<a className="pg-repository" href={project.repositoryUrl} target="_blank" rel="noreferrer">
-								<BrandIcon icon={siGithub} width="19" height="19" aria-hidden="true" />
-								<span><strong>{copy.repositoryTitle}</strong><small>{copy.repositoryNote}</small></span>
-							</a>
+							{project.links && project.links.length > 0 ? (
+								<div className="pg-project-links">
+									{project.links.map((link) => (
+										<a className="pg-repository" href={link.url} target="_blank" rel="noreferrer" key={link.url}>
+											{link.kind === 'repository' ? <BrandIcon icon={siGithub} width="19" height="19" aria-hidden="true" /> : <ExternalLink width="19" height="19" aria-hidden="true" />}
+											<span><strong>{link.label}</strong>{link.note && <small>{link.note}</small>}</span>
+										</a>
+									))}
+								</div>
+							) : project.repositoryVisibility ? <p className="pg-repository-note">{copy.repositoryNote}</p> : null}
 							<div className="pg-stack">
 								<h3>{copy.technologies}</h3>
 								<ul>{project.technologies.map((technology) => <TechnologyPill key={technology.label} technology={technology} />)}</ul>

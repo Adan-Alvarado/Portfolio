@@ -1,4 +1,4 @@
-import type { Project } from '../types/portfolio';
+import type { Project, ProjectMediaMap } from '../types/portfolio';
 import { getPortfolioContent, type Locale } from '../i18n/content';
 import { technologyCatalog } from './technologies';
 
@@ -7,40 +7,53 @@ const projectDefinitions = [
 		id: 'diseno',
 		preview: 'diseno',
 		className: 'project-auto',
-		repositoryUrl: 'https://github.com/fabricio-portfolio-demo-inexistente/diseno-grafico-demo',
-		technologies: [technologyCatalog.photoshop, technologyCatalog.corel, technologyCatalog.canva, technologyCatalog.figma],
+		links: {
+			es: [{ label: 'Colección de diseño', note: 'Piezas publicadas en Google Drive', url: 'https://drive.google.com/drive/u/0/folders/1aswlMHULvw-U8_CIb3BSNPTcdBHbosHF', kind: 'case-study' }],
+			en: [{ label: 'Design collection', note: 'Published work on Google Drive', url: 'https://drive.google.com/drive/u/0/folders/1aswlMHULvw-U8_CIb3BSNPTcdBHbosHF', kind: 'case-study' }],
+		},
+		technologies: [technologyCatalog.photoshop, technologyCatalog.canva],
 	},
 	{
 		id: 'auto-care',
 		preview: 'auto-care',
 		className: 'project-design',
-		repositoryUrl: 'https://github.com/fabricio-portfolio-demo-inexistente/auto-care-club-demo',
-		technologies: [technologyCatalog.astro, technologyCatalog.react, technologyCatalog.typescript, technologyCatalog.tailwind],
+		links: {
+			es: [
+				{ label: 'Repositorio frontend', note: 'Aplicación web', url: 'https://github.com/Adan-Alvarado/AutoCare_Club', kind: 'repository' },
+				{ label: 'Repositorio backend', note: 'API', url: 'https://github.com/Adan-Alvarado/AutoCare_Club_Api', kind: 'repository' },
+			],
+			en: [
+				{ label: 'Frontend repository', note: 'Web application', url: 'https://github.com/Adan-Alvarado/AutoCare_Club', kind: 'repository' },
+				{ label: 'Backend repository', note: 'API', url: 'https://github.com/Adan-Alvarado/AutoCare_Club_Api', kind: 'repository' },
+			],
+		},
+		technologies: [technologyCatalog.react, technologyCatalog.typescript, technologyCatalog.tailwind, technologyCatalog.dotnet, technologyCatalog.postgresql, technologyCatalog.docker],
 	},
 	{
 		id: 'fixit',
 		preview: 'fixit',
 		className: 'project-fixit',
-		repositoryUrl: 'https://github.com/fabricio-portfolio-demo-inexistente/fixit-api-demo',
-		technologies: [technologyCatalog.dotnet, technologyCatalog.csharp, technologyCatalog.postgresql, technologyCatalog.docker],
+		links: {
+			es: [{ label: 'Repositorio backend', note: 'API en .NET', url: 'https://github.com/Adan-Alvarado/FixIt', kind: 'repository' }],
+			en: [{ label: 'Backend repository', note: '.NET API', url: 'https://github.com/Adan-Alvarado/FixIt', kind: 'repository' }],
+		},
+		technologies: [technologyCatalog.dotnet, technologyCatalog.sqlite],
 	},
 ] as const;
 
-const designGallery = (locale: Locale) => locale === 'es' ? [
-	{ id: 'casa-nomada', eyebrow: 'IDENTIDAD / 01', title: 'CASA\nNÓMADA', caption: 'Sistema visual', variant: 'one' },
-	{ id: 'fruta-24', eyebrow: 'CAMPAÑA / 02', title: 'FRUTA\n24', caption: 'FRESCO · LOCAL · DIARIO', variant: 'two' },
-	{ id: 'ritmo', eyebrow: 'EDITORIAL / 03', title: 'RITMO', caption: 'VOL. 08', variant: 'three' },
-] as const : [
-	{ id: 'casa-nomada', eyebrow: 'IDENTITY / 01', title: 'CASA\nNÓMADA', caption: 'Visual system', variant: 'one' },
-	{ id: 'fruta-24', eyebrow: 'CAMPAIGN / 02', title: 'FRUTA\n24', caption: 'FRESH · LOCAL · DAILY', variant: 'two' },
-	{ id: 'ritmo', eyebrow: 'EDITORIAL / 03', title: 'RITMO', caption: 'VOL. 08', variant: 'three' },
-] as const;
+const designGallery = (media: ProjectMediaMap['diseno']) => [
+	{ id: 'social-media-01', media: media?.[0] },
+	{ id: 'social-media-02', media: media?.[1] },
+	{ id: 'social-media-03', media: media?.[2] },
+];
 
-export const getProjects = (locale: Locale): readonly Project[] => {
+export const getProjects = (locale: Locale, media: ProjectMediaMap = {}): readonly Project[] => {
 	const copy = getPortfolioContent(locale).projects.items;
 	return projectDefinitions.map((project) => ({
 		...project,
+		links: project.links[locale],
 		...copy[project.id],
-		gallery: project.id === 'diseno' ? designGallery(locale) : undefined,
+		media: media[project.id],
+		gallery: project.id === 'diseno' ? designGallery(media.diseno) : undefined,
 	}));
 };

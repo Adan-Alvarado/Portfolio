@@ -2,12 +2,12 @@
 import { Icon } from 'astro-iconset/components';
 import { Image } from 'astro:assets';
 import TechStrip from '../TechStrip.astro';
-import type { LocalizedPortfolioContent } from '../../i18n/content';
+import type { Locale, LocalizedPortfolioContent } from '../../i18n/content';
 import capybara from '../../assets/capybara.png';
 
-interface Props { content: LocalizedPortfolioContent }
+interface Props { content: LocalizedPortfolioContent; locale: Locale }
 
-const { content } = Astro.props;
+const { content, locale } = Astro.props;
 const copy = content.hero;
 ---
 
@@ -36,10 +36,10 @@ const copy = content.hero;
 				<div class="hero-profile-reveal" data-reveal="hero-profile" data-reveal-order="1">
 					<div class="profile-ticket">
 						<div class="profile-dark">
-							<div class="github-mark" aria-hidden="true"><Icon name="lucide:github" width="52" height="52" /></div>
+							<a class="github-mark" href="https://github.com/Adan-Alvarado" target="_blank" rel="noreferrer" aria-label="Perfil de GitHub de Fabricio Alvarado"><Icon name="lucide:github" width="52" height="52" aria-hidden="true" /></a>
 							<div>
 								<strong>Fabricio Alvarado</strong>
-								<a class="cv-download" href="/Fabricio-Alvarado-CV.pdf" download>{copy.downloadCv} <span><Icon name="lucide:download" width="22" height="22" aria-hidden="true" /></span></a>
+								<a class="cv-download" href="/Fabricio-Alvarado-CV.pdf" download hreflang="es" lang={locale === 'en' ? 'es' : undefined} title={copy.cvLanguage}>{copy.downloadCv} <span><Icon name="lucide:download" width="22" height="22" aria-hidden="true" /></span></a>
 							</div>
 						</div>
 						<p>{copy.availability[0]}<br />{copy.availability[1]}</p>
@@ -63,6 +63,15 @@ const copy = content.hero;
 <style>
 	.home-screen .profile-dark .cv-download {
 		outline-offset: 4px;
+	}
+
+	.home-screen .profile-dark .github-mark {
+		text-decoration: none;
+	}
+
+	.home-screen .profile-dark .github-mark:focus-visible {
+		outline: 2px solid #f2f1ef;
+		outline-offset: 3px;
 	}
 
 	.home-screen .profile-dark .cv-download:focus-visible {

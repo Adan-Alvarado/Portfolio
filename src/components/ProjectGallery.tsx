@@ -3,20 +3,20 @@ import { flushSync } from 'react-dom';
 import { ArrowUpRight } from 'lucide-react';
 import { getProjects } from '../data/projects';
 import type { Locale, LocalizedPortfolioContent } from '../i18n/content';
-import type { Project } from '../types/portfolio';
+import type { Project, ProjectMediaMap } from '../types/portfolio';
 import ProjectModal from './projects/ProjectModal';
 import ProjectPreview from './projects/ProjectPreview';
 import './ProjectGallery.css';
 
-interface ProjectGalleryProps { locale: Locale; copy: LocalizedPortfolioContent['projects'] }
+interface ProjectGalleryProps { locale: Locale; copy: LocalizedPortfolioContent['projects']; media: ProjectMediaMap }
 
-export default function ProjectGallery({ locale, copy }: ProjectGalleryProps) {
+export default function ProjectGallery({ locale, copy, media }: ProjectGalleryProps) {
 	const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 	const [transitioningProjectId, setTransitioningProjectId] = useState<Project['id'] | null>(null);
 	const [activeProjectIndex, setActiveProjectIndex] = useState<number | null>(null);
 	const triggerRef = useRef<HTMLElement | null>(null);
 	const indexRefs = useRef<Array<HTMLButtonElement | null>>([]);
-	const projects = getProjects(locale);
+	const projects = getProjects(locale, media);
 
 	const handleIndexKeys = (event: KeyboardEvent<HTMLButtonElement>, index: number) => {
 		if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
@@ -35,7 +35,7 @@ export default function ProjectGallery({ locale, copy }: ProjectGalleryProps) {
 		triggerRef.current = event.currentTarget;
 		window.dispatchEvent(new CustomEvent('portfolio:project-open', { detail: { projectId: project.id } }));
 		const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-		const usesMobileSheet = window.matchMedia('(max-width: 640px)').matches;
+		const usesMobileSheet = window.matchMedia('(max-width: 1023px)').matches;
 		const hasMatchingShowcase = !project.gallery;
 		if (!document.startViewTransition || reduceMotion || usesMobileSheet || !hasMatchingShowcase) {
 			setSelectedProject(project);

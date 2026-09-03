@@ -12,10 +12,15 @@ interface Props {
 }
 
 const { locale, content } = Astro.props;
+const configuredOrigin = import.meta.env.PUBLIC_SITE_URL?.trim();
+const siteOrigin = configuredOrigin ? new URL(configuredOrigin) : Astro.url.origin;
 const canonicalPath = locale === 'es' ? '/' : '/en/';
-const canonical = new URL(canonicalPath, Astro.url.origin);
-const spanishUrl = new URL('/', Astro.url.origin);
-const englishUrl = new URL('/en/', Astro.url.origin);
+const canonical = new URL(canonicalPath, siteOrigin);
+const spanishUrl = new URL('/', siteOrigin);
+const englishUrl = new URL('/en/', siteOrigin);
+const socialImage = new URL('/og-portfolio.png', siteOrigin);
+const ogLocale = locale === 'es' ? 'es_HN' : 'en_US';
+const alternateLocale = locale === 'es' ? 'en_US' : 'es_HN';
 ---
 
 <!doctype html>
@@ -24,6 +29,21 @@ const englishUrl = new URL('/en/', Astro.url.origin);
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 		<meta name="description" content={content.meta.description} />
+		<meta name="theme-color" content="#121212" />
+		<meta property="og:type" content="website" />
+		<meta property="og:title" content={content.meta.title} />
+		<meta property="og:description" content={content.meta.description} />
+		<meta property="og:url" content={canonical} />
+		<meta property="og:image" content={socialImage} />
+		<meta property="og:image:width" content="1200" />
+		<meta property="og:image:height" content="630" />
+		<meta property="og:image:alt" content={locale === 'es' ? 'Portfolio de Fabricio Alvarado, desarrollo y diseño' : 'Fabricio Alvarado portfolio, development and design'} />
+		<meta property="og:locale" content={ogLocale} />
+		<meta property="og:locale:alternate" content={alternateLocale} />
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={content.meta.title} />
+		<meta name="twitter:description" content={content.meta.description} />
+		<meta name="twitter:image" content={socialImage} />
 		<link rel="canonical" href={canonical} />
 		<link rel="alternate" hreflang="es" href={spanishUrl} />
 		<link rel="alternate" hreflang="en" href={englishUrl} />

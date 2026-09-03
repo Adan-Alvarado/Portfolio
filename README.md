@@ -11,6 +11,11 @@ npm run dev
 
 Astro mostrará la dirección local, normalmente `http://localhost:4321`.
 
+Copia `.env.example` a `.env` y configura:
+
+- `PUBLIC_SITE_URL`: origen público usado por canonical y Open Graph.
+- `PUBLIC_FORMSPREE_FORM_ID`: identificador público del formulario de Formspree. Si falta, el envío queda deshabilitado y el correo visible funciona como alternativa.
+
 ## Estructura principal
 
 ```text
@@ -26,8 +31,15 @@ src/
 │       ├── Projects.astro
 │       └── Contact.astro
 ├── layouts/PortfolioLayout.astro
-├── pages/index.astro
-└── styles/global.css
+├── data/
+│   ├── credential-back.ts
+│   └── projects.ts
+├── pages/
+│   ├── index.astro
+│   └── en/index.astro
+└── styles/
+    ├── global.css
+    └── mobile/
 ```
 
 - Astro construye la página, las secciones y la navegación.
@@ -40,18 +52,20 @@ src/
 
 - Hay un único navbar fijo; su estado activo cambia según la pantalla visible.
 - Cada pantalla ocupa exactamente el alto del viewport y se ajusta desde el lienzo original de 1366 × 768.
-- El botón **Ver Reverso** se muestra deshabilitado.
+- **Ver reverso** se habilita automáticamente al incorporar certificados o fotografías reales en `src/data/credential-back.ts`.
 - Las tres tarjetas de proyectos abren modales accesibles con cierre por botón, fondo o tecla `Escape`.
+- Los casos enlazan los repositorios públicos de Auto Care Club y FixIt, y la colección de Diseño Gráfico en Google Drive.
 - **Ver detalles** abre el panel lateral del stack con Front-end, Back-end y Diseño.
-- La terminal valida correo, asunto y mensaje por pasos al presionar `Enter`; al completarlos deja listo el envío por correo.
+- La terminal valida correo, asunto y mensaje por pasos; el mensaje admite varias líneas y `Ctrl/Cmd + Enter` envía mediante Formspree.
 - Las entradas, salidas, estados hover y movimiento ambiental respetan `prefers-reduced-motion`.
 
-## Recursos temporales
+## Contenido pendiente
 
-La capibara proviene de los recursos de Figma. La credencial, los proyectos y el terminal están construidos como componentes reales. Los espacios de las fotografías e ilustraciones pendientes quedan reservados en la composición hasta contar con sus exportaciones originales; ninguna captura de referencia se utiliza como contenido del sitio.
+No se publican certificados, fotografías personales ni resultados cuantitativos inventados. Para completar el reverso deben añadirse hasta tres certificados verificables y entre tres y ocho fotografías propias, con dimensiones, texto alternativo y enlaces de respaldo. Las piezas visuales reales de los proyectos deben reemplazar después las representaciones editoriales actuales.
 
 ## Verificación
 
 ```sh
+npm run check
 npm run build
 ```

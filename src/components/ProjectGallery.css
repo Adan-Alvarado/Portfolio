@@ -392,7 +392,7 @@
 .pg-card:hover .pg-poster--three,
 .pg-card:focus-within .pg-poster--three { transform: rotate(2deg) translateY(3px); }
 
-/* Fixit: documentación ficticia, reconocible como API. */
+/* Fixit: representación compacta de la documentación de la API. */
 .pg-preview--fixit {
 	display: grid;
 	place-items: center;
@@ -480,6 +480,46 @@
 	color: #c16b36;
 	font-style: normal;
 }
+
+/* Capturas reales: el contenido sustituye las maquetas conceptuales sin cambiar el marco. */
+.pg-preview.pg-preview--real-media {
+	display: block;
+	padding: 10px;
+	background: #111;
+}
+
+.pg-media-grid {
+	display: grid;
+	width: 100%;
+	height: 100%;
+	min-height: 0;
+	gap: 8px;
+}
+
+.pg-preview--design .pg-media-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.pg-preview.is-expanded .pg-media-grid--2 {
+	grid-template-columns: 1fr;
+	grid-template-rows: repeat(2, minmax(0, 1fr));
+}
+
+.pg-media-frame {
+	min-width: 0;
+	min-height: 0;
+	margin: 0;
+	overflow: hidden;
+	border: 1px solid rgb(255 255 255 / 9%);
+	border-radius: 8px;
+	background: #090909;
+}
+
+.pg-media-frame img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: contain;
+}
+
+.pg-preview--design .pg-media-frame img { object-fit: cover; }
 
 /* Modal: expansión contenida del proyecto, no una página de pantalla completa. */
 .pg-modal-layer {
@@ -608,7 +648,8 @@
 
 .pg-design-gallery {
 	display: grid;
-	grid-template-rows: minmax(0, 1fr) 88px;
+	grid-template-columns: minmax(0, 1fr) 96px;
+	grid-template-rows: minmax(0, 1fr);
 	gap: 12px;
 	height: 100%;
 	outline: none;
@@ -625,6 +666,27 @@
 	overflow: hidden;
 	place-items: center;
 	background: #131313;
+}
+
+.pg-gallery-artwork {
+	display: grid;
+	width: auto;
+	height: min(92%, 470px);
+	max-width: 82%;
+	aspect-ratio: 4 / 5;
+	margin: 0;
+	place-items: center;
+}
+
+.pg-gallery-artwork.is-entering { animation: gallery-piece-in 360ms var(--ease-out) both; }
+
+.pg-gallery-artwork img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: contain;
+	object-position: center;
+	filter: drop-shadow(0 18px 30px rgb(0 0 0 / 34%));
 }
 
 .pg-design-gallery-stage > .pg-poster {
@@ -645,11 +707,13 @@
 
 .pg-design-gallery-counter {
 	position: absolute;
-	right: 16px;
+	right: auto;
 	bottom: 14px;
+	left: 50%;
 	color: rgb(242 241 239 / 62%);
 	font-size: 11px;
 	letter-spacing: .08em;
+	transform: translateX(-50%);
 }
 
 .pg-gallery-control {
@@ -676,14 +740,17 @@
 
 .pg-design-gallery-thumbnails {
 	display: grid;
-	grid-template-columns: repeat(3, minmax(0, 1fr));
+	grid-template-rows: repeat(3, minmax(0, 1fr));
 	gap: 8px;
 }
 
 .pg-design-gallery-thumbnails button {
+	display: grid;
 	min-width: 0;
+	min-height: 0;
 	overflow: hidden;
 	padding: 3px;
+	place-items: center;
 	border: 1px solid rgb(255 255 255 / 10%);
 	border-radius: 8px;
 	background: #111;
@@ -695,6 +762,14 @@
 .pg-design-gallery-thumbnails button:hover,
 .pg-design-gallery-thumbnails button:focus-visible,
 .pg-design-gallery-thumbnails button.is-active { border-color: rgb(216 216 213 / 54%); opacity: 1; outline: none; }
+
+.pg-design-gallery-thumbnails img {
+	display: block;
+	width: auto;
+	max-width: 100%;
+	height: 100%;
+	object-fit: contain;
+}
 
 .pg-poster--thumbnail {
 	width: 100%;
@@ -750,24 +825,24 @@
 	display: flex;
 	min-width: 0;
 	flex-direction: column;
-	padding: 28px;
+	padding: 22px 24px;
 }
 
 .pg-modal-details > p {
 	margin: 0;
 	color: #d0cfcc;
-	font-size: 16px;
-	line-height: 1.52;
+	font-size: 15px;
+	line-height: 1.42;
 }
 
 .pg-modal-details dl {
 	display: grid;
-	gap: 15px;
-	margin: 28px 0 0;
+	gap: 10px;
+	margin: 18px 0 0;
 }
 
 .pg-modal-details dl > div {
-	padding-top: 14px;
+	padding-top: 10px;
 	border-top: 1px solid rgb(255 255 255 / 10%);
 }
 
@@ -781,13 +856,13 @@
 .pg-modal-details dd {
 	margin: 5px 0 0;
 	color: #e2e1de;
-	font-size: 14px;
-	line-height: 1.35;
+	font-size: 13px;
+	line-height: 1.32;
 }
 
 .pg-stack {
 	margin-top: auto;
-	padding-top: 28px;
+	padding-top: 14px;
 }
 
 .pg-stack h3 {
@@ -813,17 +888,34 @@
 	padding: 11px 12px;
 	border: 1px solid rgb(255 255 255 / 13%);
 	border-radius: 12px;
+	background: linear-gradient(115deg, rgb(var(--ambient-plum) / 34%) 0%, rgb(var(--ambient-plum) / 16%) 44%, #111 100%);
 	color: #d8d7d4;
+	box-shadow: inset 0 1px 0 rgb(255 255 255 / 4%);
 	text-decoration: none;
-	transition: border-color 180ms ease, background-color 180ms ease, color 180ms ease;
+	transition: border-color 180ms ease, background 220ms ease, color 180ms ease, transform 220ms var(--ease-out);
+}
+
+.pg-project-links {
+	display: grid;
+	gap: 8px;
+	margin-top: 10px;
+}
+
+.pg-project-links .pg-repository { margin-top: 0; }
+
+.pg-repository-note {
+	margin: 14px 0 0;
+	color: #8f8e8b;
+	font-size: 12px;
 }
 
 .pg-repository:hover,
 .pg-repository:focus-visible {
-	border-color: rgb(238 238 236 / 48%);
-	background: rgb(255 255 255 / 5%);
+	border-color: rgb(213 115 157 / 50%);
+	background: linear-gradient(115deg, rgb(var(--ambient-plum) / 48%) 0%, rgb(var(--ambient-plum) / 24%) 48%, #151214 100%);
 	color: #fff;
 	outline: none;
+	transform: translateY(-1px);
 }
 
 .pg-repository:focus-visible {
@@ -845,15 +937,17 @@
 }
 
 @media (min-width: 1024px) {
+	.pg-project-links { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+	.pg-project-links .pg-repository:only-child { grid-column: 1 / -1; }
 	.pg-modal-layer {
 		padding: clamp(18px, 2vw, 32px);
 	}
 
 	.pg-modal {
 		grid-template-rows: auto minmax(0, 1fr);
-		width: min(1120px, 86vw);
-		height: min(700px, 84svh);
-		max-height: 84svh;
+	width: min(1120px, 86vw);
+	height: min(700px, calc(100svh - 36px));
+	max-height: calc(100svh - 36px);
 	}
 
 	.pg-modal-header {
@@ -925,7 +1019,7 @@
 	.pg-stack { margin-top: 28px; padding-top: 0; }
 }
 
-@media (max-width: 620px) {
+@media (max-width: 1023px) {
 	.pg-card-content { padding: 17px; }
 
 	.pg-modal-layer { padding: 12px; }
@@ -942,6 +1036,27 @@
 	.pg-modal-showcase {
 		min-height: 300px;
 		padding: 16px;
+	}
+
+	.pg-design-gallery {
+		grid-template-columns: minmax(0, 1fr);
+		grid-template-rows: minmax(0, 1fr) 72px;
+		gap: 8px;
+	}
+
+	.pg-design-gallery-thumbnails {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		grid-template-rows: minmax(0, 1fr);
+	}
+
+	.pg-gallery-artwork {
+		height: 94%;
+		max-width: 84%;
+	}
+
+	.pg-preview.is-expanded .pg-media-grid--2 {
+		grid-template-columns: 1fr;
+		grid-template-rows: repeat(2, minmax(0, 1fr));
 	}
 
 	.pg-modal-details { padding: 21px 19px 24px; }

@@ -1,17 +1,44 @@
 ---
 import { Icon } from 'astro-iconset/components';
-import { Image } from 'astro:assets';
+import { getImage, Image } from 'astro:assets';
 import ProjectGallery from '../ProjectGallery';
 import StackDrawer from '../StackDrawer';
 import TechStrip from '../TechStrip.astro';
 import type { Locale, LocalizedPortfolioContent } from '../../i18n/content';
+import type { ProjectMediaMap } from '../../types/portfolio';
 import penguin from '../../assets/pinguino.png';
+import postOne from '../../assets/Post-1.png';
+import postTwo from '../../assets/Post-2.png';
+import postThree from '../../assets/Post-3.png';
+import autoCareOne from '../../assets/Autocare-1.png';
+import autoCareTwo from '../../assets/Autocare-2.png';
+import fixitApi from '../../assets/Fixit-api.png';
 
 interface Props { content: LocalizedPortfolioContent; locale: Locale }
 
 const { content, locale } = Astro.props;
 const copy = content.projects;
 const stackTitleLines = locale === 'es' ? ['Stack', 'Tecnológico'] : ['Technology', 'Stack'];
+const [designOne, designTwo, designThree, autoOne, autoTwo, fixit] = await Promise.all([
+	getImage({ src: postOne, width: 720, format: 'webp', quality: 80 }),
+	getImage({ src: postTwo, width: 720, format: 'webp', quality: 80 }),
+	getImage({ src: postThree, width: 720, format: 'webp', quality: 80 }),
+	getImage({ src: autoCareOne, width: 1100, format: 'webp', quality: 78 }),
+	getImage({ src: autoCareTwo, width: 1100, format: 'webp', quality: 78 }),
+	getImage({ src: fixitApi, width: 1100, format: 'webp', quality: 78 }),
+]);
+const projectMedia: ProjectMediaMap = {
+	diseno: [
+		{ src: designOne.src, alt: locale === 'es' ? 'Diseño de social media, pieza uno' : 'Social media design, piece one', width: 720, height: 900 },
+		{ src: designTwo.src, alt: locale === 'es' ? 'Diseño de social media, pieza dos' : 'Social media design, piece two', width: 720, height: 900 },
+		{ src: designThree.src, alt: locale === 'es' ? 'Diseño de social media, pieza tres' : 'Social media design, piece three', width: 720, height: 900 },
+	],
+	'auto-care': [
+		{ src: autoOne.src, alt: locale === 'es' ? 'Interfaz web de Auto Care Club' : 'Auto Care Club web interface', width: 1100, height: 553 },
+		{ src: autoTwo.src, alt: locale === 'es' ? 'Panel de gestión de Auto Care Club' : 'Auto Care Club management dashboard', width: 1100, height: 544 },
+	],
+	fixit: [{ src: fixit.src, alt: locale === 'es' ? 'Documentación de la API FixIt' : 'FixIt API documentation', width: 1100, height: 554 }],
+};
 ---
 
 <section id="proyectos" class="portfolio-screen projects-screen">
@@ -31,7 +58,7 @@ const stackTitleLines = locale === 'es' ? ['Stack', 'Tecnológico'] : ['Technolo
 				<p class="projects-bio">{copy.bio[0]} <span>{copy.bio[1]}</span><br /> {copy.bio[2]}</p>
 			</div>
 
-			<div class="projects-gallery-reveal" data-reveal="project-cards" data-reveal-order="1"><ProjectGallery client:visible={{ rootMargin: '240px' }} locale={locale} copy={copy} /></div>
+			<div class="projects-gallery-reveal" data-reveal="project-cards" data-reveal-order="1"><ProjectGallery client:visible={{ rootMargin: '240px' }} locale={locale} copy={copy} media={projectMedia} /></div>
 		</div>
 
 		<div class="stack-ticket-reveal" data-reveal="stack-ticket" data-reveal-order="2">

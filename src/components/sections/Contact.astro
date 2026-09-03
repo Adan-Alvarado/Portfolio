@@ -10,6 +10,7 @@ interface Props { content: LocalizedPortfolioContent }
 const { content } = Astro.props;
 const copy = content.contact;
 const footerParts = copy.footer[0].split('|');
+const formId = import.meta.env.PUBLIC_FORMSPREE_FORM_ID?.trim() ?? '';
 ---
 
 <section id="contacto" class="portfolio-screen contact-screen">
@@ -29,7 +30,7 @@ const footerParts = copy.footer[0].split('|');
 				<p>{copy.body.join(' ')}</p>
 			</div>
 
-			<div class="terminal-reveal" data-reveal="contact-terminal" data-reveal-order="2"><ContactTerminal client:visible={{ rootMargin: '240px' }} copy={copy.terminal} /></div>
+			<div class="terminal-reveal" data-reveal="contact-terminal" data-reveal-order="2"><ContactTerminal client:visible={{ rootMargin: '240px' }} copy={copy.terminal} formId={formId} /></div>
 		</div>
 
 		<dl class="contact-details" data-reveal="contact-details" data-reveal-order="3">
