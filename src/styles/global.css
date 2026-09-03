@@ -1,4 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Inspiration&family=Inter:ital,wght@0,100..900;1,100..900&family=Kite+One&display=swap');
 @import "tailwindcss";
 @import "./tokens.css";
 @import "./base.css";
@@ -71,7 +70,7 @@ body.motion-ready .hero-title.is-revealed .hero-scan-line {
 	position: absolute;
 	display: block;
 	color: #c55007;
-	font-family: "Inspiration", cursive;
+	font-family: var(--font-inspiration);
 	font-weight: 400;
 	line-height: 1;
 	letter-spacing: 0;
@@ -87,7 +86,7 @@ body.motion-ready .hero-title.is-revealed .hero-scan-line {
 .developer-oper {
 	position: absolute;
 	top: 9px;
-	font-family: "Inter", sans-serif;
+	font-family: var(--font-inter);
 	font-size: 124px;
 	font-weight: 700;
 	line-height: .86;
@@ -109,7 +108,7 @@ body.motion-ready .hero-title.is-revealed .hero-scan-line {
 	display: block;
 	margin-top: 8px;
 	margin-left: 261px;
-	font-family: "Inter", sans-serif;
+	font-family: var(--font-inter);
 	font-size: 76px;
 	font-weight: 100;
 	letter-spacing: -1px;
@@ -118,7 +117,7 @@ body.motion-ready .hero-title.is-revealed .hero-scan-line {
 
 .designer-word .plus {
 	color: #c55007;
-	font-family: "Kite One", sans-serif;
+	font-family: var(--font-kite-one);
 	font-size: 74px;
 	font-weight: 300;
 	letter-spacing: -2px;
@@ -221,7 +220,7 @@ body.motion-ready .hero-title.is-revealed .hero-scan-line {
 	margin: 0;
 	padding-left: 25px;
 	background: #c55007;
-	font-family: "Kite One", sans-serif;
+	font-family: var(--font-kite-one);
 	font-size: 19px;
 	font-style: italic;
 	line-height: 1.2;
@@ -763,7 +762,7 @@ body.motion-ready .timeline::before {
 .experience-card__copy h3,
 .experience-card__copy h4 {
 	margin: 0;
-	font-family: "Inter", sans-serif;
+	font-family: var(--font-inter);
 }
 
 .experience-card__eyebrow {

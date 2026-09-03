@@ -1,7 +1,7 @@
 ---
 import '../styles/global.css';
 import '../styles/mobile.css';
-import { ClientRouter } from 'astro:transitions';
+import { Font } from 'astro:assets';
 import Navigation from '../components/Navigation.astro';
 import DesktopLanguageSwitcher from '../components/DesktopLanguageSwitcher.astro';
 import type { Locale, LocalizedPortfolioContent } from '../i18n/content';
@@ -30,7 +30,9 @@ const englishUrl = new URL('/en/', Astro.url.origin);
 		<link rel="alternate" hreflang="x-default" href={spanishUrl} />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<title>{content.meta.title}</title>
-		<ClientRouter />
+		<Font cssVariable="--font-inter" preload={[{ style: 'normal' }]} />
+		<Font cssVariable="--font-inspiration" preload={[{ weight: '400', style: 'normal' }]} />
+		<Font cssVariable="--font-kite-one" />
 	</head>
 	<body>
 		<a class="skip-link" href="#inicio">{content.skipLink}</a>
@@ -42,9 +44,7 @@ const englishUrl = new URL('/en/', Astro.url.origin);
 		<script>
 			import { initPortfolioInteractions } from '../scripts/portfolio-interactions';
 
-			let cleanup = initPortfolioInteractions();
-			const restart = () => { cleanup(); cleanup = initPortfolioInteractions(); };
-			document.addEventListener('astro:page-load', restart);
+			const cleanup = initPortfolioInteractions();
 			window.addEventListener('pagehide', () => cleanup(), { once: true });
 		</script>
 	</body>

@@ -5,6 +5,9 @@ export const initCursorFollower = () => {
 	const finePointer = window.matchMedia('(pointer: fine)');
 	const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 	let isVisible = false;
+	let frame = 0;
+	let pointerX = 0;
+	let pointerY = 0;
 
 	const canFollow = () => finePointer.matches && !reducedMotion.matches;
 
@@ -20,10 +23,17 @@ export const initCursorFollower = () => {
 		dot.classList.remove('is-visible');
 	};
 
+	const renderPointer = () => {
+		frame = 0;
+		dot.style.transform = `translate3d(${pointerX}px, ${pointerY}px, 0) translate(-50%, -50%)`;
+		show();
+	};
+
 	const handlePointerMove = (event: PointerEvent) => {
 		if (!canFollow() || (event.pointerType && event.pointerType !== 'mouse')) return;
-		dot.style.transform = `translate3d(${event.clientX}px, ${event.clientY}px, 0) translate(-50%, -50%)`;
-		show();
+		pointerX = event.clientX;
+		pointerY = event.clientY;
+		if (!frame) frame = requestAnimationFrame(renderPointer);
 	};
 
 	const handlePointerOver = (event: PointerEvent) => {
@@ -51,6 +61,7 @@ export const initCursorFollower = () => {
 	reducedMotion.addEventListener('change', syncAvailability);
 
 	return () => {
+		if (frame) cancelAnimationFrame(frame);
 		window.removeEventListener('pointermove', handlePointerMove);
 		document.removeEventListener('pointerover', handlePointerOver);
 		document.removeEventListener('pointerout', handlePointerOut);

@@ -1,17 +1,18 @@
 ---
-import { getCredentials } from '../../data/credentials';
 import { getExperienceEntries } from '../../data/experience';
+import type { Credential } from '../../data/credentials';
 import type { Locale, LocalizedPortfolioContent } from '../../i18n/content';
 import CredentialCard from './CredentialCard';
 
 interface Props {
 	locale: Locale;
 	copy: LocalizedPortfolioContent['experience'];
+	credentials: Credential[];
 }
 
-const { locale, copy } = Astro.props;
+const { locale, copy, credentials } = Astro.props;
 const entries = getExperienceEntries(locale);
-const credential = getCredentials(locale)[1] ?? getCredentials(locale)[0];
+const credential = credentials[1] ?? credentials[0];
 ---
 
 <div class="mobile-experience-stack">

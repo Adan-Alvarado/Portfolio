@@ -5,7 +5,8 @@ export const initActiveNavigation = () => {
 	const indicator = navigation?.querySelector<HTMLElement>('[data-nav-indicator]') ?? null;
 	const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 	let activeId = '';
-	let frame = 0;
+	let scrollFrame = 0;
+	let resizeFrame = 0;
 
 	const positionIndicator = (activeLink: HTMLAnchorElement, animate: boolean) => {
 		if (!navigation || !indicator) return;
@@ -41,11 +42,9 @@ export const initActiveNavigation = () => {
 	};
 
 	const setActiveSection = (id: string) => {
+		if (id === activeId) return;
+
 		const activeLink = navigation?.querySelector<HTMLAnchorElement>(`[data-nav-link="${id}"]`) ?? null;
-		if (id === activeId) {
-			if (activeLink) positionIndicator(activeLink, false);
-			return;
-		}
 		activeId = id;
 		document.body.dataset.activeSection = id;
 		sections.forEach((section) => section.classList.toggle('is-visible', section.id === id));
@@ -62,7 +61,6 @@ export const initActiveNavigation = () => {
 	};
 
 	const update = () => {
-		frame = 0;
 		if (window.scrollY <= 8) {
 			setActiveSection(sections[0]?.id ?? 'inicio');
 			return;
@@ -75,39 +73,60 @@ export const initActiveNavigation = () => {
 		}
 
 		const activationLine = window.innerHeight * 0.38;
-		const centeredSection = sections.find((section) => {
+		let nearestSection: HTMLElement | null = null;
+		let nearestDistance = Number.POSITIVE_INFINITY;
+		for (const section of sections) {
 			const bounds = section.getBoundingClientRect();
-			return bounds.top <= activationLine && bounds.bottom > activationLine;
-		});
+			if (bounds.top <= activationLine && bounds.bottom > activationLine) {
+				setActiveSection(section.id);
+				return;
+			}
 
-		if (centeredSection) {
-			setActiveSection(centeredSection.id);
-			return;
+			const distance = Math.abs(bounds.top - activationLine);
+			if (distance < nearestDistance) {
+				nearestDistance = distance;
+				nearestSection = section;
+			}
 		}
 
-		const nearestSection = sections.reduce<HTMLElement | null>((nearest, section) => {
-			if (!nearest) return section;
-			const sectionDistance = Math.abs(section.getBoundingClientRect().top - activationLine);
-			const nearestDistance = Math.abs(nearest.getBoundingClientRect().top - activationLine);
-			return sectionDistance < nearestDistance ? section : nearest;
-		}, null);
 		if (nearestSection) setActiveSection(nearestSection.id);
 	};
 
-	const requestUpdate = () => {
-		if (!frame) frame = requestAnimationFrame(update);
+	const requestScrollUpdate = () => {
+		if (!scrollFrame) {
+			scrollFrame = requestAnimationFrame(() => {
+				scrollFrame = 0;
+				update();
+			});
+		}
 	};
 
-	window.addEventListener('scroll', requestUpdate, { passive: true });
-	window.addEventListener('resize', requestUpdate, { passive: true });
-	window.addEventListener('hashchange', requestUpdate);
+	const syncLayout = () => {
+		resizeFrame = 0;
+		if (scrollFrame) {
+			cancelAnimationFrame(scrollFrame);
+			scrollFrame = 0;
+		}
+		update();
+		const activeLink = navigation?.querySelector<HTMLAnchorElement>(`[data-nav-link="${activeId}"]`) ?? null;
+		if (activeLink) positionIndicator(activeLink, false);
+	};
+
+	const requestLayoutSync = () => {
+		if (!resizeFrame) resizeFrame = requestAnimationFrame(syncLayout);
+	};
+
+	window.addEventListener('scroll', requestScrollUpdate, { passive: true });
+	window.addEventListener('resize', requestLayoutSync, { passive: true });
+	window.addEventListener('hashchange', requestScrollUpdate);
 	update();
 
 	return () => {
-		if (frame) cancelAnimationFrame(frame);
-		window.removeEventListener('scroll', requestUpdate);
-		window.removeEventListener('resize', requestUpdate);
-		window.removeEventListener('hashchange', requestUpdate);
+		if (scrollFrame) cancelAnimationFrame(scrollFrame);
+		if (resizeFrame) cancelAnimationFrame(resizeFrame);
+		window.removeEventListener('scroll', requestScrollUpdate);
+		window.removeEventListener('resize', requestLayoutSync);
+		window.removeEventListener('hashchange', requestScrollUpdate);
 		indicator?.getAnimations().forEach((animation) => animation.cancel());
 		delete document.body.dataset.activeSection;
 	};

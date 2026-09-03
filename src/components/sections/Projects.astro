@@ -22,7 +22,7 @@ const stackTitleLines = locale === 'es' ? ['Stack', 'Tecnológico'] : ['Technolo
 				<div class="projects-title-row">
 					<h2>{copy.heading[0]}<br /> {copy.heading[1]} <em>{copy.heading[2]}</em></h2>
 					<div class="astronaut-slot">
-						<Image src={penguin} width={162} height={135} format="webp" quality={95} alt={copy.characterAlt} data-project-character />
+						<Image src={penguin} width={162} height={135} format="webp" quality={95} loading="lazy" decoding="async" alt={copy.characterAlt} data-project-character />
 					</div>
 				</div>
 				<span class="doodle-arrow" aria-hidden="true"><Icon name="lucide:corner-down-right" width="42" height="42" /></span>

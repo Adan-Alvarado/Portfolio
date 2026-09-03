@@ -31,6 +31,9 @@ export default function CredentialCard({ credential, isActive, copy }: Credentia
 							width={credential.photo.width}
 							height={credential.photo.height}
 							alt={isActive ? credential.photo.alt : ''}
+							loading="lazy"
+							decoding="async"
+							fetchPriority="low"
 						/>
 					</div>
 
