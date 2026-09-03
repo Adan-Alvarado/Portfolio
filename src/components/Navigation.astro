@@ -6,8 +6,9 @@ interface Props { navigation: LocalizedPortfolioContent['navigation'] }
 
 const { navigation } = Astro.props;
 const isEnglish = Astro.currentLocale === 'en';
-const menuLabel = isEnglish ? 'Menu' : 'Menú';
 const languageLabel = isEnglish ? 'Language' : 'Idioma';
+const alternateLocale = isEnglish ? 'ES' : 'EN';
+const alternatePath = isEnglish ? '/' : '/en/';
 ---
 
 <div class="nav-canvas">
@@ -32,24 +33,10 @@ const languageLabel = isEnglish ? 'Language' : 'Idioma';
 	</nav>
 </div>
 
-<!-- Hallmark · atmospheric portfolio: contextual masthead, compact enough for the artwork to remain the protagonist. -->
-<header class="mobile-masthead" data-mobile-masthead>
-	<a class="mobile-masthead__identity" href="#inicio" aria-label={`Fabricio Alvarado — ${navigation.items[0]?.label}`}>FA</a>
-	<span class="mobile-masthead__current" data-mobile-current aria-live="polite">{navigation.items[0]?.label}</span>
-	<button
-		class="mobile-masthead__toggle"
-		type="button"
-		aria-expanded="false"
-		aria-controls="mobile-navigation-panel"
-		data-mobile-nav-toggle
-	>
-		<span>{menuLabel}</span>
-		<Icon name="lucide:menu" width="19" height="19" aria-hidden="true" />
-	</button>
-
-	<div class="mobile-nav-panel" id="mobile-navigation-panel" data-mobile-nav-panel hidden>
-		<nav class="mobile-nav-panel__links" aria-label={navigation.label}>
-			{navigation.items.map((link, index) => (
+<nav class="mobile-bottom-nav" aria-label={navigation.label} data-mobile-navigation>
+	<ul>
+		{navigation.items.map((link, index) => (
+			<li>
 				<a
 					href={link.href}
 					data-nav-link={link.href.slice(1)}
@@ -57,17 +44,23 @@ const languageLabel = isEnglish ? 'Language' : 'Idioma';
 					class:list={{ active: index === 0 }}
 					aria-current={index === 0 ? 'page' : undefined}
 				>
-					<Icon name={link.icon} width="21" height="21" aria-hidden="true" />
+					<Icon name={link.icon} width="20" height="20" aria-hidden="true" />
 					<span>{link.label}</span>
 				</a>
-			))}
-		</nav>
-		<div class="mobile-nav-panel__language" aria-label={languageLabel}>
-			<span>{languageLabel}</span>
-			<div>
-				<a href="/" lang="es" data-mobile-locale-path="/" aria-current={!isEnglish ? 'page' : undefined}>ES</a>
-				<a href="/en/" lang="en" data-mobile-locale-path="/en/" aria-current={isEnglish ? 'page' : undefined}>EN</a>
-			</div>
-		</div>
-	</div>
-</header>
+			</li>
+		))}
+		<li class="mobile-bottom-nav__locale">
+			<a
+				href={alternatePath}
+				lang={isEnglish ? 'es' : 'en'}
+				hreflang={isEnglish ? 'es' : 'en'}
+				data-locale-path={alternatePath}
+				data-astro-reload
+				aria-label={`${languageLabel}: ${alternateLocale}`}
+			>
+				<Icon name="lucide:languages" width="19" height="19" aria-hidden="true" />
+				<span>{alternateLocale}</span>
+			</a>
+		</li>
+	</ul>
+</nav>

@@ -3,8 +3,7 @@ import '../styles/global.css';
 import '../styles/mobile.css';
 import { ClientRouter } from 'astro:transitions';
 import Navigation from '../components/Navigation.astro';
-import AmbientDock from '../components/AmbientDock';
-import { ambientTrack } from '../data/audio';
+import DesktopLanguageSwitcher from '../components/DesktopLanguageSwitcher.astro';
 import type { Locale, LocalizedPortfolioContent } from '../i18n/content';
 
 interface Props {
@@ -38,20 +37,7 @@ const englishUrl = new URL('/en/', Astro.url.origin);
 		<span class="cursor-dot" data-cursor-dot aria-hidden="true" hidden></span>
 		<Navigation navigation={content.navigation} />
 		<main><slot /></main>
-		<audio
-			id="portfolio-ambient-audio"
-			src={ambientTrack.src}
-			loop
-			preload="metadata"
-			transition:persist="ambient-audio"
-		></audio>
-		<AmbientDock
-			client:load
-			transition:persist="ambient-controls"
-			locale={locale}
-			copy={content.dock}
-			track={ambientTrack}
-		/>
+		<DesktopLanguageSwitcher locale={locale} label={content.dock.languageLabel} />
 
 		<script>
 			import { initPortfolioInteractions } from '../scripts/portfolio-interactions';

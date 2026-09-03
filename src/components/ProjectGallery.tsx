@@ -13,7 +13,7 @@ interface ProjectGalleryProps { locale: Locale; copy: LocalizedPortfolioContent[
 export default function ProjectGallery({ locale, copy }: ProjectGalleryProps) {
 	const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 	const [transitioningProjectId, setTransitioningProjectId] = useState<Project['id'] | null>(null);
-	const [activeProjectIndex, setActiveProjectIndex] = useState(0);
+	const [activeProjectIndex, setActiveProjectIndex] = useState<number | null>(null);
 	const triggerRef = useRef<HTMLElement | null>(null);
 	const indexRefs = useRef<Array<HTMLButtonElement | null>>([]);
 	const projects = getProjects(locale);
@@ -25,6 +25,10 @@ export default function ProjectGallery({ locale, copy }: ProjectGalleryProps) {
 		const nextIndex = (index + direction + projects.length) % projects.length;
 		setActiveProjectIndex(nextIndex);
 		indexRefs.current[nextIndex]?.focus();
+	};
+
+	const toggleProject = (index: number) => {
+		setActiveProjectIndex((current) => current === index ? null : index);
 	};
 
 	const openProject = (project: Project, event: MouseEvent<HTMLButtonElement>) => {
@@ -54,6 +58,36 @@ export default function ProjectGallery({ locale, copy }: ProjectGalleryProps) {
 		}
 	};
 
+	const renderProjectCard = (project: Project, index: number, context: 'desktop' | 'mobile') => (
+		<article
+			key={`${context}-${project.id}`}
+			id={`${context}-project-panel-${project.id}`}
+			className={`project-card pg-card ${project.className}`}
+			role="region"
+			aria-label={`${index + 1} / ${projects.length}: ${project.title}`}
+			data-active={activeProjectIndex === index ? 'true' : 'false'}
+			data-project-id={project.id}
+			style={{ viewTransitionName: context === 'desktop' && transitioningProjectId === project.id && !selectedProject ? 'project-showcase' : undefined } as CSSProperties}
+		>
+			<button
+				type="button"
+				className="pg-card-trigger"
+				onClick={(event) => openProject(project, event)}
+				aria-haspopup="dialog"
+				aria-label={`${copy.openCase}: ${project.title}`}
+			>
+				<span className="pg-visually-hidden">{copy.openCase}: {project.title}</span>
+			</button>
+			<div className="pg-card-content" aria-hidden="true">
+				<div className="pg-card-header">
+					<h3>{project.title}</h3>
+					<span className="pg-card-action"><span>{copy.seeCase}</span><ArrowUpRight size={20} strokeWidth={1.8} /></span>
+				</div>
+				<ProjectPreview project={project} copy={copy.preview} />
+			</div>
+		</article>
+	);
+
 	return (
 		<>
 			<div className="pg-project-index" role="group" aria-label={copy.galleryLabel}>
@@ -65,7 +99,7 @@ export default function ProjectGallery({ locale, copy }: ProjectGalleryProps) {
 						ref={(node) => { indexRefs.current[index] = node; }}
 						aria-pressed={activeProjectIndex === index}
 						data-active={activeProjectIndex === index ? 'true' : 'false'}
-						onClick={() => setActiveProjectIndex(index)}
+						onClick={() => toggleProject(index)}
 						onKeyDown={(event) => handleIndexKeys(event, index)}
 					>
 						<span>{String(index + 1).padStart(2, '0')}</span>
@@ -79,34 +113,32 @@ export default function ProjectGallery({ locale, copy }: ProjectGalleryProps) {
 				role="region"
 				aria-label={copy.galleryLabel}
 			>
-				{projects.map((project, index) => (
-					<article
-						key={project.id}
-						id={`project-panel-${project.id}`}
-						className={`project-card pg-card ${project.className}`}
-						role="group"
-						aria-label={`${index + 1} / ${projects.length}: ${project.title}`}
-						data-active={activeProjectIndex === index ? 'true' : 'false'}
-						style={{ viewTransitionName: transitioningProjectId === project.id && !selectedProject ? 'project-showcase' : undefined } as CSSProperties}
-					>
-						<button
-							type="button"
-							className="pg-card-trigger"
-							onClick={(event) => openProject(project, event)}
-							aria-haspopup="dialog"
-							aria-label={`${copy.openCase}: ${project.title}`}
-						>
-							<span className="pg-visually-hidden">{copy.openCase}: {project.title}</span>
-						</button>
-						<div className="pg-card-content" aria-hidden="true">
-							<div className="pg-card-header">
-								<h3>{project.title}</h3>
-								<span className="pg-card-action"><span>{copy.seeCase}</span><ArrowUpRight size={20} strokeWidth={1.8} /></span>
+				{projects.map((project, index) => renderProjectCard(project, index, 'desktop'))}
+			</div>
+			<div className="pg-mobile-accordion" aria-label={copy.galleryLabel}>
+				{projects.map((project, index) => {
+					const expanded = activeProjectIndex === index;
+					return (
+						<section className="pg-accordion-item" data-active={expanded ? 'true' : 'false'} data-project-id={project.id} key={`accordion-${project.id}`}>
+							<button
+								type="button"
+								id={`mobile-project-trigger-${project.id}`}
+								ref={(node) => { indexRefs.current[index] = node; }}
+								aria-expanded={expanded}
+								aria-controls={`mobile-project-content-${project.id}`}
+								onClick={() => toggleProject(index)}
+								onKeyDown={(event) => handleIndexKeys(event, index)}
+							>
+								<span>{String(index + 1).padStart(2, '0')}</span>
+								<strong>{project.title}</strong>
+								<ArrowUpRight size={18} strokeWidth={1.7} aria-hidden="true" />
+							</button>
+							<div className="pg-accordion-panel" id={`mobile-project-content-${project.id}`} role="region" aria-labelledby={`mobile-project-trigger-${project.id}`}>
+								<div className="pg-accordion-panel__inner">{renderProjectCard(project, index, 'mobile')}</div>
 							</div>
-							<ProjectPreview project={project} copy={copy.preview} />
-						</div>
-					</article>
-				))}
+						</section>
+					);
+				})}
 			</div>
 			{selectedProject && (
 				<ProjectModal

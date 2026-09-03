@@ -41,19 +41,21 @@ export default function StackDrawer({ copy }: StackDrawerProps) {
 							<button ref={closeButtonRef} type="button" onClick={close} aria-label={copy.close}><X width="19" height="19" aria-hidden="true" /></button>
 						</header>
 
-						<div className="drawer-groups">
-							{technologyGroups.map((group, index) => (
-								<section key={group.title} className={index === 0 ? 'primary-group' : ''}>
-									<h3>{copy.groups[index] ?? group.title}</h3>
-									<ul>{group.items.map((technology) => <TechnologyPill key={technology.label} technology={technology} variant="drawer" interactive />)}</ul>
-								</section>
-							))}
-						</div>
+						<div className="stack-drawer__body">
+							<div className="drawer-groups">
+								{technologyGroups.map((group, index) => (
+									<section key={group.title} className={index === 0 ? 'primary-group' : ''}>
+										<h3>{copy.groups[index] ?? group.title}</h3>
+										<ul>{group.items.map((technology) => <TechnologyPill key={technology.label} technology={technology} variant="drawer" interactive />)}</ul>
+									</section>
+								))}
+							</div>
 
-						<footer>
-							<span>{copy.environment}</span>
-							<ul>{environmentTechnologies.map((technology) => <TechnologyPill key={technology.label} technology={technology} variant="drawer" interactive />)}</ul>
-						</footer>
+							<footer>
+								<span>{copy.environment}</span>
+								<ul>{environmentTechnologies.map((technology) => <TechnologyPill key={technology.label} technology={technology} variant="drawer" interactive />)}</ul>
+							</footer>
+						</div>
 					</>
 				)}
 			</Dialog>

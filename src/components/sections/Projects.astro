@@ -11,6 +11,7 @@ interface Props { content: LocalizedPortfolioContent; locale: Locale }
 
 const { content, locale } = Astro.props;
 const copy = content.projects;
+const stackTitleLines = locale === 'es' ? ['Stack', 'Tecnológico'] : ['Technology', 'Stack'];
 ---
 
 <section id="proyectos" class="portfolio-screen projects-screen">
@@ -18,13 +19,14 @@ const copy = content.projects;
 		<div class="projects-stage">
 			<div class="projects-intro" data-reveal="projects-intro" data-reveal-order="0">
 				<p class="section-kicker">{copy.kicker}</p>
-				<h2>{copy.heading[0]}<br /> {copy.heading[1]} <em>{copy.heading[2]}</em></h2>
+				<div class="projects-title-row">
+					<h2>{copy.heading[0]}<br /> {copy.heading[1]} <em>{copy.heading[2]}</em></h2>
+					<div class="astronaut-slot">
+						<Image src={penguin} width={162} height={135} format="webp" quality={95} alt={copy.characterAlt} data-project-character />
+					</div>
+				</div>
 				<span class="doodle-arrow" aria-hidden="true"><Icon name="lucide:corner-down-right" width="42" height="42" /></span>
 				<div class="intro-rule"></div>
-
-				<div class="astronaut-slot">
-					<Image src={penguin} width={162} height={135} format="webp" quality={95} alt={copy.characterAlt} data-project-character />
-				</div>
 
 				<p class="projects-bio">{copy.bio[0]} <span>{copy.bio[1]}</span><br /> {copy.bio[2]}</p>
 			</div>
@@ -35,7 +37,12 @@ const copy = content.projects;
 		<div class="stack-ticket-reveal" data-reveal="stack-ticket" data-reveal-order="2">
 			<div class="stack-ticket">
 				<div class="github-mark" aria-hidden="true"><Icon name="lucide:github" width="44" height="44" /></div>
-				<div><strong>{copy.stack.title}</strong><StackDrawer client:visible={{ rootMargin: '240px' }} copy={copy.stack} /></div>
+				<div class="stack-ticket-content">
+					<strong>{stackTitleLines.map((line) => <span>{line}</span>)}</strong>
+					<span class="stack-ticket-action">
+						<StackDrawer client:visible={{ rootMargin: '240px' }} copy={copy.stack} />
+					</span>
+				</div>
 			</div>
 		</div>
 

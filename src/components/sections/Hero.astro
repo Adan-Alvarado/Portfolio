@@ -14,6 +14,12 @@ const copy = content.hero;
 <section id="inicio" class="portfolio-screen home-screen">
 	<div class="screen-inner">
 		<div class="home-stage">
+			<div class="capybara-wrap" data-reveal="hero-character" data-reveal-order="3">
+				<div class="capybara-glow"></div>
+				<span class="capybara-steam" aria-hidden="true"><i></i><i></i></span>
+				<Image src={capybara} alt={copy.characterAlt} width={446} height={470} format="webp" quality={95} loading="eager" />
+			</div>
+
 			<div class="hero-copy">
 				<p class="section-kicker hero-kicker">{copy.kicker}</p>
 				<h1 class="hero-title" aria-label={copy.titleAria} data-reveal="hero-title" data-reveal-order="0">
@@ -41,17 +47,13 @@ const copy = content.hero;
 				</div>
 			</div>
 
-			<div class="capybara-wrap" data-reveal="hero-character" data-reveal-order="2">
-				<div class="capybara-glow"></div>
-				<span class="capybara-steam" data-capybara-steam aria-hidden="true"><i></i><i></i></span>
-				<Image src={capybara} alt={copy.characterAlt} width={446} height={470} format="webp" quality={95} loading="eager" />
+			<div class="hero-metrics-row">
+				<aside class="hero-stats" aria-label={copy.statsLabel} data-reveal="hero-stats" data-reveal-order="2">
+					{copy.stats.map((stat) => (
+						<div><strong>{stat.value}</strong><p>{stat.emphasis === 0 ? <b>{stat.lines[0]}</b> : stat.lines[0]}<br />{stat.emphasis === 1 ? <b>{stat.lines[1]}</b> : stat.lines[1]}</p></div>
+					))}
+				</aside>
 			</div>
-
-			<aside class="hero-stats" aria-label={copy.statsLabel} data-reveal="hero-stats" data-reveal-order="3">
-				{copy.stats.map((stat) => (
-					<div><strong>{stat.value}</strong><p>{stat.emphasis === 0 ? <b>{stat.lines[0]}</b> : stat.lines[0]}<br />{stat.emphasis === 1 ? <b>{stat.lines[1]}</b> : stat.lines[1]}</p></div>
-				))}
-			</aside>
 		</div>
 
 		<TechStrip revealOrder={4} label={copy.technologiesLabel} />
@@ -76,7 +78,7 @@ const copy = content.hero;
 	.home-screen .profile-ticket > p {
 		justify-content: center;
 		padding: 0 18px;
-		font-family: "Inter", Arial, sans-serif;
+		font-family: var(--font-body);
 		font-weight: 300;
 		font-style: normal;
 		text-align: center;

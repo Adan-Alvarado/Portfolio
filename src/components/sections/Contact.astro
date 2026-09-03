@@ -17,15 +17,16 @@ const footerParts = copy.footer[0].split('|');
 		<div class="contact-stage">
 			<div class="contact-copy" data-reveal="contact-copy" data-reveal-order="0">
 				<p class="section-kicker">{copy.kicker}</p>
-				<h2>{copy.heading[0]}<br /> {copy.heading[1]} <em>{copy.heading[2]}</em></h2>
+				<div class="contact-title-row">
+					<h2>{copy.heading[0]}<br /> {copy.heading[1]} <em>{copy.heading[2]}</em></h2>
+					<div class="bird-reveal" data-reveal="contact-character" data-reveal-order="1">
+						<div class="bird-slot">
+							<Image src={pigeon} width={300} height={283} format="webp" quality={95} alt={copy.characterAlt} data-contact-character />
+						</div>
+					</div>
+				</div>
 				<div class="intro-rule"></div>
 				<p>{copy.body.join(' ')}</p>
-			</div>
-
-			<div class="bird-reveal" data-reveal="contact-character" data-reveal-order="1">
-				<div class="bird-slot">
-					<Image src={pigeon} width={300} height={283} format="webp" quality={95} alt={copy.characterAlt} data-contact-character />
-				</div>
 			</div>
 
 			<div class="terminal-reveal" data-reveal="contact-terminal" data-reveal-order="2"><ContactTerminal client:visible={{ rootMargin: '240px' }} copy={copy.terminal} /></div>

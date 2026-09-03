@@ -1,0 +1,48 @@
+---
+import { getCredentials } from '../../data/credentials';
+import { getExperienceEntries } from '../../data/experience';
+import type { Locale, LocalizedPortfolioContent } from '../../i18n/content';
+import CredentialCard from './CredentialCard';
+
+interface Props {
+	locale: Locale;
+	copy: LocalizedPortfolioContent['experience'];
+}
+
+const { locale, copy } = Astro.props;
+const entries = getExperienceEntries(locale);
+const credential = getCredentials(locale)[1] ?? getCredentials(locale)[0];
+---
+
+<div class="mobile-experience-stack">
+	<div class="mobile-experience-stack__panels">
+		{entries.map((entry, index) => (
+			<article
+				class="mobile-experience-panel mobile-experience-panel--entry"
+				data-tone={index === 0 ? 'current' : 'past'}
+			>
+				<header class="mobile-experience-panel__header">
+					<span>{entry.year}</span>
+				</header>
+
+				<div class="mobile-experience-panel__body">
+					{index === 0 && <p class="mobile-experience-panel__student">{copy.student[0]}<br />{copy.student[1]}</p>}
+					<h3>{entry.role.split('\n').map((line, lineIndex) => <span>{lineIndex > 0 && <br />}{line}</span>)}</h3>
+					<p class="mobile-experience-panel__description">{entry.description}</p>
+				</div>
+			</article>
+		))}
+
+		{credential && (
+			<article class="mobile-experience-panel mobile-experience-panel--credential">
+				<header class="mobile-experience-panel__header">
+					<h3>{copy.credentialLabel}</h3>
+				</header>
+
+				<div class="mobile-experience-panel__credential-card" aria-label={copy.credentialLabel}>
+					<CredentialCard credential={credential} isActive copy={copy} />
+				</div>
+			</article>
+		)}
+	</div>
+</div>

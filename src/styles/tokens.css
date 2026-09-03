@@ -33,6 +33,13 @@
 		--mobile-accent-text: #ee7b34;
 		--mobile-github-surface: #191919;
 		--mobile-github-ink: #85827f;
+		--mobile-experience-current: #5a260f;
+		--mobile-experience-past: #2a1c18;
+		--mobile-experience-panel: #171313;
+		--mobile-experience-copy: #d4d0cd;
+		--project-design-accent: #c55007;
+		--project-autocare-accent: #d5cbbb;
+		--project-fixit-accent: #67a884;
 		color-scheme: dark;
 		scroll-behavior: smooth;
 		scrollbar-color: #8d3908 #121212;

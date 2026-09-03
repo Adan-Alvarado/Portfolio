@@ -1,31 +1,12 @@
-const FOLLOW_EASING = 0.24;
-const SETTLE_DISTANCE = 0.1;
-
 export const initCursorFollower = () => {
 	const dot = document.querySelector<HTMLElement>('[data-cursor-dot]');
 	if (!dot) return () => undefined;
 
 	const finePointer = window.matchMedia('(pointer: fine)');
 	const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-	let frame = 0;
-	let currentX = 0;
-	let currentY = 0;
-	let targetX = 0;
-	let targetY = 0;
 	let isVisible = false;
 
 	const canFollow = () => finePointer.matches && !reducedMotion.matches;
-	const render = () => {
-		currentX += (targetX - currentX) * FOLLOW_EASING;
-		currentY += (targetY - currentY) * FOLLOW_EASING;
-		dot.style.transform = `translate3d(${currentX}px, ${currentY}px, 0) translate(-50%, -50%)`;
-
-		if (Math.abs(targetX - currentX) > SETTLE_DISTANCE || Math.abs(targetY - currentY) > SETTLE_DISTANCE) {
-			frame = requestAnimationFrame(render);
-		} else {
-			frame = 0;
-		}
-	};
 
 	const show = () => {
 		if (!isVisible) {
@@ -41,16 +22,8 @@ export const initCursorFollower = () => {
 
 	const handlePointerMove = (event: PointerEvent) => {
 		if (!canFollow() || (event.pointerType && event.pointerType !== 'mouse')) return;
-		targetX = event.clientX;
-		targetY = event.clientY;
-
-		if (!isVisible) {
-			currentX = targetX;
-			currentY = targetY;
-			show();
-		}
-
-		if (!frame) frame = requestAnimationFrame(render);
+		dot.style.transform = `translate3d(${event.clientX}px, ${event.clientY}px, 0) translate(-50%, -50%)`;
+		show();
 	};
 
 	const handlePointerOver = (event: PointerEvent) => {
@@ -78,7 +51,6 @@ export const initCursorFollower = () => {
 	reducedMotion.addEventListener('change', syncAvailability);
 
 	return () => {
-		if (frame) cancelAnimationFrame(frame);
 		window.removeEventListener('pointermove', handlePointerMove);
 		document.removeEventListener('pointerover', handlePointerOver);
 		document.removeEventListener('pointerout', handlePointerOut);

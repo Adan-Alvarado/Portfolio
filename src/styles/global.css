@@ -1252,6 +1252,13 @@ body.motion-ready .timeline::before {
 	height: 245px;
 }
 
+@media (min-width: 1024px) {
+	.contact-title-row .bird-reveal {
+		top: 124px;
+		left: 335px;
+	}
+}
+
 .bird-reveal .bird-slot {
 	position: relative;
 	top: auto;

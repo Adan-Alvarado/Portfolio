@@ -1,0 +1,85 @@
+---
+import type { Locale } from '../i18n/content';
+
+interface Props {
+	locale: Locale;
+	label: string;
+}
+
+const { locale, label } = Astro.props;
+const locales = [
+	{ code: 'es', text: 'ES', path: '/' },
+	{ code: 'en', text: 'EN', path: '/en/' },
+] as const;
+---
+
+<nav class="desktop-language-switcher" aria-label={label}>
+	{locales.map((item) => (
+		<a
+			href={item.path}
+			lang={item.code}
+			hreflang={item.code}
+			aria-current={locale === item.code ? 'page' : undefined}
+			data-locale-path={item.path}
+			data-astro-reload
+		>
+			{item.text}
+		</a>
+	))}
+</nav>
+
+<style>
+	.desktop-language-switcher {
+		position: fixed;
+		right: max(22px, env(safe-area-inset-right));
+		bottom: max(20px, env(safe-area-inset-bottom));
+		z-index: 88;
+		display: flex;
+		gap: 2px;
+		padding: 4px;
+		border: 1px solid rgb(255 255 255 / 13%);
+		border-radius: 999px;
+		background: rgb(10 9 10 / 48%);
+		box-shadow: 0 12px 34px rgb(0 0 0 / 34%), 0 6px 24px rgb(90 33 116 / 9%);
+		backdrop-filter: blur(12px) saturate(115%);
+	}
+
+	.desktop-language-switcher a {
+		display: inline-flex;
+		width: 40px;
+		height: 36px;
+		align-items: center;
+		justify-content: center;
+		border-radius: 999px;
+		color: #dddcd9;
+		font-size: 11px;
+		font-weight: 520;
+		letter-spacing: .06em;
+		text-decoration: none;
+		transition: background-color 180ms ease, color 180ms ease;
+	}
+
+	.desktop-language-switcher a:hover,
+	.desktop-language-switcher a:focus-visible {
+		background: rgb(255 255 255 / 7%);
+		color: #fff;
+		outline: none;
+	}
+
+	.desktop-language-switcher a:focus-visible {
+		box-shadow: 0 0 0 2px #0c0b0c, 0 0 0 4px rgb(236 235 232 / 80%);
+	}
+
+	.desktop-language-switcher a[aria-current='page'] {
+		background: rgb(197 80 7 / 22%);
+		color: #ee7b34;
+	}
+
+	@media (max-width: 640px) {
+		.desktop-language-switcher { display: none; }
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.desktop-language-switcher a { transition-duration: 100ms; }
+	}
+</style>

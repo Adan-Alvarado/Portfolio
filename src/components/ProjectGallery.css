@@ -16,6 +16,7 @@
 
 .pg-carousel-status { display: none; }
 .pg-project-index { display: none; }
+.pg-mobile-accordion { display: none; }
 
 .projects-gallery .project-card.pg-card {
 	padding: 0;

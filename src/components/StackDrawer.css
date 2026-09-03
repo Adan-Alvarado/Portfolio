@@ -72,6 +72,8 @@
 .stack-drawer header button:hover,
 .stack-drawer header button:focus-visible { color: #e1661a; outline: none; }
 
+.stack-drawer__body { display: contents; }
+
 .drawer-groups {
 	display: grid;
 	grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -120,22 +122,34 @@
 		top: auto;
 		bottom: 0;
 		width: 100%;
-		height: min(88svh, 760px);
+		height: min(92svh, 760px);
 		overflow-y: hidden;
-		padding: 26px 22px max(26px, env(safe-area-inset-bottom));
+		padding: 18px 16px max(18px, env(safe-area-inset-bottom));
 		border-top: 1px solid rgb(255 255 255 / 14%);
 		border-left: 0;
 		border-radius: 22px 22px 0 0;
 		animation-name: drawer-up;
 	}
+	.stack-drawer header { flex: none; }
+	.stack-drawer__body {
+		display: block;
+		min-height: 0;
+		padding-right: 2px;
+		overflow-y: auto;
+		overscroll-behavior: contain;
+		scrollbar-width: thin;
+		flex: 1;
+	}
 	.drawer-layer.is-closing .stack-drawer { animation-name: drawer-down; }
-	.drawer-groups { overflow-y: auto; padding-right: 2px; }
+	.drawer-groups { overflow: visible; padding-right: 0; }
 }
 
 @media (max-width: 540px) {
-	.stack-drawer h2 { font-size: 31px; }
-	.drawer-groups { grid-template-columns: 1fr; }
-	.drawer-groups .primary-group { grid-column: auto; }
-	.drawer-groups section { padding: 18px; }
-	.drawer-groups h3 { font-size: 17px; }
+	.stack-drawer h2 { font-size: 26px; }
+	.drawer-groups { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-top: 12px; }
+	.drawer-groups .primary-group { grid-column: 1 / -1; }
+	.drawer-groups section { padding: 12px; border-radius: 14px; }
+	.drawer-groups h3 { font-size: 14px; }
+	.drawer-groups ul { gap: 5px; margin-top: 7px; }
+	.stack-drawer footer { margin-top: 12px; }
 }
