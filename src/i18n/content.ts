@@ -239,7 +239,7 @@ export const portfolioContent: Record<Locale, LocalizedPortfolioContent> = {
 			},
 		},
 		projects: {
-			kicker: '[“Have something in mind?”]', heading: ['Let’s', 'build', 'something'],
+			kicker: '[“Have something in mind?”]', heading: ['Let’s build', '', 'something'],
 			bio: ['I am a', 'cheerful, proactive and self-taught person.', 'I always aim beyond expectations, optimize processes and contribute creative solutions.'],
 			characterAlt: 'Pixel-art penguin holding a tool', galleryLabel: 'Project selection',
 			openCase: 'Open case', seeCase: 'View case', modalEyebrow: 'Project case', close: 'Close',
