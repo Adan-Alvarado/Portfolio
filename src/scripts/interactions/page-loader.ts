@@ -7,6 +7,7 @@ export const initPageTransitionLoader = () => {
 	const root = document.documentElement;
 	const loader = document.querySelector<HTMLElement>('[data-page-loader]');
 	if (!loader) return () => {};
+	const shouldPlayOnEntry = root.classList.contains('page-loader-enabled');
 
 	let fallbackTimer = 0;
 	let completionTimer = 0;
@@ -93,20 +94,28 @@ export const initPageTransitionLoader = () => {
 		}
 
 		root.classList.remove('page-loader-ready');
+		root.classList.add('page-loader-enabled');
 		root.classList.add('page-loader-leaving');
 		startProgress();
 		fallbackTimer = window.setTimeout(finish, 1600);
 	};
 
 	const onPageShow = (event: PageTransitionEvent) => {
-		if (event.persisted) finish();
+		if (!event.persisted) return;
+		root.classList.add('page-loader-ready');
+		root.classList.remove('page-loader-leaving');
+		clearTransitionMark();
 	};
 
 	const localeLinks = [...document.querySelectorAll<HTMLAnchorElement>('[data-locale-path]')];
 	localeLinks.forEach((link) => link.addEventListener('click', onLocaleClick));
 	window.addEventListener('pageshow', onPageShow);
-	startProgress();
-	waitForInitialPaint();
+	if (shouldPlayOnEntry) {
+		startProgress();
+		waitForInitialPaint();
+	} else {
+		root.classList.add('page-loader-ready');
+	}
 
 	return () => {
 		if (fallbackTimer) window.clearTimeout(fallbackTimer);

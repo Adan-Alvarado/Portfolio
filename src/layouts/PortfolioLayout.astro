@@ -50,7 +50,18 @@ const alternateLocale = locale === 'es' ? 'en_US' : 'es_HN';
 		<link rel="alternate" hreflang="x-default" href={spanishUrl} />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<title>{content.meta.title}</title>
-		<script is:inline>document.documentElement.classList.add('page-loader-enabled');</script>
+		<script is:inline>
+			try {
+				const hasStarted = sessionStorage.getItem('portfolio:loader-seen') === '1';
+				const isLocaleTransition = sessionStorage.getItem('portfolio:locale-transition') === '1';
+				if (!hasStarted || isLocaleTransition) {
+					document.documentElement.classList.add('page-loader-enabled');
+					sessionStorage.setItem('portfolio:loader-seen', '1');
+				}
+			} catch {
+				// When storage is unavailable, keep the page immediately usable.
+			}
+		</script>
 		<style is:inline>
 			.page-loader { display: none; }
 			html.page-loader-enabled .page-loader {
