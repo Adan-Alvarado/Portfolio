@@ -1,7 +1,8 @@
 const LOCALE_TRANSITION_KEY = 'portfolio:locale-transition';
 const MAX_FONT_WAIT = 1200;
-const MIN_VISIBLE_TIME = 1550;
-const COMPLETE_DELAY = 250;
+const MIN_VISIBLE_TIME = 2600;
+const COMPLETE_DELAY = 300;
+const LOCALE_FADE_DURATION = 380;
 
 export const initPageTransitionLoader = () => {
 	const root = document.documentElement;
@@ -11,6 +12,7 @@ export const initPageTransitionLoader = () => {
 
 	let fallbackTimer = 0;
 	let completionTimer = 0;
+	let navigationTimer = 0;
 	let progressFrame = 0;
 	let startedAt = performance.now();
 	let hasFinished = false;
@@ -25,7 +27,7 @@ export const initPageTransitionLoader = () => {
 
 	const animateProgress = () => {
 		const elapsed = performance.now() - startedAt;
-		setProgress(Math.min(88, elapsed * 0.058));
+		setProgress(Math.min(88, elapsed * 0.034));
 		if (!hasFinished) progressFrame = window.requestAnimationFrame(animateProgress);
 	};
 
@@ -85,7 +87,8 @@ export const initPageTransitionLoader = () => {
 		) return;
 
 		const destination = new URL(link.href, window.location.href);
-		if (destination.pathname === window.location.pathname) return;
+		if (destination.pathname === window.location.pathname || navigationTimer) return;
+		event.preventDefault();
 
 		try {
 			sessionStorage.setItem(LOCALE_TRANSITION_KEY, '1');
@@ -93,10 +96,13 @@ export const initPageTransitionLoader = () => {
 			// Storage is optional; the departure overlay does not depend on it.
 		}
 
-		root.classList.remove('page-loader-ready');
 		root.classList.add('page-loader-enabled');
 		root.classList.add('page-loader-leaving');
-		startProgress();
+		window.requestAnimationFrame(() => {
+			root.classList.remove('page-loader-ready');
+			startProgress();
+		});
+		navigationTimer = window.setTimeout(() => window.location.assign(destination.href), reducedMotion ? 0 : LOCALE_FADE_DURATION);
 		fallbackTimer = window.setTimeout(finish, 1600);
 	};
 
@@ -120,6 +126,7 @@ export const initPageTransitionLoader = () => {
 	return () => {
 		if (fallbackTimer) window.clearTimeout(fallbackTimer);
 		if (completionTimer) window.clearTimeout(completionTimer);
+		if (navigationTimer) window.clearTimeout(navigationTimer);
 		if (progressFrame) window.cancelAnimationFrame(progressFrame);
 		localeLinks.forEach((link) => link.removeEventListener('click', onLocaleClick));
 		window.removeEventListener('pageshow', onPageShow);
