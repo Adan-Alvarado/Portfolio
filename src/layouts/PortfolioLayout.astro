@@ -63,16 +63,22 @@ const alternateLocale = locale === 'es' ? 'en_US' : 'es_HN';
 			}
 		</script>
 		<style is:inline>
-			.page-loader { display: none; }
-			html.page-loader-enabled .page-loader {
+			.page-loader {
 				position: fixed;
 				inset: 0;
 				z-index: 999;
-				display: block;
+				contain: paint;
+				isolation: isolate;
 				background: #070707;
+				opacity: 0;
+				visibility: hidden;
+				pointer-events: none;
+				transition: opacity 420ms cubic-bezier(0.16, 1, 0.3, 1), visibility 0s linear 420ms;
+			}
+			html.page-loader-enabled .page-loader {
 				opacity: 1;
 				visibility: visible;
-				transition: opacity 420ms cubic-bezier(0.16, 1, 0.3, 1), visibility 0s linear 420ms;
+				pointer-events: auto;
 			}
 			html.page-loader-ready .page-loader {
 				opacity: 0;
