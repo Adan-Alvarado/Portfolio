@@ -5,6 +5,7 @@ import { initReveals } from './interactions/reveal';
 import { initTimelineProgress } from './interactions/timeline';
 import { initPageVisibility } from './interactions/visibility';
 import { initCharacterReactions } from './interactions/reactions';
+import { initPageTransitionLoader } from './interactions/page-loader';
 
 type Cleanup = () => void;
 
@@ -20,6 +21,7 @@ export const initPortfolioInteractions = () => {
 		initTimelineProgress(),
 		initPageVisibility(),
 		initCharacterReactions(),
+		initPageTransitionLoader(),
 	];
 
 	cleanupCurrent = () => {
