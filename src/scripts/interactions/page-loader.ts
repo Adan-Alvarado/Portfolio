@@ -64,6 +64,7 @@ export const initPageTransitionLoader = () => {
 		completionTimer = window.setTimeout(() => {
 			root.classList.add('page-loader-ready');
 			root.classList.remove('page-loader-leaving');
+			root.classList.remove('page-loader-locale-transition');
 			clearTransitionMark();
 		}, COMPLETE_DELAY);
 	};
@@ -101,6 +102,7 @@ export const initPageTransitionLoader = () => {
 
 		root.classList.add('page-loader-enabled');
 		root.classList.add('page-loader-leaving');
+		root.classList.add('page-loader-locale-transition');
 		window.requestAnimationFrame(() => {
 			root.classList.remove('page-loader-ready');
 			startProgress();
@@ -112,6 +114,7 @@ export const initPageTransitionLoader = () => {
 		if (!event.persisted) return;
 		root.classList.add('page-loader-ready');
 		root.classList.remove('page-loader-leaving');
+		root.classList.remove('page-loader-locale-transition');
 		clearTransitionMark();
 	};
 

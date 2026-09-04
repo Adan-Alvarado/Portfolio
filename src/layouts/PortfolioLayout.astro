@@ -58,6 +58,7 @@ const alternateLocale = locale === 'es' ? 'en_US' : 'es_HN';
 					document.documentElement.classList.add('page-loader-enabled');
 					sessionStorage.setItem('portfolio:loader-seen', '1');
 				}
+				if (isLocaleTransition) document.documentElement.classList.add('page-loader-locale-transition');
 			} catch {
 				// When storage is unavailable, keep the page immediately usable.
 			}
@@ -75,6 +76,7 @@ const alternateLocale = locale === 'es' ? 'en_US' : 'es_HN';
 				pointer-events: none;
 				transition: opacity 420ms cubic-bezier(0.16, 1, 0.3, 1), visibility 0s linear 420ms;
 			}
+			html.page-loader-locale-transition { scroll-behavior: auto; }
 			html.page-loader-enabled .page-loader {
 				opacity: 1;
 				visibility: visible;
