@@ -1,6 +1,6 @@
 const LOCALE_TRANSITION_KEY = 'portfolio:locale-transition';
 const MAX_FONT_WAIT = 1200;
-const MIN_VISIBLE_TIME = 2600;
+const PROGRESS_DURATION = 2600;
 const COMPLETE_DELAY = 300;
 const LOCALE_FADE_DURATION = 380;
 
@@ -10,12 +10,12 @@ export const initPageTransitionLoader = () => {
 	if (!loader) return () => {};
 	const shouldPlayOnEntry = root.classList.contains('page-loader-enabled');
 
-	let fallbackTimer = 0;
 	let completionTimer = 0;
 	let navigationTimer = 0;
 	let progressFrame = 0;
 	let startedAt = performance.now();
 	let hasFinished = false;
+	let documentReady = !shouldPlayOnEntry;
 	const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 	const counter = loader.querySelector<HTMLElement>('[data-page-loader-counter]');
 
@@ -27,8 +27,13 @@ export const initPageTransitionLoader = () => {
 
 	const animateProgress = () => {
 		const elapsed = performance.now() - startedAt;
-		setProgress(Math.min(88, elapsed * 0.034));
-		if (!hasFinished) progressFrame = window.requestAnimationFrame(animateProgress);
+		const progress = Math.min(100, (elapsed / PROGRESS_DURATION) * 100);
+		setProgress(progress);
+		if (progress < 100 || !documentReady) {
+			progressFrame = window.requestAnimationFrame(animateProgress);
+			return;
+		}
+		finish();
 	};
 
 	const startProgress = () => {
@@ -53,25 +58,21 @@ export const initPageTransitionLoader = () => {
 		if (hasFinished) return;
 		hasFinished = true;
 		if (progressFrame) window.cancelAnimationFrame(progressFrame);
-		if (fallbackTimer) {
-			window.clearTimeout(fallbackTimer);
-			fallbackTimer = 0;
-		}
-		const remaining = reducedMotion ? 0 : Math.max(0, MIN_VISIBLE_TIME - (performance.now() - startedAt));
+		setProgress(100);
 		completionTimer = window.setTimeout(() => {
-			setProgress(100);
-			completionTimer = window.setTimeout(() => {
-				root.classList.add('page-loader-ready');
-				root.classList.remove('page-loader-leaving');
-				clearTransitionMark();
-			}, COMPLETE_DELAY);
-		}, remaining);
+			root.classList.add('page-loader-ready');
+			root.classList.remove('page-loader-leaving');
+			clearTransitionMark();
+		}, COMPLETE_DELAY);
 	};
 
 	const waitForInitialPaint = () => {
 		const fontsReady = document.fonts?.ready ?? Promise.resolve();
 		const safetyTimeout = new Promise<void>((resolve) => window.setTimeout(resolve, MAX_FONT_WAIT));
-		void Promise.race([fontsReady, safetyTimeout]).then(() => window.requestAnimationFrame(finish));
+		void Promise.race([fontsReady, safetyTimeout]).then(() => {
+			documentReady = true;
+			if (reducedMotion) finish();
+		});
 	};
 
 	const onLocaleClick = (event: MouseEvent) => {
@@ -103,7 +104,6 @@ export const initPageTransitionLoader = () => {
 			startProgress();
 		});
 		navigationTimer = window.setTimeout(() => window.location.assign(destination.href), reducedMotion ? 0 : LOCALE_FADE_DURATION);
-		fallbackTimer = window.setTimeout(finish, 1600);
 	};
 
 	const onPageShow = (event: PageTransitionEvent) => {
@@ -124,7 +124,6 @@ export const initPageTransitionLoader = () => {
 	}
 
 	return () => {
-		if (fallbackTimer) window.clearTimeout(fallbackTimer);
 		if (completionTimer) window.clearTimeout(completionTimer);
 		if (navigationTimer) window.clearTimeout(navigationTimer);
 		if (progressFrame) window.cancelAnimationFrame(progressFrame);
