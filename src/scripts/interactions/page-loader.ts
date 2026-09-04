@@ -42,6 +42,8 @@ export const initPageTransitionLoader = () => {
 		hasFinished = false;
 		startedAt = performance.now();
 		setProgress(0);
+		root.classList.remove('page-loader-running');
+		window.requestAnimationFrame(() => root.classList.add('page-loader-running'));
 		if (reducedMotion) return;
 		progressFrame = window.requestAnimationFrame(animateProgress);
 	};
