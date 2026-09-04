@@ -1,7 +1,7 @@
 const LOCALE_TRANSITION_KEY = 'portfolio:locale-transition';
 const MAX_FONT_WAIT = 1200;
-const MIN_VISIBLE_TIME = 900;
-const COMPLETE_DELAY = 180;
+const MIN_VISIBLE_TIME = 1550;
+const COMPLETE_DELAY = 250;
 
 export const initPageTransitionLoader = () => {
 	const root = document.documentElement;
@@ -25,7 +25,7 @@ export const initPageTransitionLoader = () => {
 
 	const animateProgress = () => {
 		const elapsed = performance.now() - startedAt;
-		setProgress(Math.min(88, elapsed * 0.11));
+		setProgress(Math.min(88, elapsed * 0.058));
 		if (!hasFinished) progressFrame = window.requestAnimationFrame(animateProgress);
 	};
 
