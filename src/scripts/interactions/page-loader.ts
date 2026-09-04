@@ -1,6 +1,6 @@
 const LOCALE_TRANSITION_KEY = 'portfolio:locale-transition';
 const MAX_FONT_WAIT = 1200;
-const PROGRESS_DURATION = 2600;
+const PROGRESS_DURATION = 1700;
 const COMPLETE_DELAY = 300;
 const LOCALE_FADE_DURATION = 380;
 
