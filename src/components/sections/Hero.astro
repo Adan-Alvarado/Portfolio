@@ -4,14 +4,12 @@ import { Image } from 'astro:assets';
 import TechStrip from '../TechStrip.astro';
 import type { Locale, LocalizedPortfolioContent } from '../../i18n/content';
 import capybara from '../../assets/capybara.png';
-import cvSpanish from '../../assets/CV_AdanFabricioAlvarado.pdf';
-import cvEnglish from '../../assets/CV_Ingles_AdanFabricioAlvarado.pdf';
 
 interface Props { content: LocalizedPortfolioContent; locale: Locale }
 
 const { content, locale } = Astro.props;
 const copy = content.hero;
-const cvDocument = locale === 'en' ? cvEnglish : cvSpanish;
+const cvDocument = locale === 'en' ? '/cv/fabricio-alvarado-en.pdf' : '/cv/fabricio-alvarado-es.pdf';
 ---
 
 <section id="inicio" class="portfolio-screen home-screen">

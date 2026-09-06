@@ -14,6 +14,7 @@ export default function ProjectGallery({ locale, copy, media }: ProjectGalleryPr
 	const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 	const [transitioningProjectId, setTransitioningProjectId] = useState<Project['id'] | null>(null);
 	const [activeProjectIndex, setActiveProjectIndex] = useState<number | null>(null);
+	const [hasInteractedWithMobileAccordion, setHasInteractedWithMobileAccordion] = useState(false);
 	const triggerRef = useRef<HTMLElement | null>(null);
 	const indexRefs = useRef<Array<HTMLButtonElement | null>>([]);
 	const projects = getProjects(locale, media);
@@ -29,6 +30,24 @@ export default function ProjectGallery({ locale, copy, media }: ProjectGalleryPr
 
 	const toggleProject = (index: number) => {
 		setActiveProjectIndex((current) => current === index ? null : index);
+	};
+
+	const toggleMobileProject = (index: number) => {
+		setActiveProjectIndex((current) => {
+			const currentMobileIndex = hasInteractedWithMobileAccordion ? current : 0;
+			return currentMobileIndex === index ? null : index;
+		});
+		setHasInteractedWithMobileAccordion(true);
+	};
+
+	const handleMobileIndexKeys = (event: KeyboardEvent<HTMLButtonElement>, index: number) => {
+		if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
+		event.preventDefault();
+		const direction = event.key === 'ArrowRight' ? 1 : -1;
+		const nextIndex = (index + direction + projects.length) % projects.length;
+		setHasInteractedWithMobileAccordion(true);
+		setActiveProjectIndex(nextIndex);
+		indexRefs.current[nextIndex]?.focus();
 	};
 
 	const openProject = (project: Project, event: MouseEvent<HTMLButtonElement>) => {
@@ -117,7 +136,7 @@ export default function ProjectGallery({ locale, copy, media }: ProjectGalleryPr
 			</div>
 			<div className="pg-mobile-accordion" aria-label={copy.galleryLabel}>
 				{projects.map((project, index) => {
-					const expanded = activeProjectIndex === index;
+					const expanded = hasInteractedWithMobileAccordion ? activeProjectIndex === index : index === 0;
 					return (
 						<section className="pg-accordion-item" data-active={expanded ? 'true' : 'false'} data-project-id={project.id} key={`accordion-${project.id}`}>
 							<button
@@ -126,8 +145,8 @@ export default function ProjectGallery({ locale, copy, media }: ProjectGalleryPr
 								ref={(node) => { indexRefs.current[index] = node; }}
 								aria-expanded={expanded}
 								aria-controls={`mobile-project-content-${project.id}`}
-								onClick={() => toggleProject(index)}
-								onKeyDown={(event) => handleIndexKeys(event, index)}
+								onClick={() => toggleMobileProject(index)}
+								onKeyDown={(event) => handleMobileIndexKeys(event, index)}
 							>
 								<img className="pg-accordion-thumbnail" src={project.media?.[0]?.src} alt="" width={64} height={64} loading="lazy" decoding="async" />
 								<strong>{project.title}</strong>

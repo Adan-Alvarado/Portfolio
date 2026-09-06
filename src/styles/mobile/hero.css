@@ -298,51 +298,6 @@
 	}
 }
 
-@media (max-width: 350px) {
-	.home-stage { padding-top: max(40px, env(safe-area-inset-top)); padding-bottom: 6px; }
-	.hero-copy { height: 278px; }
-	.hero-kicker { font-size: 9px; }
-	.hero-profile-reveal { top: 164px; height: 108px; }
-	.profile-ticket { top: auto; height: 108px; }
-	.profile-ticket { gap: 5px; grid-template-rows: 64px 37px; }
-	.profile-dark { height: 64px; }
-	.profile-ticket > p { height: 37px; }
-	.profile-dark { grid-template-columns: 52px minmax(0, 1fr); gap: 7px; padding-inline: 7px; }
-	.profile-ticket .github-mark { width: 52px; height: 54px; }
-	.profile-ticket .github-mark svg { width: 35px; height: 35px; }
-	.profile-dark strong { font-size: 13px; }
-	.profile-dark .cv-download { width: 104px; padding-inline: 8px; }
-	.hero-metrics-row { min-height: 88px; margin-top: 6px; padding-block: 8px; }
-	.hero-stats { min-height: 70px; }
-	.hero-stats div { min-height: 70px; padding: 4px 7px 3px; }
-	.hero-stats strong,
-	.hero-stats div:nth-child(2) strong { font-size: 22px; }
-	.hero-stats p { margin-top: 4px; font-size: 8px; }
-	.home-screen .skills-strip { height: 46px; margin-top: 2px; flex-basis: 46px; }
-}
-
-@media (min-width: 351px) and (max-width: 640px) {
-	.hero-metrics-row {
-		min-height: 126px;
-		padding: 14px var(--mobile-gutter) 12px;
-	}
-
-	.hero-stats div {
-		min-height: 96px;
-		padding-inline: 8px;
-		align-items: center;
-		text-align: center;
-	}
-
-	.hero-stats strong,
-	.hero-stats div:nth-child(2) strong { font-size: clamp(28px, 7.6vw, 34px); }
-
-	.hero-stats p {
-		font-size: clamp(10px, 2.8vw, 12px);
-		line-height: 1.2;
-	}
-}
-
 @media (max-width: 1023px) and (hover: none) {
 	.capybara-wrap:hover img { transform: none; }
 }

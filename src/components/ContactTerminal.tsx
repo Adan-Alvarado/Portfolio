@@ -1,4 +1,4 @@
-import { useReducer, useRef, type KeyboardEvent } from 'react';
+import { useEffect, useReducer, useRef, type KeyboardEvent } from 'react';
 import { Send, RotateCcw } from 'lucide-react';
 import {
 	initialTerminalState,
@@ -118,6 +118,29 @@ export default function ContactTerminal({ copy, formId }: ContactTerminalProps) 
 			: copy.send;
 	const visibleFeedback = feedback || (!isConfigured ? copy.configurationMissing : '');
 	const visibleFeedbackTone = feedback ? feedbackTone : !isConfigured ? 'info' : 'idle';
+
+	useEffect(() => {
+		const resizeMessageField = () => {
+			const textarea = messageInput.current;
+			if (!textarea) return;
+
+			if (!window.matchMedia('(max-width: 1023px)').matches) {
+				textarea.style.height = '';
+				textarea.style.overflowY = '';
+				return;
+			}
+
+			const maximumHeight = 176;
+			textarea.style.height = 'auto';
+			const nextHeight = Math.min(textarea.scrollHeight, maximumHeight);
+			textarea.style.height = `${nextHeight}px`;
+			textarea.style.overflowY = textarea.scrollHeight > maximumHeight ? 'auto' : 'hidden';
+		};
+
+		resizeMessageField();
+		window.addEventListener('resize', resizeMessageField);
+		return () => window.removeEventListener('resize', resizeMessageField);
+	}, [message]);
 
 	return (
 		<form className="terminal-shell" data-terminal-step={step} data-submission-status={submissionStatus} aria-busy={isSubmitting} onSubmit={(event) => { event.preventDefault(); void sendMessage(); }}>

@@ -17,6 +17,8 @@ pnpm-debug.log*
 .env
 .env.production
 
+# local design critique reports
+
 # macOS-specific files
 .DS_Store
 

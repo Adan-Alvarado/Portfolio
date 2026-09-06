@@ -148,7 +148,13 @@
 	}
 
 	.terminal-entry--message { max-width: 100%; }
-	.terminal-entry textarea { min-width: 0; min-height: 70px; height: 70px; }
+	.terminal-entry textarea {
+		min-width: 0;
+		min-height: 70px;
+		max-height: 176px;
+		height: 70px;
+		overflow-y: hidden;
+	}
 
 	.terminal-block-cursor { display: none; }
 
