@@ -1,4 +1,4 @@
-# Ejemplo portfolio — Fabricio
+# Portfolio — Fabricio Alvarado
 
 Reconstrucción en Astro, React, TypeScript y Tailwind CSS de las cuatro pantallas del portfolio diseñado en Figma.
 
