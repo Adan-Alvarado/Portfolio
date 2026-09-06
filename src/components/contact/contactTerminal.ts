@@ -24,6 +24,7 @@ export const initialTerminalState: TerminalState = {
 };
 
 export type TerminalAction =
+	| { type: 'focus'; field: TerminalField }
 	| { type: 'change'; field: TerminalField; value: string }
 	| { type: 'advance'; step: TerminalStep; feedback?: string; tone?: FeedbackTone }
 	| { type: 'feedback'; message: string; tone: FeedbackTone }
@@ -34,6 +35,8 @@ export type TerminalAction =
 
 export const terminalReducer = (state: TerminalState, action: TerminalAction): TerminalState => {
 	switch (action.type) {
+		case 'focus':
+			return state.submissionStatus === 'submitting' ? state : { ...state, step: action.field };
 		case 'change':
 			return { ...state, [action.field]: action.value, feedback: '', feedbackTone: 'idle', submissionStatus: 'idle' };
 		case 'advance':

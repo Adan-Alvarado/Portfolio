@@ -178,6 +178,12 @@
 	.mobile-experience-panel__credential-card { width: min(74vw, 254px); }
 }
 
+@media (min-width: 641px) and (max-width: 1023px) {
+	/* Tablet keeps the stack readable while reducing the dead travel between cards. */
+	.mobile-experience-stack__panels { gap: 28px; }
+	.mobile-experience-panel__body { padding-inline: clamp(22px, 3vw, 28px); }
+}
+
 @media (max-width: 1023px) and (prefers-reduced-motion: reduce) {
 	.mobile-experience-stack__panels { gap: 16px; }
 	.mobile-experience-panel,

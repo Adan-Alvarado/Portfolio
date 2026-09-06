@@ -111,6 +111,7 @@ export interface LocalizedPortfolioContent {
 		terminal: {
 			title: string;
 			reset: string;
+			continue: string;
 			intro: readonly [string, string];
 			prompts: readonly [string, string, string];
 			labels: readonly [string, string, string];
@@ -200,6 +201,7 @@ export const portfolioContent: Record<Locale, LocalizedPortfolioContent> = {
 				sending: 'Enviando mensaje…', sent: 'Mensaje enviado. Te responderé lo antes posible.',
 				sendError: 'No se pudo enviar. Revisa tu conexión e inténtalo de nuevo.', retry: 'Reintentar',
 				configurationMissing: 'El formulario aún no está configurado. Puedes escribirme al correo visible.',
+				continue: 'Continuar →',
 				shortcut: 'Ctrl o Cmd + Enter para enviar.',
 			},
 		},
@@ -213,7 +215,7 @@ export const portfolioContent: Record<Locale, LocalizedPortfolioContent> = {
 		},
 		hero: {
 			kicker: '[ “ Let’s Work Together ” ]', titleAria: 'Developer plus designer', downloadCv: 'Download résumé',
-			cvLanguage: 'Résumé currently available in Spanish',
+			cvLanguage: 'Résumé available in English',
 			availability: ['Available for freelance', 'projects or watching One Piece'],
 			characterAlt: 'Pixel-art capybara holding a mug', statsLabel: 'Experience summary',
 			stats: [
@@ -268,6 +270,7 @@ export const portfolioContent: Record<Locale, LocalizedPortfolioContent> = {
 				sending: 'Sending message…', sent: 'Message sent. I will get back to you soon.',
 				sendError: 'The message could not be sent. Check your connection and try again.', retry: 'Try again',
 				configurationMissing: 'The form is not configured yet. You can use the visible email address instead.',
+				continue: 'Continue →',
 				shortcut: 'Press Ctrl or Cmd + Enter to send.',
 			},
 		},

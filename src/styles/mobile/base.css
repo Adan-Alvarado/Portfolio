@@ -6,6 +6,15 @@
 .mobile-experience-stack { display: none; }
 
 @media (min-width: 641px) and (max-width: 1023px) {
+	/* Tablet keeps the mobile interaction model without stretching every band to the viewport edge. */
+	.home-stage,
+	.experience-stage,
+	.projects-stage,
+	.contact-stage {
+		max-width: 640px;
+		margin-inline: auto;
+	}
+
 	.experience-stage { display: flex; flex-direction: column; }
 	.experience-heading,
 	.experience-timeline {

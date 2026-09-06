@@ -1,8 +1,8 @@
-const LOCALE_TRANSITION_KEY = 'portfolio:locale-transition';
+import type { TransitionBeforePreparationEvent, TransitionBeforeSwapEvent } from 'astro:transitions/client';
+
 const MAX_FONT_WAIT = 1200;
 const PROGRESS_DURATION = 1200;
 const COMPLETE_DELAY = 300;
-const LOCALE_FADE_DURATION = 380;
 
 export const initPageTransitionLoader = () => {
 	const root = document.documentElement;
@@ -11,11 +11,11 @@ export const initPageTransitionLoader = () => {
 	const shouldPlayOnEntry = root.classList.contains('page-loader-enabled');
 
 	let completionTimer = 0;
-	let navigationTimer = 0;
 	let progressFrame = 0;
 	let startedAt = performance.now();
 	let hasFinished = false;
 	let documentReady = !shouldPlayOnEntry;
+	let routeTransitionActive = false;
 	const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 	const counter = loader.querySelector<HTMLElement>('[data-page-loader-counter]');
 
@@ -48,14 +48,6 @@ export const initPageTransitionLoader = () => {
 		progressFrame = window.requestAnimationFrame(animateProgress);
 	};
 
-	const clearTransitionMark = () => {
-		try {
-			sessionStorage.removeItem(LOCALE_TRANSITION_KEY);
-		} catch {
-			// Private browsing can deny storage; the visual transition still works.
-		}
-	};
-
 	const finish = () => {
 		if (hasFinished) return;
 		hasFinished = true;
@@ -63,9 +55,8 @@ export const initPageTransitionLoader = () => {
 		setProgress(100);
 		completionTimer = window.setTimeout(() => {
 			root.classList.add('page-loader-ready');
-			root.classList.remove('page-loader-leaving');
+			root.classList.remove('page-loader-entry');
 			root.classList.remove('page-loader-locale-transition');
-			clearTransitionMark();
 		}, COMPLETE_DELAY);
 	};
 
@@ -78,48 +69,77 @@ export const initPageTransitionLoader = () => {
 		});
 	};
 
-	const onLocaleClick = (event: MouseEvent) => {
-		const link = event.currentTarget as HTMLAnchorElement;
-		if (
-			event.defaultPrevented ||
-			event.button !== 0 ||
-			event.metaKey ||
-			event.ctrlKey ||
-			event.shiftKey ||
-			event.altKey ||
-			link.getAttribute('aria-current') === 'page'
-		) return;
+	const isLocaleRoute = (url: URL) => url.pathname === '/' || url.pathname === '/en/';
 
+	const beginRouteTransition = () => {
+		if (routeTransitionActive) return;
+		routeTransitionActive = true;
+		documentReady = false;
+		root.classList.add('page-loader-enabled', 'page-loader-locale-transition');
+		root.classList.remove('page-loader-ready');
+		startProgress();
+	};
+
+	const cancelRouteTransition = () => {
+		if (!routeTransitionActive) return;
+		routeTransitionActive = false;
+		documentReady = true;
+		finish();
+	};
+
+	const onBeforePreparation = (event: Event) => {
+		const transition = event as TransitionBeforePreparationEvent;
+		if (!isLocaleRoute(transition.from) || !isLocaleRoute(transition.to) || transition.from.pathname === transition.to.pathname) return;
+		beginRouteTransition();
+		// Fetch immediately, but keep Astro from swapping a fast/cached route
+		// before the existing veil has finished its entrance fade.
+		const prepareDestination = transition.loader;
+		const coverReady = Promise.all(
+			loader.getAnimations().map((animation) => animation.finished.catch(() => {})),
+		);
+		transition.loader = async () => {
+			await Promise.all([prepareDestination(), coverReady]);
+		};
+		transition.signal.addEventListener('abort', cancelRouteTransition, { once: true });
+	};
+
+	const onLocaleLinkClick = (event: MouseEvent) => {
+		if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+		const target = event.target;
+		if (!(target instanceof Element)) return;
+		const link = target.closest<HTMLAnchorElement>('[data-locale-path]');
+		if (!link || link.target === '_blank') return;
 		const destination = new URL(link.href, window.location.href);
-		if (destination.pathname === window.location.pathname || navigationTimer) return;
-		event.preventDefault();
+		const current = new URL(window.location.href);
+		if (!isLocaleRoute(current) || !isLocaleRoute(destination) || current.pathname === destination.pathname) return;
+		beginRouteTransition();
+	};
 
-		try {
-			sessionStorage.setItem(LOCALE_TRANSITION_KEY, '1');
-		} catch {
-			// Storage is optional; the departure overlay does not depend on it.
-		}
+	const onBeforeSwap = (event: Event) => {
+		if (!routeTransitionActive) return;
+		const transition = event as TransitionBeforeSwapEvent;
+		transition.newDocument.documentElement.classList.add('page-loader-enabled', 'page-loader-locale-transition', 'page-loader-running');
+		transition.newDocument.documentElement.classList.remove('page-loader-ready');
+	};
 
-		root.classList.add('page-loader-enabled');
-		root.classList.add('page-loader-leaving');
-		root.classList.add('page-loader-locale-transition');
-		window.requestAnimationFrame(() => {
-			root.classList.remove('page-loader-ready');
-			startProgress();
-		});
-		navigationTimer = window.setTimeout(() => window.location.assign(destination.href), reducedMotion ? 0 : LOCALE_FADE_DURATION);
+	const onPageLoad = () => {
+		if (!routeTransitionActive) return;
+		routeTransitionActive = false;
+		documentReady = true;
+		if (reducedMotion) finish();
 	};
 
 	const onPageShow = (event: PageTransitionEvent) => {
 		if (!event.persisted) return;
 		root.classList.add('page-loader-ready');
-		root.classList.remove('page-loader-leaving');
+		root.classList.remove('page-loader-entry');
 		root.classList.remove('page-loader-locale-transition');
-		clearTransitionMark();
 	};
 
-	const localeLinks = [...document.querySelectorAll<HTMLAnchorElement>('[data-locale-path]')];
-	localeLinks.forEach((link) => link.addEventListener('click', onLocaleClick));
+	document.addEventListener('astro:before-preparation', onBeforePreparation);
+	document.addEventListener('astro:before-swap', onBeforeSwap);
+	document.addEventListener('astro:page-load', onPageLoad);
+	document.addEventListener('click', onLocaleLinkClick, true);
 	window.addEventListener('pageshow', onPageShow);
 	if (shouldPlayOnEntry) {
 		startProgress();
@@ -130,9 +150,11 @@ export const initPageTransitionLoader = () => {
 
 	return () => {
 		if (completionTimer) window.clearTimeout(completionTimer);
-		if (navigationTimer) window.clearTimeout(navigationTimer);
 		if (progressFrame) window.cancelAnimationFrame(progressFrame);
-		localeLinks.forEach((link) => link.removeEventListener('click', onLocaleClick));
+		document.removeEventListener('astro:before-preparation', onBeforePreparation);
+		document.removeEventListener('astro:before-swap', onBeforeSwap);
+		document.removeEventListener('astro:page-load', onPageLoad);
+		document.removeEventListener('click', onLocaleLinkClick, true);
 		window.removeEventListener('pageshow', onPageShow);
 	};
 };

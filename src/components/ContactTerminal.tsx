@@ -1,5 +1,5 @@
-import { useReducer, useRef, type CSSProperties, type KeyboardEvent } from 'react';
-import { Send, X } from 'lucide-react';
+import { useReducer, useRef, type KeyboardEvent } from 'react';
+import { Send, RotateCcw } from 'lucide-react';
 import {
 	initialTerminalState,
 	isValidEmail,
@@ -37,9 +37,7 @@ export default function ContactTerminal({ copy, formId }: ContactTerminalProps) 
 		focusStep(field);
 	};
 
-	const advance = (event: KeyboardEvent<HTMLInputElement>, current: Exclude<TerminalField, 'message'>) => {
-		if (event.key !== 'Enter') return;
-		event.preventDefault();
+	const advance = (current: Exclude<TerminalField, 'message'>) => {
 
 		if (current === 'email') {
 			if (!isValidEmail(email)) {
@@ -68,7 +66,6 @@ export default function ContactTerminal({ copy, formId }: ContactTerminalProps) 
 		focusStep('email');
 	};
 
-	const entryWidth = (value: string) => ({ '--entry-length': Math.max(value.length, 0) }) as CSSProperties;
 
 	const sendMessage = async () => {
 		if (isSubmitting) return;
@@ -129,40 +126,35 @@ export default function ContactTerminal({ copy, formId }: ContactTerminalProps) 
 				<div className="terminal-head">
 					<div className="terminal-dots" aria-hidden="true"><span></span><span></span><span></span></div>
 					<strong id="terminal-title">{copy.title}</strong>
-					<button type="button" className="terminal-reset" onClick={resetTerminal} aria-label={copy.reset} title={copy.reset}><X width="25" height="25" aria-hidden="true" /></button>
+					<button type="button" className="terminal-reset" onClick={resetTerminal} disabled={isSubmitting} aria-label={copy.reset} title={copy.reset}><RotateCcw width="20" height="20" aria-hidden="true" /></button>
 				</div>
 
-				<div className="terminal-body" onClick={() => {
-					if (step === 'email') emailInput.current?.focus();
-					if (step === 'subject') subjectInput.current?.focus();
-					if (step === 'message') messageInput.current?.focus();
-				}}>
+				<div className="terminal-body">
 					<p>{copy.intro[0]}<br />{copy.intro[1]}</p>
 
 					<label className={step === 'email' ? 'current-command' : ''}>
 						<span className="terminal-prompt">{copy.prompts[0]}</span>
-						<span className={`terminal-entry ${email ? 'has-value' : ''}`} style={entryWidth(email)}>
-							<input ref={emailInput} type="email" value={email} onChange={(event) => dispatch({ type: 'change', field: 'email', value: event.target.value })} onKeyDown={(event) => advance(event, 'email')} readOnly={step !== 'email'} aria-label={copy.labels[0]} aria-invalid={feedbackTone === 'error' && step === 'email'} aria-describedby="terminal-feedback" autoComplete="email" />
-							{step === 'email' && <span className="terminal-block-cursor" aria-hidden="true"></span>}
+						<span className={`terminal-entry ${email ? 'has-value' : ''}`}>
+							<input ref={emailInput} type="email" value={email} onChange={(event) => dispatch({ type: 'change', field: 'email', value: event.target.value })} onKeyDown={(event) => { if (event.key === 'Enter') { event.preventDefault(); advance('email'); } }} readOnly={isSubmitting} onFocus={() => dispatch({ type: 'focus', field: 'email' })} aria-label={copy.labels[0]} aria-invalid={feedbackTone === 'error' && step === 'email'} aria-describedby="terminal-feedback" autoComplete="email" />
 						</span>
 					</label>
 
-					<label className={step === 'subject' ? 'current-command' : step === 'email' ? 'future-command' : ''}>
+					<label className={step === 'subject' ? 'current-command' : step === 'email' && !subject && !message ? 'future-command' : ''}>
 						<span className="terminal-prompt">{copy.prompts[1]}</span>
-						<span className={`terminal-entry ${subject ? 'has-value' : ''}`} style={entryWidth(subject)}>
-							<input ref={subjectInput} type="text" value={subject} onChange={(event) => dispatch({ type: 'change', field: 'subject', value: event.target.value })} onKeyDown={(event) => advance(event, 'subject')} readOnly={step !== 'subject'} aria-label={copy.labels[1]} aria-invalid={feedbackTone === 'error' && step === 'subject'} aria-describedby="terminal-feedback" />
-							{step === 'subject' && <span className="terminal-block-cursor" aria-hidden="true"></span>}
+						<span className={`terminal-entry ${subject ? 'has-value' : ''}`}>
+							<input ref={subjectInput} type="text" value={subject} onChange={(event) => dispatch({ type: 'change', field: 'subject', value: event.target.value })} onKeyDown={(event) => { if (event.key === 'Enter') { event.preventDefault(); advance('subject'); } }} readOnly={isSubmitting} onFocus={() => dispatch({ type: 'focus', field: 'subject' })} aria-label={copy.labels[1]} aria-invalid={feedbackTone === 'error' && step === 'subject'} aria-describedby="terminal-feedback" />
 						</span>
 					</label>
 
-					<label className={step === 'message' ? 'current-command' : step === 'ready' ? '' : 'future-command'}>
+					<label className={step === 'message' ? 'current-command' : step === 'ready' || message ? '' : 'future-command'}>
 						<span className="terminal-prompt">{copy.prompts[2]}</span>
 						<span className={`terminal-entry terminal-entry--message ${message ? 'has-value' : ''}`}>
-							<textarea ref={messageInput} value={message} onChange={(event) => dispatch({ type: 'change', field: 'message', value: event.target.value })} onKeyDown={handleMessageKeyDown} readOnly={step !== 'message'} aria-label={copy.labels[2]} aria-invalid={feedbackTone === 'error' && step === 'message'} aria-describedby="terminal-feedback terminal-shortcut" rows={2} />
+							<textarea ref={messageInput} value={message} onChange={(event) => dispatch({ type: 'change', field: 'message', value: event.target.value })} onKeyDown={handleMessageKeyDown} readOnly={isSubmitting} onFocus={() => dispatch({ type: 'focus', field: 'message' })} aria-label={copy.labels[2]} aria-invalid={feedbackTone === 'error' && step === 'message'} aria-describedby="terminal-feedback terminal-shortcut" rows={2} />
 						</span>
 					</label>
 
 					<p id="terminal-feedback" className={`terminal-feedback ${visibleFeedback ? 'is-shown' : ''}`} data-tone={visibleFeedbackTone} role="status" aria-live="polite">{visibleFeedback || '\u00a0'}</p>
+					{(step === 'email' || step === 'subject') && <button type="button" className="terminal-continue" disabled={isSubmitting} onClick={() => advance(step)}>{copy.continue}</button>}
 					<p id="terminal-shortcut" className="terminal-shortcut">{step === 'message' ? copy.shortcut : '\u00a0'}</p>
 				</div>
 			</div>

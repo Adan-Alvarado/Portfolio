@@ -1,6 +1,6 @@
 import { useRef, useState, type CSSProperties, type KeyboardEvent, type MouseEvent } from 'react';
 import { flushSync } from 'react-dom';
-import { ArrowUpRight } from 'lucide-react';
+import { ArrowUpRight, ChevronDown } from 'lucide-react';
 import { getProjects } from '../data/projects';
 import type { Locale, LocalizedPortfolioContent } from '../i18n/content';
 import type { Project, ProjectMediaMap } from '../types/portfolio';
@@ -129,9 +129,9 @@ export default function ProjectGallery({ locale, copy, media }: ProjectGalleryPr
 								onClick={() => toggleProject(index)}
 								onKeyDown={(event) => handleIndexKeys(event, index)}
 							>
-								<span>{String(index + 1).padStart(2, '0')}</span>
+								<img className="pg-accordion-thumbnail" src={project.media?.[0]?.src} alt="" width={64} height={64} loading="lazy" decoding="async" />
 								<strong>{project.title}</strong>
-								<ArrowUpRight size={18} strokeWidth={1.7} aria-hidden="true" />
+								<ChevronDown size={18} strokeWidth={1.7} aria-hidden="true" />
 							</button>
 							<div className="pg-accordion-panel" id={`mobile-project-content-${project.id}`} role="region" aria-labelledby={`mobile-project-trigger-${project.id}`}>
 								<div className="pg-accordion-panel__inner">{renderProjectCard(project, index, 'mobile')}</div>

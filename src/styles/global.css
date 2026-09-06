@@ -2207,22 +2207,6 @@ body.motion-ready .timeline::before {
 
 }
 
-@media (min-width: 700px) and (max-width: 1023px) {
-	.projects-gallery {
-		grid-template-columns: 1.08fr .92fr;
-	}
-
-	.project-auto {
-		height: 638px;
-		grid-row: span 2;
-	}
-
-	.project-design,
-	.project-fixit {
-		height: 310px;
-	}
-}
-
 @media (hover: none) {
 	.technology-item {
 		color: #f2f1ef;

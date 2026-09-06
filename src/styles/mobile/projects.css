@@ -83,12 +83,13 @@
 	.pg-accordion-item > button {
 		display: grid;
 		width: 100%;
-		min-height: 52px;
-		padding: 0 5px;
+		min-height: 88px;
+		padding: 12px 5px;
 		border: 0;
 		border-bottom: 1px solid var(--mobile-rule);
 		background: transparent;
-		grid-template-columns: 36px minmax(0, 1fr) 26px;
+		grid-template-columns: 64px minmax(0, 1fr) 26px;
+		gap: 12px;
 		align-items: center;
 		color: var(--mobile-text-secondary);
 		font: inherit;
@@ -96,15 +97,18 @@
 		cursor: pointer;
 	}
 
-	.pg-accordion-item > button > span {
-		font-size: 10px;
-		font-variant-numeric: tabular-nums;
-		letter-spacing: .08em;
+	.pg-accordion-thumbnail {
+		display: block;
+		width: 64px;
+		height: 64px;
+		object-fit: contain;
+		background: var(--mobile-panel-surface);
+		border-radius: 4px;
 	}
 
 	.pg-accordion-item > button strong {
 		overflow: hidden;
-		font-size: 14px;
+		font-size: 16px;
 		font-weight: 450;
 		text-overflow: ellipsis;
 		white-space: nowrap;
@@ -112,13 +116,12 @@
 
 	.pg-accordion-item > button svg {
 		opacity: .48;
-		transform: translate(-3px, 3px);
+		transform: rotate(0);
 		transition: opacity var(--motion-feedback) var(--ease-smooth), transform var(--motion-state) var(--ease-smooth);
 	}
 
 	.pg-accordion-item[data-active='true'] > button { color: var(--color-paper); }
-	.pg-accordion-item[data-active='true'] > button > span { color: color-mix(in srgb, var(--project-accent) 70%, var(--color-paper)); }
-	.pg-accordion-item[data-active='true'] > button svg { opacity: 1; transform: translate(1px, 1px); }
+	.pg-accordion-item[data-active='true'] > button svg { opacity: 1; transform: rotate(180deg); }
 	.pg-accordion-item > button:active { background: color-mix(in srgb, var(--project-accent) 12%, transparent); }
 	.pg-accordion-item > button:focus-visible { outline: 2px solid var(--color-paper); outline-offset: -2px; }
 
@@ -328,6 +331,42 @@
 		from { opacity: 1; transform: translateY(0); }
 		to { opacity: 0; transform: translateY(22px); }
 	}
+}
+
+@media (max-width: 640px) {
+	/* The social-media originals are portrait 4:5 pieces; do not crop them into a landscape viewport. */
+	body .pg-modal-showcase {
+		min-height: 0;
+		padding: 12px;
+	}
+
+	body .pg-design-gallery {
+		height: auto;
+		grid-template-rows: auto 64px;
+		justify-content: center;
+	}
+
+	body .pg-design-gallery-stage {
+		width: min(84vw, 42svh);
+		height: auto;
+		aspect-ratio: 4 / 5;
+		justify-self: center;
+	}
+
+	body .pg-gallery-artwork {
+		width: 100%;
+		height: 100%;
+		max-width: none;
+		aspect-ratio: 4 / 5;
+	}
+
+	body .pg-gallery-artwork img {
+		width: 100%;
+		height: 100%;
+		object-fit: contain;
+	}
+
+	body .pg-design-gallery-thumbnails { width: 100%; }
 }
 
 @media (max-width: 1023px) and (hover: none) {

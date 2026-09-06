@@ -4,11 +4,14 @@ import { Image } from 'astro:assets';
 import TechStrip from '../TechStrip.astro';
 import type { Locale, LocalizedPortfolioContent } from '../../i18n/content';
 import capybara from '../../assets/capybara.png';
+import cvSpanish from '../../assets/CV_AdanFabricioAlvarado.pdf';
+import cvEnglish from '../../assets/CV_Ingles_AdanFabricioAlvarado.pdf';
 
 interface Props { content: LocalizedPortfolioContent; locale: Locale }
 
 const { content, locale } = Astro.props;
 const copy = content.hero;
+const cvDocument = locale === 'en' ? cvEnglish : cvSpanish;
 ---
 
 <section id="inicio" class="portfolio-screen home-screen">
@@ -39,7 +42,7 @@ const copy = content.hero;
 							<a class="github-mark" href="https://github.com/Adan-Alvarado" target="_blank" rel="noreferrer" aria-label="Perfil de GitHub de Fabricio Alvarado"><Icon name="lucide:github" width="52" height="52" aria-hidden="true" /></a>
 							<div>
 								<strong>Fabricio Alvarado</strong>
-								<a class="cv-download" href="/Fabricio-Alvarado-CV.pdf" download hreflang="es" lang={locale === 'en' ? 'es' : undefined} title={copy.cvLanguage}>{copy.downloadCv} <span><Icon name="lucide:download" width="22" height="22" aria-hidden="true" /></span></a>
+								<a class="cv-download" href={cvDocument} download hreflang={locale} lang={locale} title={copy.cvLanguage}>{copy.downloadCv} <span><Icon name="lucide:download" width="22" height="22" aria-hidden="true" /></span></a>
 							</div>
 						</div>
 						<p>{copy.availability[0]}<br />{copy.availability[1]}</p>

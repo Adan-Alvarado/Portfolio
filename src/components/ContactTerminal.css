@@ -3,6 +3,32 @@
 	--terminal-focus-ring: rgb(242 241 239 / 82%);
 }
 
+.terminal-shell .terminal-entry {
+	flex: 1;
+	min-width: 0;
+}
+
+.terminal-shell .terminal-entry input {
+	width: 100%;
+	caret-color: #f1efed;
+}
+
+.terminal-continue {
+	min-height: 44px;
+	padding: 8px 12px;
+	border: 1px solid var(--terminal-interactive-border);
+	border-radius: 6px;
+	background: transparent;
+	color: var(--color-paper);
+	font: inherit;
+	cursor: pointer;
+}
+
+.terminal-continue:focus-visible {
+	outline: 2px solid var(--terminal-focus-ring);
+	outline-offset: 3px;
+}
+
 .terminal-shell .terminal-card {
 	transition:
 		border-color 220ms ease,
