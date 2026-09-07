@@ -9,6 +9,13 @@ export const initTechnologyStripSelection = () => {
 		});
 	};
 
+	const clearSelection = (strip: HTMLElement) => {
+		strip.querySelectorAll<HTMLButtonElement>('[data-technology-item]').forEach((item) => {
+			item.classList.remove('is-selected');
+			item.setAttribute('aria-pressed', 'false');
+		});
+	};
+
 	const onClick = (event: MouseEvent) => {
 		if (!responsiveViewport.matches) return;
 		const target = event.target;
@@ -20,8 +27,12 @@ export const initTechnologyStripSelection = () => {
 		if (!strip || !technology) return;
 
 		const wasSelected = item.getAttribute('aria-pressed') === 'true';
-		setSelection(strip, technology, !wasSelected);
-		if (wasSelected) item.blur();
+		clearSelection(strip);
+		if (wasSelected) {
+			item.blur();
+			return;
+		}
+		setSelection(strip, technology, true);
 	};
 
 	const clearSelectionOutsideResponsive = () => {
