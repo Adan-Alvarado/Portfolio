@@ -1,4 +1,4 @@
-import { useState, type KeyboardEvent } from 'react';
+import { useEffect, useRef, useState, type KeyboardEvent } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import type { LocalizedPortfolioContent } from '../../i18n/content';
 import type { DesignGalleryItem } from '../../types/portfolio';
@@ -11,6 +11,18 @@ interface DesignGalleryProps {
 export default function DesignGallery({ items, copy }: DesignGalleryProps) {
 	const [activeIndex, setActiveIndex] = useState(0);
 	const [hasChangedItem, setHasChangedItem] = useState(false);
+	const thumbnailsRef = useRef<HTMLDivElement>(null);
+	const [pageSize, setPageSize] = useState(3);
+	useEffect(() => {
+		const strip = thumbnailsRef.current;
+		if (!strip) return;
+		const resize = () => setPageSize(Math.max(1, Math.min(5, Math.floor((strip.clientWidth + 8) / 80))));
+		resize();
+		const observer = new ResizeObserver(resize);
+		observer.observe(strip);
+		return () => observer.disconnect();
+	}, []);
+	const pageStart = Math.floor(activeIndex / pageSize) * pageSize;
 	const activeItem = items[activeIndex] ?? items[0];
 	if (!activeItem?.media) return null;
 
@@ -21,6 +33,7 @@ export default function DesignGallery({ items, copy }: DesignGalleryProps) {
 		setActiveIndex(nextIndex);
 	};
 	const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+		if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') event.currentTarget.focus({ preventScroll: true });
 		if (event.key === 'ArrowLeft') { event.preventDefault(); select(activeIndex - 1); }
 		if (event.key === 'ArrowRight') { event.preventDefault(); select(activeIndex + 1); }
 	};
@@ -35,12 +48,14 @@ export default function DesignGallery({ items, copy }: DesignGalleryProps) {
 				<button type="button" className="pg-gallery-control pg-gallery-control--previous" onClick={() => select(activeIndex - 1)} aria-label={copy.galleryPrevious}><ChevronLeft aria-hidden="true" /></button>
 				<button type="button" className="pg-gallery-control pg-gallery-control--next" onClick={() => select(activeIndex + 1)} aria-label={copy.galleryNext}><ChevronRight aria-hidden="true" /></button>
 			</div>
-			<div className="pg-design-gallery-thumbnails" aria-label={copy.galleryItem}>
-				{items.map((item, index) => item.media && (
+			<div ref={thumbnailsRef} className="pg-design-gallery-thumbnails" aria-label={copy.galleryItem}>
+				{items.slice(pageStart, pageStart + pageSize).map((item, offset) => {
+					const index = pageStart + offset;
+					return item.media && (
 					<button key={item.id} type="button" className={index === activeIndex ? 'is-active' : ''} onClick={() => select(index)} aria-label={`${copy.galleryItem} ${index + 1}`} aria-current={index === activeIndex ? 'true' : undefined}>
 						<img src={item.media.src} alt="" width={item.media.width} height={item.media.height} loading="lazy" decoding="async" />
 					</button>
-				))}
+				); })}
 			</div>
 		</div>
 	);

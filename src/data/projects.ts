@@ -41,11 +41,11 @@ const projectDefinitions = [
 	},
 ] as const;
 
-const designGallery = (media: ProjectMediaMap['diseno']) => [
-	{ id: 'social-media-01', media: media?.[0] },
-	{ id: 'social-media-02', media: media?.[1] },
-	{ id: 'social-media-03', media: media?.[2] },
-];
+const designGallery = (media: ProjectMediaMap['diseno']) =>
+	(media ?? []).map((item, index) => ({
+		id: `social-media-${String(index + 1).padStart(2, '0')}`,
+		media: item,
+	}));
 
 export const getProjects = (locale: Locale, media: ProjectMediaMap = {}): readonly Project[] => {
 	const copy = getPortfolioContent(locale).projects.items;

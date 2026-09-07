@@ -9,7 +9,7 @@ interface ProjectPreviewProps {
 
 export default function ProjectPreview({ project, copy, expanded = false }: ProjectPreviewProps) {
 	const media = project.media ?? [];
-	const visibleMedia = expanded ? media : project.preview === 'diseno' ? media : media.slice(0, 1);
+	const visibleMedia = expanded ? media : project.preview === 'diseno' ? media.slice(0, 3) : media.slice(0, 1);
 	const label = project.preview === 'diseno'
 		? copy.designSelection
 		: project.preview === 'auto-care'

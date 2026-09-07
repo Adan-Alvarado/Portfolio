@@ -107,7 +107,7 @@ export interface LocalizedPortfolioContent {
 		body: readonly string[];
 		characterAlt: string;
 		details: readonly { term: string; value: string }[];
-		footer: readonly [string, string];
+		footer: string;
 		terminal: {
 			title: string;
 			reset: string;
@@ -192,7 +192,7 @@ export const portfolioContent: Record<Locale, LocalizedPortfolioContent> = {
 			body: ['Estoy siempre abierto a nuevos', 'desafíos, colaboraciones y', 'oportunidades creativas.', 'Cuéntame tu idea y veamos', 'cómo podemos construir algo', 'increíble juntos.'],
 			characterAlt: 'Paloma pixelada sosteniendo una taza de café',
 			details: [{ term: 'Ubicación', value: 'Copán, Honduras' }, { term: 'Email', value: 'alvaradoadan55@gmail.com' }, { term: 'Disponibilidad', value: 'Lunes a Sábado' }],
-			footer: ['@2026 --- Fabricio Alvarado | Todos los derechos reservados', '</> Hecho con pasión y un poco de café'],
+			footer: '@2026 --- Fabricio Alvarado | Todos los derechos reservados',
 			terminal: {
 				title: 'terminal@contacto', reset: 'Reiniciar terminal', intro: ['> Cuéntame sobre tu proyecto, idea o simplemente', 'salúdame. Estoy aquí para leerte...'],
 				prompts: ['Tu@mensaje: ~$ correo:', 'Tu@mensaje: ~$ asunto:', 'Tu@mensaje: ~$ mensaje:'], labels: ['Correo', 'Asunto', 'Mensaje'], send: 'Enviar Mensaje',
@@ -261,7 +261,7 @@ export const portfolioContent: Record<Locale, LocalizedPortfolioContent> = {
 			body: ['I am always open to new', 'challenges, collaborations and', 'creative opportunities.', 'Tell me about your idea and let’s see', 'how we can build something', 'remarkable together.'],
 			characterAlt: 'Pixel-art pigeon holding a coffee mug',
 			details: [{ term: 'Location', value: 'Copán, Honduras' }, { term: 'Email', value: 'alvaradoadan55@gmail.com' }, { term: 'Availability', value: 'Monday to Saturday' }],
-			footer: ['@2026 --- Fabricio Alvarado | All rights reserved', '</> Made with passion and a little coffee'],
+			footer: '@2026 --- Fabricio Alvarado | All rights reserved',
 			terminal: {
 				title: 'terminal@contact', reset: 'Reset terminal', intro: ['> Tell me about your project, idea or simply', 'say hello. I’m here to read you...'],
 				prompts: ['You@message: ~$ email:', 'You@message: ~$ subject:', 'You@message: ~$ message:'], labels: ['Email', 'Subject', 'Message'], send: 'Send Message',

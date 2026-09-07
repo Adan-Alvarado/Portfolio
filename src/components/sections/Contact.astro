@@ -9,7 +9,7 @@ interface Props { content: LocalizedPortfolioContent }
 
 const { content } = Astro.props;
 const copy = content.contact;
-const footerParts = copy.footer[0].split('|');
+const footerParts = copy.footer.split('|');
 const formId = import.meta.env.PUBLIC_FORMSPREE_FORM_ID?.trim() ?? '';
 ---
 
@@ -41,7 +41,6 @@ const formId = import.meta.env.PUBLIC_FORMSPREE_FORM_ID?.trim() ?? '';
 
 		<footer class="portfolio-footer" data-reveal="contact-footer" data-reveal-order="4">
 			<p>{footerParts[0]}<span>|</span>{footerParts[1]}</p>
-			<p>{copy.footer[1]}</p>
 		</footer>
 	</div>
 </section>

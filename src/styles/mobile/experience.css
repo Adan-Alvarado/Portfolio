@@ -1,8 +1,8 @@
 @media (max-width: 1023px) {
 	.experience-screen {
-		contain: paint;
+		contain: layout style;
 		isolation: isolate;
-		overflow: clip;
+		overflow: visible;
 	}
 	.experience-stage { display: flex; flex-direction: column; }
 
@@ -27,7 +27,7 @@
 	.mobile-experience-stack {
 		display: block;
 		margin-top: 20px;
-		padding-bottom: max(28px, env(safe-area-inset-bottom));
+		padding-bottom: max(48px, env(safe-area-inset-bottom));
 	}
 
 	.mobile-experience-stack__panels {
@@ -138,8 +138,9 @@
 	}
 
 	.mobile-experience-panel--credential {
-		height: var(--experience-credential-height);
-		padding-bottom: 0;
+		height: auto;
+		overflow: visible;
+		padding-bottom: 44px;
 		background: color-mix(in srgb, var(--mobile-experience-current) 14%, var(--mobile-experience-panel));
 	}
 
@@ -147,7 +148,7 @@
 		position: relative;
 		width: min(76vw, 300px);
 		aspect-ratio: 398.314 / 478.862;
-		margin: 8px auto 0;
+		margin: 24px auto 0;
 		container-type: inline-size;
 	}
 

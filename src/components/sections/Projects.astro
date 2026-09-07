@@ -10,6 +10,14 @@ import penguin from '../../assets/pinguino.png';
 import postOne from '../../assets/Post-1.png';
 import postTwo from '../../assets/Post-2.png';
 import postThree from '../../assets/Post-3.png';
+import postFour from '../../assets/Post-4.png';
+import postFive from '../../assets/Post-5.png';
+import postSix from '../../assets/Post-6.png';
+import postSeven from '../../assets/Post-7.png';
+import postEight from '../../assets/Post-8.png';
+import postNine from '../../assets/Post-9.png';
+import postTen from '../../assets/Post-10.png';
+import postEleven from '../../assets/Post-11.png';
 import autoCareOne from '../../assets/Autocare-1.png';
 import autoCareTwo from '../../assets/Autocare-2.png';
 import fixitApi from '../../assets/Fixit-api.png';
@@ -19,19 +27,35 @@ interface Props { content: LocalizedPortfolioContent; locale: Locale }
 const { content, locale } = Astro.props;
 const copy = content.projects;
 const stackTitleLines = locale === 'es' ? ['Stack', 'Tecnológico'] : ['Technology', 'Stack'];
-const [designOne, designTwo, designThree, autoOne, autoTwo, fixit] = await Promise.all([
+const [designOne, designTwo, designThree, designFour, designFive, designSix, designSeven, designEight, designNine, designTen, designEleven, autoOne, autoTwo, fixit] = await Promise.all([
 	getImage({ src: postOne, width: 720, format: 'webp', quality: 80 }),
 	getImage({ src: postTwo, width: 720, format: 'webp', quality: 80 }),
 	getImage({ src: postThree, width: 720, format: 'webp', quality: 80 }),
+	getImage({ src: postFour, width: 720, format: 'webp', quality: 80 }),
+	getImage({ src: postFive, width: 720, format: 'webp', quality: 80 }),
+	getImage({ src: postSix, width: 720, format: 'webp', quality: 80 }),
+	getImage({ src: postSeven, width: 720, format: 'webp', quality: 80 }),
+	getImage({ src: postEight, width: 720, format: 'webp', quality: 80 }),
+	getImage({ src: postNine, width: 720, format: 'webp', quality: 80 }),
+	getImage({ src: postTen, width: 720, format: 'webp', quality: 80 }),
+	getImage({ src: postEleven, width: 720, format: 'webp', quality: 80 }),
 	getImage({ src: autoCareOne, width: 1100, format: 'webp', quality: 78 }),
 	getImage({ src: autoCareTwo, width: 1100, format: 'webp', quality: 78 }),
 	getImage({ src: fixitApi, width: 1100, format: 'webp', quality: 78 }),
 ]);
 const projectMedia: ProjectMediaMap = {
-	diseno: [
+		diseno: [
 		{ src: designOne.src, alt: locale === 'es' ? 'Diseño de social media, pieza uno' : 'Social media design, piece one', width: 720, height: 900 },
 		{ src: designTwo.src, alt: locale === 'es' ? 'Diseño de social media, pieza dos' : 'Social media design, piece two', width: 720, height: 900 },
 		{ src: designThree.src, alt: locale === 'es' ? 'Diseño de social media, pieza tres' : 'Social media design, piece three', width: 720, height: 900 },
+		{ src: designFour.src, alt: locale === 'es' ? 'Diseño de social media, pieza cuatro' : 'Social media design, piece four', width: 720, height: 900 },
+		{ src: designFive.src, alt: locale === 'es' ? 'Diseño de social media, pieza cinco' : 'Social media design, piece five', width: 720, height: 900 },
+		{ src: designSix.src, alt: locale === 'es' ? 'Diseño de social media, pieza seis' : 'Social media design, piece six', width: 720, height: 900 },
+		{ src: designSeven.src, alt: locale === 'es' ? 'Diseño de social media, pieza siete' : 'Social media design, piece seven', width: 720, height: 900 },
+		{ src: designEight.src, alt: locale === 'es' ? 'Diseño de social media, pieza ocho' : 'Social media design, piece eight', width: 720, height: 900 },
+		{ src: designNine.src, alt: locale === 'es' ? 'Diseño de social media, pieza nueve' : 'Social media design, piece nine', width: 720, height: 900 },
+		{ src: designTen.src, alt: locale === 'es' ? 'Diseño de social media, pieza diez' : 'Social media design, piece ten', width: 720, height: 900 },
+		{ src: designEleven.src, alt: locale === 'es' ? 'Diseño de social media, pieza once' : 'Social media design, piece eleven', width: 720, height: 900 },
 	],
 	'auto-care': [
 		{ src: autoOne.src, alt: locale === 'es' ? 'Interfaz web de Auto Care Club' : 'Auto Care Club web interface', width: 1100, height: 553 },
