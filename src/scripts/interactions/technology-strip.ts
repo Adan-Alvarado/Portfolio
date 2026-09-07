@@ -1,12 +1,9 @@
 const responsiveViewport = window.matchMedia('(max-width: 1023px)');
 
 export const initTechnologyStripSelection = () => {
-	const setSelection = (strip: HTMLElement, technology: string, selected: boolean) => {
-		strip.querySelectorAll<HTMLButtonElement>('[data-technology-item]').forEach((item) => {
-			if (item.dataset.technology !== technology) return;
-			item.classList.toggle('is-selected', selected);
-			item.setAttribute('aria-pressed', String(selected));
-		});
+	const setSelection = (item: HTMLButtonElement, selected: boolean) => {
+		item.classList.toggle('is-selected', selected);
+		item.setAttribute('aria-pressed', String(selected));
 	};
 
 	const clearSelection = (strip: HTMLElement) => {
@@ -23,8 +20,7 @@ export const initTechnologyStripSelection = () => {
 		const item = target.closest<HTMLButtonElement>('[data-technology-item]');
 		if (!item) return;
 		const strip = item.closest<HTMLElement>('[data-technology-strip]');
-		const technology = item.dataset.technology;
-		if (!strip || !technology) return;
+		if (!strip) return;
 
 		const wasSelected = item.getAttribute('aria-pressed') === 'true';
 		clearSelection(strip);
@@ -32,7 +28,7 @@ export const initTechnologyStripSelection = () => {
 			item.blur();
 			return;
 		}
-		setSelection(strip, technology, true);
+		setSelection(item, true);
 	};
 
 	const clearSelectionOutsideResponsive = () => {
