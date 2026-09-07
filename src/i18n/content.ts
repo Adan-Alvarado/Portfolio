@@ -172,7 +172,7 @@ export const portfolioContent: Record<Locale, LocalizedPortfolioContent> = {
 			},
 		},
 		projects: {
-			kicker: '[“¿Tienes algo en mente?”]', heading: ['Vamos a', 'construir', 'algo'],
+			kicker: '[“¿Tienes algo en mente?”]', heading: ['Vamos a', 'crear', 'algo'],
 			bio: ['Soy una persona', 'alegre, propositiva y autodidacta.', 'Siempre busco ir más allá de lo esperado, optimizar procesos y aportar soluciones creativas.'],
 			characterAlt: 'Pingüino pixelado sosteniendo una herramienta', galleryLabel: 'Selección de proyectos',
 			openCase: 'Abrir caso', seeCase: 'Ver caso', modalEyebrow: 'Caso de proyecto', close: 'Cerrar',

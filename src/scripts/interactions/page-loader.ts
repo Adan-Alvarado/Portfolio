@@ -3,12 +3,13 @@ import type { TransitionBeforePreparationEvent, TransitionBeforeSwapEvent } from
 const MAX_FONT_WAIT = 1200;
 const PROGRESS_DURATION = 1200;
 const COMPLETE_DELAY = 300;
+const LOCALE_COVER_DURATION = 500;
 
 export const initPageTransitionLoader = () => {
-	const root = document.documentElement;
+	const getRoot = () => document.documentElement;
 	const loader = document.querySelector<HTMLElement>('[data-page-loader]');
 	if (!loader) return () => {};
-	const shouldPlayOnEntry = root.classList.contains('page-loader-enabled');
+	const shouldPlayOnEntry = getRoot().classList.contains('page-loader-enabled');
 
 	let completionTimer = 0;
 	let progressFrame = 0;
@@ -42,8 +43,8 @@ export const initPageTransitionLoader = () => {
 		hasFinished = false;
 		startedAt = performance.now();
 		setProgress(0);
-		root.classList.remove('page-loader-running');
-		window.requestAnimationFrame(() => root.classList.add('page-loader-running'));
+		getRoot().classList.remove('page-loader-running');
+		window.requestAnimationFrame(() => getRoot().classList.add('page-loader-running'));
 		if (reducedMotion) return;
 		progressFrame = window.requestAnimationFrame(animateProgress);
 	};
@@ -54,6 +55,7 @@ export const initPageTransitionLoader = () => {
 		if (progressFrame) window.cancelAnimationFrame(progressFrame);
 		setProgress(100);
 		completionTimer = window.setTimeout(() => {
+			const root = getRoot();
 			root.classList.add('page-loader-ready');
 			root.classList.remove('page-loader-entry');
 			root.classList.remove('page-loader-locale-transition');
@@ -75,6 +77,7 @@ export const initPageTransitionLoader = () => {
 		if (routeTransitionActive) return;
 		routeTransitionActive = true;
 		documentReady = false;
+		const root = getRoot();
 		root.classList.add('page-loader-enabled', 'page-loader-locale-transition');
 		root.classList.remove('page-loader-ready');
 		startProgress();
@@ -92,11 +95,11 @@ export const initPageTransitionLoader = () => {
 		if (!isLocaleRoute(transition.from) || !isLocaleRoute(transition.to) || transition.from.pathname === transition.to.pathname) return;
 		beginRouteTransition();
 		// Fetch immediately, but keep Astro from swapping a fast/cached route
-		// before the existing veil has finished its entrance fade.
+		// before the veil has had time to fully cover the outgoing view.
 		const prepareDestination = transition.loader;
-		const coverReady = Promise.all(
-			loader.getAnimations().map((animation) => animation.finished.catch(() => {})),
-		);
+		const coverReady = new Promise<void>((resolve) => {
+			window.setTimeout(resolve, reducedMotion ? 120 : LOCALE_COVER_DURATION);
+		});
 		transition.loader = async () => {
 			await Promise.all([prepareDestination(), coverReady]);
 		};
@@ -131,6 +134,7 @@ export const initPageTransitionLoader = () => {
 
 	const onPageShow = (event: PageTransitionEvent) => {
 		if (!event.persisted) return;
+		const root = getRoot();
 		root.classList.add('page-loader-ready');
 		root.classList.remove('page-loader-entry');
 		root.classList.remove('page-loader-locale-transition');
@@ -145,7 +149,7 @@ export const initPageTransitionLoader = () => {
 		startProgress();
 		waitForInitialPaint();
 	} else {
-		root.classList.add('page-loader-ready');
+		getRoot().classList.add('page-loader-ready');
 	}
 
 	return () => {

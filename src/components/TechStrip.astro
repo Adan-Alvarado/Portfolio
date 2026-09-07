@@ -14,8 +14,9 @@ const copies = [0, 1];
 
 <div
 	class:list={['skills-strip', { 'projects-skills': compact }]}
-	role="list"
+	role="group"
 	aria-label={label}
+	data-technology-strip
 	data-reveal={revealOrder !== undefined ? 'technology-strip' : undefined}
 	data-reveal-order={revealOrder}
 >
@@ -23,10 +24,13 @@ const copies = [0, 1];
 		{copies.map((copy) => (
 			<div class="technology-group" aria-hidden={copy === 1 ? 'true' : undefined}>
 				{stripTechnologies.map((technology) => (
-					<span
+					<button
+						type="button"
 						class="technology-item"
-						role={copy === 0 ? 'listitem' : undefined}
-						tabindex={copy === 0 ? 0 : -1}
+						tabindex={copy === 0 ? undefined : -1}
+						data-technology-item
+						data-technology={technology.label}
+						aria-pressed="false"
 						style={`--technology-color: ${technology.color}`}
 					>
 						<Icon
@@ -36,7 +40,7 @@ const copies = [0, 1];
 							aria-hidden="true"
 						/>
 						{technology.label}
-					</span>
+					</button>
 				))}
 			</div>
 		))}
