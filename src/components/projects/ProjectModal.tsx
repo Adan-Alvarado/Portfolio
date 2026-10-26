@@ -48,12 +48,6 @@ export default function ProjectModal({ project, copy, returnFocusRef, onAfterClo
 						</div>
 						<div className="pg-modal-details">
 							<p className="pg-modal-summary">{project.description}</p>
-							<dl>
-								{project.challenge && <div><dt>{copy.challenge}</dt><dd>{project.challenge}</dd></div>}
-								{project.contribution && <div><dt>{copy.contribution}</dt><dd>{project.contribution}</dd></div>}
-								{project.outcome && <div><dt>{copy.outcome}</dt><dd>{project.outcome}</dd></div>}
-								{!project.challenge && !project.contribution && !project.outcome && <div><dt>{copy.role}</dt><dd>{project.role}</dd></div>}
-							</dl>
 							{project.links && project.links.length > 0 ? (
 								<div className="pg-project-links">
 									{project.links.map((link) => (
@@ -64,6 +58,12 @@ export default function ProjectModal({ project, copy, returnFocusRef, onAfterClo
 									))}
 								</div>
 							) : project.repositoryVisibility ? <p className="pg-repository-note">{copy.repositoryNote}</p> : null}
+							<dl>
+								{project.challenge && <div><dt>{copy.challenge}</dt><dd>{project.challenge}</dd></div>}
+								{project.contribution && <div><dt>{copy.contribution}</dt><dd>{project.contribution}</dd></div>}
+								{project.outcome && <div><dt>{copy.outcome}</dt><dd>{project.outcome}</dd></div>}
+								{!project.challenge && !project.contribution && !project.outcome && <div><dt>{copy.role}</dt><dd>{project.role}</dd></div>}
+							</dl>
 							<div className="pg-stack">
 								<h3>{copy.technologies}</h3>
 								<ul>{project.technologies.map((technology) => <TechnologyPill key={technology.label} technology={technology} />)}</ul>
